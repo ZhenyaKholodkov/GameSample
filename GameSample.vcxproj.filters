@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{f16e3349-fcf1-4b85-bab2-2421998fc06a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine">
+      <UniqueIdentifier>{c6846ddf-c15e-4a53-bf0b-b47b05ce3edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game">
+      <UniqueIdentifier>{14629528-677b-492a-ae4e-42a6f799a6f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\Render">
+      <UniqueIdentifier>{64244cd6-b9fe-4ba6-9765-aecfac6b404f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\Render\ext">
+      <UniqueIdentifier>{ef7ad102-84ed-4082-86a2-1421e5f91430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thirdparty">
+      <UniqueIdentifier>{f472cf51-4b2b-4781-922c-64300886bda1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thirdparty\libpng">
+      <UniqueIdentifier>{ea924e8f-97b3-44e2-9294-77f19e35306a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thirdparty\zlib">
+      <UniqueIdentifier>{db1e8dd3-444e-40cd-ba01-30dc62c3fafa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thirdparty\zlib\include">
+      <UniqueIdentifier>{49cb17d6-a14f-4f1b-8e82-bd47654ac94e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thirdparty\zlib\lib">
+      <UniqueIdentifier>{7e5f86f3-71dc-45ff-a7a3-f01ccb125bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\graphics">
+      <UniqueIdentifier>{e2adc4c9-cce7-41e9-b2cf-ebd927ca6b2c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\GResManager.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Types.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\GSprite.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\IGame.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\GGame.cpp">
+      <Filter>src\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\OpenGL\ext\olOpenGL.cpp">
+      <Filter>src\Engine\Render\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\OpenGL\IGRender.cpp">
+      <Filter>src\Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\png.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngerror.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngget.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngmem.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngpread.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngread.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngrio.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngrtran.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngrutil.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngset.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngtrans.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngwio.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngwrite.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngwtran.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\libpng\pngwutil.c">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\adler32.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\compress.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\crc32.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\deflate.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\gzclose.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\gzlib.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\gzread.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\gzwrite.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\infback.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\inffast.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\inflate.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\inftrees.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\trees.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\uncompr.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\zlib\zutil.c">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\OpenGL\GRender.cpp">
+      <Filter>src\Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\graphics\TextureManager.cpp">
+      <Filter>src\Engine\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\graphics\TextureObject.cpp">
+      <Filter>src\Engine\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\graphics\TextureHandle.cpp">
+      <Filter>src\Engine\graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Engine\GResManager.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Types.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\GSprite.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OWindow.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Utils.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\IGame.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\GGame.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\OpenGL\ext\glext.h">
+      <Filter>src\Engine\Render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\OpenGL\ext\olOpenGL.h">
+      <Filter>src\Engine\Render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\OpenGL\ext\wglext.h">
+      <Filter>src\Engine\Render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\OpenGL\IGRender.h">
+      <Filter>src\Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\libpng\config.h">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\libpng\png.h">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\libpng\pngconf.h">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\libpng\pngpriv.h">
+      <Filter>src\thirdparty\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\crc32.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\deflate.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\gzguts.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\inffast.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\inffixed.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\inflate.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\inftrees.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\trees.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\zconf.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\zlib.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\INCLUDE\zutil.h">
+      <Filter>src\thirdparty\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\crc32.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\deflate.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\gzguts.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\inffast.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\inffixed.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\inflate.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\inftrees.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\trees.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\zconf.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\zlib.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\zlib\zutil.h">
+      <Filter>src\thirdparty\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\OpenGL\GRender.h">
+      <Filter>src\Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\TextureManager.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\TextureObject.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\TextureHandle.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\GDefines.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="src\thirdparty\zlib\LIB\zlib.lib">
+      <Filter>src\thirdparty\zlib\lib</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
