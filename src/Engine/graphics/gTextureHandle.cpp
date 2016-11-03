@@ -8,7 +8,7 @@ GTextureHandle::GTextureHandle():
 
 GTextureHandle::GTextureHandle(const char* texturePath)
 {
-
+	mTexture = 
 }
 
 GTextureHandle::GTextureHandle(const GTextureHandle& handle)
@@ -29,7 +29,7 @@ void GTextureHandle::lock()
 	mTexture->mRefCounter++;
 }
 
-void TextureHandle::unlock()
+void GTextureHandle::unlock()
 {
 	if (IsNull())
 		return;

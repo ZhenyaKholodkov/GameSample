@@ -105,6 +105,8 @@ public:
 	virtual	void	applyTransform() = 0;											         //!< установить матрицу трансформации
   virtual void   restoreContext(){}                                          //!< восстановление контекста
 
+  virtual uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih) = 0;
+
 			// platform independed functions
          int		width()  {return _width;}									      //!< получить ширину вьюпорта
 			int		height() {return _height;}									      //!< получить высоту вьюпорта

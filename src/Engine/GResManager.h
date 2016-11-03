@@ -14,15 +14,6 @@ extern "C"
 }
 using namespace std;
 
-struct	png_image_raw_data
-{
-	FILE*	file;
-	size_t	size;
-	int		offset;
-	png_image_raw_data() : file(NULL), size(0), offset(0) {};
-};
-
-
 enum ResType
 {
 	RES_FILE_TEXTURE = BIT(0)

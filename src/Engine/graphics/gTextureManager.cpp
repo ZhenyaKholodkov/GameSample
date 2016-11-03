@@ -17,3 +17,11 @@ GTextureManager::~GTextureManager()
 {
 
 }
+
+GTextureObject* GTextureManager::LoadTexture(const char* name)
+{
+	GTextureObject* texture = GTextureDictinary::Instance()->find(name);
+	if (texture)
+		return texture;
+
+}

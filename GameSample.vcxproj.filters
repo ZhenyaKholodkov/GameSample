@@ -14,12 +14,6 @@
     <Filter Include="src\Game">
       <UniqueIdentifier>{14629528-677b-492a-ae4e-42a6f799a6f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Engine\Render">
-      <UniqueIdentifier>{64244cd6-b9fe-4ba6-9765-aecfac6b404f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Engine\Render\ext">
-      <UniqueIdentifier>{ef7ad102-84ed-4082-86a2-1421e5f91430}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\thirdparty">
       <UniqueIdentifier>{f472cf51-4b2b-4781-922c-64300886bda1}</UniqueIdentifier>
     </Filter>
@@ -35,8 +29,20 @@
     <Filter Include="src\thirdparty\zlib\lib">
       <UniqueIdentifier>{7e5f86f3-71dc-45ff-a7a3-f01ccb125bc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Engine\graphics">
+    <Filter Include="src\Engine\texture">
       <UniqueIdentifier>{e2adc4c9-cce7-41e9-b2cf-ebd927ca6b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\render">
+      <UniqueIdentifier>{64244cd6-b9fe-4ba6-9765-aecfac6b404f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\render\ext">
+      <UniqueIdentifier>{ef7ad102-84ed-4082-86a2-1421e5f91430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\texture\pngloader">
+      <UniqueIdentifier>{62b13d96-5556-4d8e-af85-8fa47d363f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\io">
+      <UniqueIdentifier>{e09905d6-5e93-4a68-8493-78507cb7c591}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,10 +71,10 @@
       <Filter>src\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\OpenGL\ext\olOpenGL.cpp">
-      <Filter>src\Engine\Render\ext</Filter>
+      <Filter>src\Engine\render\ext</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\OpenGL\IGRender.cpp">
-      <Filter>src\Engine\Render</Filter>
+      <Filter>src\Engine\render</Filter>
     </ClCompile>
     <ClCompile Include="src\thirdparty\libpng\png.c">
       <Filter>src\thirdparty\libpng</Filter>
@@ -161,19 +167,23 @@
       <Filter>src\thirdparty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\OpenGL\GRender.cpp">
-      <Filter>src\Engine\Render</Filter>
+      <Filter>src\Engine\render</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\graphics\gTextureHandle.cpp">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\graphics\gTextureManager.cpp">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\graphics\gTextureObject.cpp">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClCompile>
-    <ClCompile Include="gTextureDictinary.cpp">
-      <Filter>src\Engine\graphics</Filter>
+    <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp" />
+    <ClCompile Include="src\Engine\graphics\gpngloader\gPngLoader.cpp">
+      <Filter>src\Engine\texture\pngloader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\graphics\gpngloader\gIOFile.cpp">
+      <Filter>src\Engine\io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,16 +212,16 @@
       <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\OpenGL\ext\glext.h">
-      <Filter>src\Engine\Render\ext</Filter>
+      <Filter>src\Engine\render\ext</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\OpenGL\ext\olOpenGL.h">
-      <Filter>src\Engine\Render\ext</Filter>
+      <Filter>src\Engine\render\ext</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\OpenGL\ext\wglext.h">
-      <Filter>src\Engine\Render\ext</Filter>
+      <Filter>src\Engine\render\ext</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\OpenGL\IGRender.h">
-      <Filter>src\Engine\Render</Filter>
+      <Filter>src\Engine\render</Filter>
     </ClInclude>
     <ClInclude Include="src\thirdparty\libpng\config.h">
       <Filter>src\thirdparty\libpng</Filter>
@@ -292,22 +302,26 @@
       <Filter>src\thirdparty\zlib</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\OpenGL\GRender.h">
-      <Filter>src\Engine\Render</Filter>
+      <Filter>src\Engine\render</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\graphics\GDefines.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\graphics\gTextureManager.h">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\graphics\gTextureObject.h">
-      <Filter>src\Engine\graphics</Filter>
+      <Filter>src\Engine\texture</Filter>
     </ClInclude>
-    <ClInclude Include="gTextureDictinary.h">
-      <Filter>src\Engine\graphics</Filter>
+    <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
+    <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h">
+      <Filter>src\Engine\texture\pngloader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\gpngloader\gIOFile.h">
+      <Filter>src\Engine\io</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

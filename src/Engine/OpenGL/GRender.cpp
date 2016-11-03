@@ -280,6 +280,38 @@ void GRender::drawLine(float x1, float y1, float z1, float x2, float y2, float z
 }
 
 
+uint32 GRender::LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih)
+{
+	int   glFormt = GL_RGBA;
+
+	GThreadSafeErrors err;
+	unsigned int glTextureID;
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &glTextureID);
+	if (checkForGLErrors(err) > 0)
+	{
+		return -1;
+	}
+
+	glBindTexture(GL_TEXTURE_2D, glTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	if (checkForGLErrors(err) > 0)
+		return -1;
+
+	glTexImage2D(GL_TEXTURE_2D, 0, glFormt, textureWidth, textureHegih, 0, glFormt, GL_UNSIGNED_BYTE, bits);
+
+	if (checkForGLErrors(err) > 0)
+		return -1;
+
+	return glTextureID;
+}
+
 //----------------------------------------------------------------------------------------
 //! Создание текстуры из буфера
 //

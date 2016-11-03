@@ -1,0 +1,8 @@
+﻿  gPngLoader.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(114): error C3861: 'malloc': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(119): error C3861: 'malloc': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(133): error C3861: 'rgbaToInt': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(139): error C3861: 'rgbaToInt': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(173): error C3861: 'rgbaToInt': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(181): error C3861: 'rgbaToInt': identifier not found
+c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(194): error C3861: 'free': identifier not found
