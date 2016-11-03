@@ -163,13 +163,16 @@
     <ClCompile Include="src\Engine\OpenGL\GRender.cpp">
       <Filter>src\Engine\Render</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\graphics\TextureManager.cpp">
+    <ClCompile Include="src\Engine\graphics\gTextureHandle.cpp">
       <Filter>src\Engine\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\graphics\TextureObject.cpp">
+    <ClCompile Include="src\Engine\graphics\gTextureManager.cpp">
       <Filter>src\Engine\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\graphics\TextureHandle.cpp">
+    <ClCompile Include="src\Engine\graphics\gTextureObject.cpp">
+      <Filter>src\Engine\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="gTextureDictinary.cpp">
       <Filter>src\Engine\graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -291,17 +294,20 @@
     <ClInclude Include="src\Engine\OpenGL\GRender.h">
       <Filter>src\Engine\Render</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\graphics\TextureManager.h">
-      <Filter>src\Engine\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\graphics\TextureObject.h">
-      <Filter>src\Engine\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\graphics\TextureHandle.h">
-      <Filter>src\Engine\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\graphics\GDefines.h">
       <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\gTextureHandle.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\gTextureManager.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\gTextureObject.h">
+      <Filter>src\Engine\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="gTextureDictinary.h">
+      <Filter>src\Engine\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

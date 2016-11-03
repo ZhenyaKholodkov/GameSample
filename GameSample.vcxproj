@@ -121,10 +121,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gTextureDictinary.cpp" />
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Engine\graphics\TextureHandle.cpp" />
-    <ClCompile Include="src\Engine\graphics\TextureManager.cpp" />
-    <ClCompile Include="src\Engine\graphics\TextureObject.cpp" />
+    <ClCompile Include="src\Engine\graphics\gTextureHandle.cpp" />
+    <ClCompile Include="src\Engine\graphics\gTextureManager.cpp" />
+    <ClCompile Include="src\Engine\graphics\gTextureObject.cpp" />
     <ClCompile Include="src\Engine\GResManager.cpp" />
     <ClCompile Include="src\Engine\GSprite.cpp" />
     <ClCompile Include="src\Engine\IGame.cpp" />
@@ -167,11 +168,12 @@
     <ClCompile Include="src\thirdparty\zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gTextureDictinary.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Engine\graphics\GDefines.h" />
-    <ClInclude Include="src\Engine\graphics\TextureHandle.h" />
-    <ClInclude Include="src\Engine\graphics\TextureManager.h" />
-    <ClInclude Include="src\Engine\graphics\TextureObject.h" />
+    <ClInclude Include="src\Engine\graphics\gTextureHandle.h" />
+    <ClInclude Include="src\Engine\graphics\gTextureManager.h" />
+    <ClInclude Include="src\Engine\graphics\gTextureObject.h" />
     <ClInclude Include="src\Engine\GResManager.h" />
     <ClInclude Include="src\Engine\GSprite.h" />
     <ClInclude Include="src\Engine\IGame.h" />
