@@ -58,9 +58,6 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\GSprite.cpp">
-      <Filter>src\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\OWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -185,6 +182,9 @@
     <ClCompile Include="src\Engine\graphics\gpngloader\gIOFile.cpp">
       <Filter>src\Engine\io</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\GImage.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\GResManager.h">
@@ -195,9 +195,6 @@
     </ClInclude>
     <ClInclude Include="src\Application.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\GSprite.h">
-      <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\OWindow.h">
       <Filter>src</Filter>
@@ -322,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="src\Engine\graphics\gpngloader\gIOFile.h">
       <Filter>src\Engine\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\GImage.h">
+      <Filter>src\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

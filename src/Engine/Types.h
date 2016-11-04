@@ -11,7 +11,8 @@ using namespace std;
 #define WindowMutex "GameMutex"
 #define WindowCaption "Game"
 
-#define BIT(x) (1 << (x))        
+#define BIT(x) (1 << (x))   
+#define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
 
 typedef signed int int32;
 typedef unsigned int uint32;

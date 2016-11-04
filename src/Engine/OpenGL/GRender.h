@@ -34,6 +34,7 @@ public:
    void		drawLine(float x1, float y1, float z1, float x2, float y2, float z2);	//!< нарисовать линию (между вершинами - x1,y1,z1 и x2,y2,z2)
 
    uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
+   void   UnloadTexture(uint32 textureId);
 
    int      createTexture(   TexturePixType format,					
                                  unsigned char* data, 

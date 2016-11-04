@@ -7,9 +7,10 @@
 class GTextureManager
 {
 public:
-	GTextureManager* Instance();
+	static GTextureManager* Instance();
 
 	GTextureObject* LoadTexture(const char* name);
+	void unloadTexture(GTextureObject* texture);
 private:
 	GTextureManager();
 	~GTextureManager();

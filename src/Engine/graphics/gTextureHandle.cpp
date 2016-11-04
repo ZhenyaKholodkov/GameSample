@@ -8,7 +8,8 @@ GTextureHandle::GTextureHandle():
 
 GTextureHandle::GTextureHandle(const char* texturePath)
 {
-	mTexture = 
+	mTexture = GTextureManager::Instance()->LoadTexture(texturePath);
+	lock();
 }
 
 GTextureHandle::GTextureHandle(const GTextureHandle& handle)
@@ -18,7 +19,7 @@ GTextureHandle::GTextureHandle(const GTextureHandle& handle)
 
 GTextureHandle::~GTextureHandle()
 {
-
+	unlock();
 }
 
 void GTextureHandle::lock()
@@ -37,6 +38,7 @@ void GTextureHandle::unlock()
 	if (--mTexture->mRefCounter == 0)
 	{
 		// free
+		GTextureManager::Instance()->unloadTexture(mTexture);
 	}
 
 	mTexture = nullptr;

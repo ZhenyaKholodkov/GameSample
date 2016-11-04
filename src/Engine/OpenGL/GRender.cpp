@@ -311,7 +311,10 @@ uint32 GRender::LoadTexture(const unsigned char* bits, uint32 textureWidth, uint
 
 	return glTextureID;
 }
-
+void  GRender::UnloadTexture(uint32 textureId)
+{
+	glDeleteTextures(1, &textureId);
+}
 //----------------------------------------------------------------------------------------
 //! Создание текстуры из буфера
 //
