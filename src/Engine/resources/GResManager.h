@@ -4,14 +4,11 @@
 #include "Types.h"
 
 #include <vector>
+#include "gResource.h"
+#include "GSprite.h"
+#include "gTextureAtlas.h"
+#include "gResourceDictionary.h"
 
-extern "C"
-{
-#define		Byte	z_Byte					// to avoid conflcits in zconf.h
-#include	"zlib.h"
-#undef		Byte
-#include	"png.h"
-}
 using namespace std;
 
 enum ResType
@@ -82,6 +79,8 @@ public:
 
 	void  Add(GResFile* resFile);
 	bool LoadResource(int id);
+	bool LoadResources(const char* pathToConfig);
+	GSprite* GetSprite(const char* key);
 
 	void setResDirectory(const char* dir);
 
@@ -92,7 +91,6 @@ private:
 	GResFile* CreateRes(const char* name);
 	bool LoadTextureToVRAM(int id);
 	bool LoadImage(const char* path, unsigned char** data, uint32* dataSize);
-	bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* aWidth, unsigned long* aHeight);
 
 	const char*     mResDir;
 	int             mMaxFileId;

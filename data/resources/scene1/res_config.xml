@@ -1,0 +1,27 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:7e38ddadf9ada19113ec81c2ac480e72:02eb7e2b274b75b85c7262d9a8ca9ee2:dd6d8c0304e89f23f328daf296e4bd6d$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<Resources>
+<TextureAtlas imagePath="texture_1.png" width="400" height="100">
+    <sprite n="button1.png" x="0" y="0" w="200" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="button2.png" x="200" y="0" w="200" h="100" pX="0.5" pY="0.5"/>
+</TextureAtlas>
+</Resources>

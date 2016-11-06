@@ -1,4 +1,5 @@
 #include "gTextureDictinary.h"
+#include "gTextureManager.h"
 
 
 GTextureDictinary* GTextureDictinary::Instance()
@@ -80,5 +81,9 @@ uint32 GTextureDictinary::getTableID(const char* key)
 
 void GTextureDictinary::destroy()
 {
-
+	while (mChain) 
+	{
+		GTextureManager::Instance()->unloadTexture(mChain);
+	}
+	delete[] mTable;
 }

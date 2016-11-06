@@ -27,16 +27,16 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 	if (texture)
 		return texture;
 
-	unsigned char** data;
-	ulong32* width;
-	ulong32* height;
-	LoadPngImage(name, data, width, height);
+	unsigned char* data;
+	ulong32 width;
+	ulong32 height;
+	LoadPngImage(name, &data, &width, &height);
 
 	texture = new GTextureObject();
 	texture->mKey = name;
-	texture->mGLTextureId = IGRender::Instance()->LoadTexture(*data, *width, *height);
-	texture->mWidth = *width;
-	texture->mHeight = *height;
+	texture->mGLTextureId = IGRender::Instance()->LoadTexture(data, width, height);
+	texture->mWidth = width;
+	texture->mHeight = height;
 
 	dictionary->insert(texture);
 

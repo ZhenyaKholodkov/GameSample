@@ -4,9 +4,9 @@
 #define _CRTDBG_MAP_ALLOC
 
 #include "OWindow.h"
-#include "Engine/GResManager.h"
+#include "GResManager.h"
 #include "IGame.h"
-#include "Engine/OpenGL/IGRender.h"
+#include "IGRender.h"
 
 #include <time.h>
 

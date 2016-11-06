@@ -1,8 +1,15 @@
-﻿  gPngLoader.cpp
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(114): error C3861: 'malloc': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(119): error C3861: 'malloc': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(133): error C3861: 'rgbaToInt': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(139): error C3861: 'rgbaToInt': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(173): error C3861: 'rgbaToInt': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(181): error C3861: 'rgbaToInt': identifier not found
-c:\users\eholodkov\documents\github\gamesample\src\engine\graphics\gpngloader\gpngloader.cpp(194): error C3861: 'free': identifier not found
+﻿  Utils.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  Generating Code...
+  Compiling...
+  gResourceDictionary.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  GResManager.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\yevge\documents\github\gamesample\src\engine\resources\gresmanager.cpp(16): warning C4018: '<': signed/unsigned mismatch
+c:\users\yevge\documents\github\gamesample\src\engine\resources\gresmanager.cpp(74): warning C4018: '<': signed/unsigned mismatch
+  gPngLoader.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  Generating Code...
+  GameSample.vcxproj -> C:\Users\yevge\Documents\GitHub\GameSample\data\GameSample.exe
+  GameSample.vcxproj -> data\GameSample.pdb (Partial PDB)

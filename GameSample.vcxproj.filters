@@ -44,13 +44,16 @@
     <Filter Include="src\Engine\io">
       <UniqueIdentifier>{e09905d6-5e93-4a68-8493-78507cb7c591}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\thirdparty\tinyxml">
+      <UniqueIdentifier>{beae21a7-9620-4822-958e-d7cffe0117f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\resources">
+      <UniqueIdentifier>{8d26aa6d-d827-48b6-a68c-621c2aa89651}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\GResManager.cpp">
-      <Filter>src\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Types.cpp">
       <Filter>src\Engine</Filter>
@@ -66,12 +69,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\GGame.cpp">
       <Filter>src\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\OpenGL\ext\olOpenGL.cpp">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\OpenGL\IGRender.cpp">
-      <Filter>src\Engine\render</Filter>
     </ClCompile>
     <ClCompile Include="src\thirdparty\libpng\png.c">
       <Filter>src\thirdparty\libpng</Filter>
@@ -163,9 +160,6 @@
     <ClCompile Include="src\thirdparty\zlib\zutil.c">
       <Filter>src\thirdparty\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\OpenGL\GRender.cpp">
-      <Filter>src\Engine\render</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine\graphics\gTextureHandle.cpp">
       <Filter>src\Engine\texture</Filter>
     </ClCompile>
@@ -175,21 +169,56 @@
     <ClCompile Include="src\Engine\graphics\gTextureObject.cpp">
       <Filter>src\Engine\texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp" />
     <ClCompile Include="src\Engine\graphics\gpngloader\gPngLoader.cpp">
       <Filter>src\Engine\texture\pngloader</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\graphics\gpngloader\gIOFile.cpp">
+    <ClCompile Include="src\thirdparty\Tinyxml\tinystr.cpp">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxml.cpp">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxmlerror.cpp">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxmlparser.cpp">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\resources\GResManager.cpp">
+      <Filter>src\Engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\resources\GSprite.cpp">
+      <Filter>src\Engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\io\gIOFile.cpp">
       <Filter>src\Engine\io</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\GImage.cpp">
+    <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp">
+      <Filter>src\Engine\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\render\GRender.cpp">
+      <Filter>src\Engine\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\render\IGRender.cpp">
+      <Filter>src\Engine\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\render\ext\olOpenGL.cpp">
+      <Filter>src\Engine\render\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\resources\gResource.cpp">
+      <Filter>src\Engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp">
+      <Filter>src\Engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\resources\gResourceDictionary.cpp">
+      <Filter>src\Engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Utils.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Engine\GResManager.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Types.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
@@ -207,18 +236,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\GGame.h">
       <Filter>src\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\OpenGL\ext\glext.h">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\OpenGL\ext\olOpenGL.h">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\OpenGL\ext\wglext.h">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\OpenGL\IGRender.h">
-      <Filter>src\Engine\render</Filter>
     </ClInclude>
     <ClInclude Include="src\thirdparty\libpng\config.h">
       <Filter>src\thirdparty\libpng</Filter>
@@ -298,12 +315,6 @@
     <ClInclude Include="src\thirdparty\zlib\zutil.h">
       <Filter>src\thirdparty\zlib</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\OpenGL\GRender.h">
-      <Filter>src\Engine\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\graphics\GDefines.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h">
       <Filter>src\Engine\texture</Filter>
     </ClInclude>
@@ -313,15 +324,53 @@
     <ClInclude Include="src\Engine\graphics\gTextureObject.h">
       <Filter>src\Engine\texture</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h">
       <Filter>src\Engine\texture\pngloader</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\graphics\gpngloader\gIOFile.h">
+    <ClInclude Include="src\thirdparty\Tinyxml\tinystr.h">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\Tinyxml\tinyxml.h">
+      <Filter>src\thirdparty\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\resources\GSprite.h">
+      <Filter>src\Engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\resources\GResManager.h">
+      <Filter>src\Engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\io\gIOFile.h">
       <Filter>src\Engine\io</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\GImage.h">
+    <ClInclude Include="src\Engine\render\ext\glext.h">
+      <Filter>src\Engine\render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\graphics\gTextureDictinary.h">
+      <Filter>src\Engine\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\render\IGRender.h">
+      <Filter>src\Engine\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\render\GRender.h">
+      <Filter>src\Engine\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\render\ext\wglext.h">
+      <Filter>src\Engine\render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\render\ext\olOpenGL.h">
+      <Filter>src\Engine\render\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\GDefines.h">
       <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\resources\gResource.h">
+      <Filter>src\Engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\resources\gTextureAtlas.h">
+      <Filter>src\Engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\resources\gResourceDictionary.h">
+      <Filter>src\Engine\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

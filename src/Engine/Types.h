@@ -18,6 +18,7 @@ typedef signed int int32;
 typedef unsigned int uint32;
 typedef unsigned long ulong32;
 typedef int      Int32;
+typedef unsigned char       uint8;
 typedef unsigned char       UInt8;
 typedef __int64             Int64;
 
@@ -40,16 +41,16 @@ class Rect;
 class IGColor     //!< цвет
 {
 public:
-	UInt8   r;     //!< 8-bit red component.
-	UInt8   g;     //!< 8-bit green component.
-	UInt8   b;     //!< 8-bit blue component.
-	UInt8   a;     //!< 8-bit alpha component. 
-	void set(UInt8 rV, UInt8 gV, UInt8 bV, UInt8 aV) { r = rV;g = gV;b = bV;a = aV; }
+	uint8   r;     //!< 8-bit red component.
+	uint8   g;     //!< 8-bit green component.
+	uint8   b;     //!< 8-bit blue component.
+	uint8   a;     //!< 8-bit alpha component. 
+	void set(uint8 rV, uint8 gV, uint8 bV, uint8 aV) { r = rV;g = gV;b = bV;a = aV; }
 	void set(UInt32 rgba) { *(UInt32*)this = rgba; }
 	IGColor() :r(0), g(0), b(0), a(0) {}
-	IGColor(UInt8 red, UInt8 green, UInt8 blue, UInt8 alpha = 0) : r(red), g(green), b(blue), a(alpha) {}
+	IGColor(uint8 red, uint8 green, uint8 blue, uint8 alpha = 0) : r(red), g(green), b(blue), a(alpha) {}
 	IGColor(UInt32 rgba) : r((rgba >> 24) & 0xFF), g((rgba >> 16) & 0xFF), b((rgba >> 8) & 0xFF), a(rgba & 0xFF) {}
-	static UInt32  colorToUintARGB(UInt8 r, UInt8 g, UInt8 b, UInt8 a = 0) { return (a << 24) | (r << 16) | (g << 8) | (b); }			 //! вернуть цвет по его компонентам
+	static UInt32  colorToUintARGB(uint8 r, uint8 g, uint8 b, uint8 a = 0) { return (a << 24) | (r << 16) | (g << 8) | (b); }			 //! вернуть цвет по его компонентам
 	static IGColor uintrgbaToColor(UInt32 col) { return IGColor((col >> 24) & 0xFF, (col >> 16) & 0xFF, (col >> 8) & 0xFF, (col & 0xFF)); }	 //! разбить цвет на компоненты
 	static IGColor uintargbToColor(UInt32 col) { return IGColor((col & 0xFF), (col >> 8) & 0xFF, (col >> 16) & 0xFF, ((col >> 24) & 0xFF)); }//! разбить цвет на компоненты
 
@@ -298,15 +299,15 @@ struct OColor
 {
 	OColor() {                         }
 	OColor(const uint32 c) { iColor = c; }
-	OColor(const UInt8 r, const UInt8 g, const UInt8 b) { iR = r; iG = g; iB = b; }
-	OColor(const UInt8 r, const UInt8 g, const UInt8 b, const UInt8 a) { iR = r; iG = g; iB = b; iA = a; }
+	OColor(const uint8 r, const uint8 g, const uint8 b) { iR = r; iG = g; iB = b; }
+	OColor(const uint8 r, const uint8 g, const uint8 b, const uint8 a) { iR = r; iG = g; iB = b; iA = a; }
 	OColor(const OColor &c1, const OColor c2, float t) { Interpol(c1, c2, t); }
 
 
-	UInt8   R() const { return iR; }                        //<! красная компонена цвета
-	UInt8   G() const { return iG; }                        //<! зеленая компонена цвета
-	UInt8   B() const { return iB; }                        //<! синяя компонена цвета
-	UInt8   A() const { return iA; }                        //<! канал прозрачности
+	uint8   R() const { return iR; }                        //<! красная компонена цвета
+	uint8   G() const { return iG; }                        //<! зеленая компонена цвета
+	uint8   B() const { return iB; }                        //<! синяя компонена цвета
+	uint8   A() const { return iA; }                        //<! канал прозрачности
 
 	uint32  & Color() { return iColor; }                        //<! цвет упакованный в 32 битное беззнаковое целое
 
@@ -316,20 +317,20 @@ struct OColor
 	bool    operator == (uint32 color) { return color == iColor; }
 	bool    operator != (uint32 color) { return color != iColor; }
 
-	void    Set(UInt8 r, UInt8 g, UInt8 b) { iR = r; iG = g; iB = b; }
-	void    Set(UInt8 r, UInt8 g, UInt8 b, UInt8 a) { iR = r; iG = g; iB = b; iA = a; }
+	void    Set(uint8 r, uint8 g, uint8 b) { iR = r; iG = g; iB = b; }
+	void    Set(uint8 r, uint8 g, uint8 b, uint8 a) { iR = r; iG = g; iB = b; iA = a; }
 
 	//!< интерполировать цвет между c1 и c2 параметром t=[0..1]
 	void    Interpol(OColor c1, OColor c2, float t)
 	{
-		Set(UInt8(c1.R() + (int32(c2.R()) - int32(c1.R()))*t),
-			UInt8(c1.G() + (int32(c2.G()) - int32(c1.G()))*t),
-			UInt8(c1.B() + (int32(c2.B()) - int32(c1.B()))*t));
+		Set(uint8(c1.R() + (int32(c2.R()) - int32(c1.R()))*t),
+			uint8(c1.G() + (int32(c2.G()) - int32(c1.G()))*t),
+			uint8(c1.B() + (int32(c2.B()) - int32(c1.B()))*t));
 	}
 protected:
 	union {
 		uint32  iColor;                        //<! цвет пикселя
-		struct { UInt8 iR, iG, iB, iA; };       //<! его компоненты
+		struct { uint8 iR, iG, iB, iA; };       //<! его компоненты
 	};
 };
 

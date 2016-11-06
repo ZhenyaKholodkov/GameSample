@@ -77,7 +77,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Engine\graphics\gpngloader;src/Engine/pngloader;src/Engine/io;src/Engine/OpenGL;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\zlib;src\thirdparty\libpng;src/Engine/render;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -122,19 +122,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Engine\graphics\gpngloader\gIOFile.cpp" />
+    <ClCompile Include="src\Engine\io\gIOFile.cpp" />
     <ClCompile Include="src\Engine\graphics\gpngloader\gPngLoader.cpp" />
     <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp" />
     <ClCompile Include="src\Engine\graphics\gTextureHandle.cpp" />
     <ClCompile Include="src\Engine\graphics\gTextureManager.cpp" />
     <ClCompile Include="src\Engine\graphics\gTextureObject.cpp" />
-    <ClCompile Include="src\Engine\GResManager.cpp" />
-    <ClCompile Include="src\Engine\GImage.cpp" />
+    <ClCompile Include="src\Engine\resources\GResManager.cpp" />
+    <ClCompile Include="src\Engine\resources\gResourceDictionary.cpp" />
+    <ClCompile Include="src\Engine\resources\gResource.cpp" />
+    <ClCompile Include="src\Engine\resources\GSprite.cpp" />
     <ClCompile Include="src\Engine\IGame.cpp" />
-    <ClCompile Include="src\Engine\OpenGL\ext\olOpenGL.cpp" />
-    <ClCompile Include="src\Engine\OpenGL\GRender.cpp" />
-    <ClCompile Include="src\Engine\OpenGL\IGRender.cpp" />
+    <ClCompile Include="src\Engine\render\ext\olOpenGL.cpp" />
+    <ClCompile Include="src\Engine\render\GRender.cpp" />
+    <ClCompile Include="src\Engine\render\IGRender.cpp" />
+    <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
     <ClCompile Include="src\Engine\Types.cpp" />
+    <ClCompile Include="src\Engine\Utils.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OWindow.cpp" />
@@ -153,6 +157,10 @@
     <ClCompile Include="src\thirdparty\libpng\pngwrite.c" />
     <ClCompile Include="src\thirdparty\libpng\pngwtran.c" />
     <ClCompile Include="src\thirdparty\libpng\pngwutil.c" />
+    <ClCompile Include="src\thirdparty\Tinyxml\tinystr.cpp" />
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxml.cpp" />
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="src\thirdparty\Tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\thirdparty\zlib\adler32.c" />
     <ClCompile Include="src\thirdparty\zlib\compress.c" />
     <ClCompile Include="src\thirdparty\zlib\crc32.c" />
@@ -171,21 +179,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Engine\graphics\gpngloader\gIOFile.h" />
+    <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
-    <ClInclude Include="src\Engine\graphics\GDefines.h" />
+    <ClInclude Include="src\Engine\GDefines.h" />
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h" />
     <ClInclude Include="src\Engine\graphics\gTextureManager.h" />
     <ClInclude Include="src\Engine\graphics\gTextureObject.h" />
-    <ClInclude Include="src\Engine\GResManager.h" />
-    <ClInclude Include="src\Engine\GImage.h" />
+    <ClInclude Include="src\Engine\resources\GResManager.h" />
+    <ClInclude Include="src\Engine\resources\gResourceDictionary.h" />
+    <ClInclude Include="src\Engine\resources\gResource.h" />
+    <ClInclude Include="src\Engine\resources\GSprite.h" />
     <ClInclude Include="src\Engine\IGame.h" />
-    <ClInclude Include="src\Engine\OpenGL\ext\glext.h" />
-    <ClInclude Include="src\Engine\OpenGL\ext\olOpenGL.h" />
-    <ClInclude Include="src\Engine\OpenGL\ext\wglext.h" />
-    <ClInclude Include="src\Engine\OpenGL\GRender.h" />
-    <ClInclude Include="src\Engine\OpenGL\IGRender.h" />
+    <ClInclude Include="src\Engine\render\ext\glext.h" />
+    <ClInclude Include="src\Engine\render\ext\olOpenGL.h" />
+    <ClInclude Include="src\Engine\render\ext\wglext.h" />
+    <ClInclude Include="src\Engine\render\GRender.h" />
+    <ClInclude Include="src\Engine\render\IGRender.h" />
+    <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
     <ClInclude Include="src\Engine\Types.h" />
     <ClInclude Include="src\Engine\Utils.h" />
     <ClInclude Include="src\Game\GGame.h" />
@@ -194,6 +205,8 @@
     <ClInclude Include="src\thirdparty\libpng\png.h" />
     <ClInclude Include="src\thirdparty\libpng\pngconf.h" />
     <ClInclude Include="src\thirdparty\libpng\pngpriv.h" />
+    <ClInclude Include="src\thirdparty\Tinyxml\tinystr.h" />
+    <ClInclude Include="src\thirdparty\Tinyxml\tinyxml.h" />
     <ClInclude Include="src\thirdparty\zlib\crc32.h" />
     <ClInclude Include="src\thirdparty\zlib\deflate.h" />
     <ClInclude Include="src\thirdparty\zlib\gzguts.h" />

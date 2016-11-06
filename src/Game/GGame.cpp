@@ -1,6 +1,7 @@
 #include "GGame.h"
 #include "GResManager.h"
-#include "Engine\OpenGL\IGRender.h"
+#include "IGRender.h"
+#include "GSprite.h"
 
 
 GGame::GGame():
@@ -30,9 +31,11 @@ void GGame::Update(int dt)
 	IGRender::Instance()->setClearColor(mBackgroundColor);
 	IGRender::Instance()->clear();
 	IGRender::Instance()->startFrame();
-	Texture* texture = reinterpret_cast<Texture*>(GResManager::Instance()->mResources[0]);
+	//Texture* texture = reinterpret_cast<Texture*>(GResManager::Instance()->mResources[0]);
+	GSprite* sprite = GResManager::Instance()->GetSprite("button1.png");
 
-	IGRender::Instance()->drawImage(texture->mTextureId, texture->mWeight, texture->mHeight, 0, 0, texture->mWeight, texture->mHeight, 0.0f, 0.0f, 0.0f);
+	IGRender::Instance()->drawImage(sprite->mTextureHandle.getTextureGLId(), sprite->mTextureHandle.getTextureWidth(), sprite->mTextureHandle.getTextureHeight(),
+		sprite->GetXPos(), sprite->GetYPos(), sprite->GetWidth(), sprite->GetHeight(), 0.0f, 0.0f, 0.0f);
 	IGRender::Instance()->setLineColor(100, 100, 100);
 	IGRender::Instance()->drawLine(0.0f, 0.0f, 0.0f, 100.0f, 100.0f, 100.0f);
 	IGRender::Instance()->endFrame();
@@ -40,12 +43,22 @@ void GGame::Update(int dt)
 
 void GGame::LoadResources()
 {
-	GResManager* resManager = GResManager::Instance();
+	char* buf1 = "qwerty";
+	uint32 hash1 = (uint32)(((size_t)buf1) >> 2);
+	int i = 9;
+	char* buf2 = "qwerty";
+	uint32 hash2 = (uint32)(((size_t)buf2) >> 2);
 
+	GResManager* resManager = GResManager::Instance();
+	resManager->LoadResources("data/resources/scene1/res_config.xml");
+	GSprite* sprite = GResManager::Instance()->GetSprite("button1.png");
+	sprite->load();
+	/*
 	Texture* redButtonResFile = new Texture();
 	redButtonResFile->mName = "Button.png";
 	redButtonResFile->mPath = "data/resources";
 	redButtonResFile->mType = ResType::RES_FILE_TEXTURE;
 	resManager->Add(redButtonResFile);
 	resManager->LoadResource(redButtonResFile->mFileId);
+	*/
 }

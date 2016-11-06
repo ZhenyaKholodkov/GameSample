@@ -17,6 +17,17 @@ GTextureHandle::GTextureHandle(const GTextureHandle& handle)
 
 }
 
+void GTextureHandle::Set(const char* texturePath)
+{
+	if (mTexture != nullptr) 
+	{
+		unlock();
+	}
+
+	mTexture = GTextureManager::Instance()->LoadTexture(texturePath);
+	lock();
+}
+
 GTextureHandle::~GTextureHandle()
 {
 	unlock();

@@ -12,8 +12,11 @@ public:
 	GTextureHandle(const GTextureHandle& handle);
 	~GTextureHandle();
 
+	int    getTextureGLId()   { return mTexture->mGLTextureId; }
 	uint32 getTextureWidth()  { return mTexture->mWidth;  }
 	uint32 getTextureHeight() { return mTexture->mHeight; }
+
+	void Set(const char* texturePath);
 private:
 	void lock();
 	void unlock();

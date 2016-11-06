@@ -1,6 +1,7 @@
 #include "GResManager.h"
 #include "Utils.h"
-#include "Engine\OpenGL\IGRender.h"
+#include "IGRender.h"
+#include "tinyxml.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -105,7 +106,7 @@ bool GResManager::LoadResource(int id)
 	if (resource->mType == RES_FILE_TEXTURE)
 	{
 		Texture* texture = reinterpret_cast<Texture*>(resource);
-		LoadPngImage(path.c_str(), &texture->mData, &texture->mWeight, &texture->mHeight);
+		//LoadPngImage(path.c_str(), &texture->mData, &texture->mWeight, &texture->mHeight);
 		LoadTextureToVRAM(id);
 	}
 	return true;
@@ -131,6 +132,56 @@ bool GResManager::LoadImage(const char* path, unsigned char** data, uint32* data
 	*dataSize = (uint32)fread(data, 1, fLen, file);
 
 	fclose(file);
+	return true;
+}
+
+GSprite* GResManager::GetSprite(const char* key)
+{
+	return (GSprite*)(GResourceDictionary::Instance()->find(key));
+}
+
+bool GResManager::LoadResources(const char* pathToConfig)
+{
+	TiXmlDocument confDocument;
+	if (!confDocument.LoadFile(pathToConfig))
+	{
+		return false;
+	}
+	if (confDocument.Error())
+	{
+		return false;
+	}
+
+	TiXmlElement* root = confDocument.RootElement();
+	if (!root)
+	{
+		return false;
+	}
+	TiXmlElement* atlasTextureData = root->FirstChildElement("TextureAtlas");
+	while (atlasTextureData)
+	{
+		GTextureAtlas* atlas = new GTextureAtlas(atlasTextureData->Attribute("imagePath"));
+		atlasTextureData->QueryIntAttribute("width", &atlas->mWidth);
+		atlasTextureData->QueryIntAttribute("height", &atlas->mHeight);
+		GResourceDictionary::Instance()->insert(static_cast<GResource*>(atlas));
+
+		TiXmlElement* spriteData = atlasTextureData->FirstChildElement("sprite");
+		while (spriteData)
+		{
+			GSprite* sprite = new GSprite(spriteData->Attribute("n"));
+
+			spriteData->QueryIntAttribute("x", &sprite->mXPos);
+			spriteData->QueryIntAttribute("y", &sprite->mYPos);
+			spriteData->QueryIntAttribute("w", &sprite->mWidth);
+			spriteData->QueryIntAttribute("h", &sprite->mHeight);
+			spriteData->QueryFloatAttribute("pX", &sprite->mPivotX);
+			spriteData->QueryFloatAttribute("pY", &sprite->mPivotY);
+			GResourceDictionary::Instance()->insert((GResource*)(sprite));
+
+			spriteData = spriteData->NextSiblingElement();
+		}
+		atlasTextureData = atlasTextureData->NextSiblingElement();
+	}
 	return true;
 }
 
