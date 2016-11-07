@@ -32,5 +32,7 @@ private:
 	float mPivotX;
 	float mPivotY;
 
+	const char* mTextureKey;
+
 };
 #endif //GSPRITE_H

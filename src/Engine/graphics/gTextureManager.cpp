@@ -27,10 +27,14 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 	if (texture)
 		return texture;
 
+	char path[256];
+	strcpy(path, "data/resources/scene1/");
+	strcat(path, name);
+
 	unsigned char* data;
 	ulong32 width;
 	ulong32 height;
-	LoadPngImage(name, &data, &width, &height);
+	LoadPngImage(path, &data, &width, &height);
 
 	texture = new GTextureObject();
 	texture->mKey = name;

@@ -139,7 +139,7 @@ GSprite* GResManager::GetSprite(const char* key)
 {
 	return (GSprite*)(GResourceDictionary::Instance()->find(key));
 }
-
+static GSprite* sprite1 = NULL;
 bool GResManager::LoadResources(const char* pathToConfig)
 {
 	TiXmlDocument confDocument;
@@ -157,6 +157,7 @@ bool GResManager::LoadResources(const char* pathToConfig)
 	{
 		return false;
 	}
+
 	TiXmlElement* atlasTextureData = root->FirstChildElement("TextureAtlas");
 	while (atlasTextureData)
 	{
@@ -170,6 +171,7 @@ bool GResManager::LoadResources(const char* pathToConfig)
 		{
 			GSprite* sprite = new GSprite(spriteData->Attribute("n"));
 
+			sprite->mTextureKey = atlas->mKey;
 			spriteData->QueryIntAttribute("x", &sprite->mXPos);
 			spriteData->QueryIntAttribute("y", &sprite->mYPos);
 			spriteData->QueryIntAttribute("w", &sprite->mWidth);
@@ -179,6 +181,7 @@ bool GResManager::LoadResources(const char* pathToConfig)
 			GResourceDictionary::Instance()->insert((GResource*)(sprite));
 
 			spriteData = spriteData->NextSiblingElement();
+			sprite1 = sprite;
 		}
 		atlasTextureData = atlasTextureData->NextSiblingElement();
 	}

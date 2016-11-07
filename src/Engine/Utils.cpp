@@ -1,32 +1,13 @@
 
 #include "Utils.h"
 
-
-bool sgInitTable = true;
-uint8   sgHashTable[256];
-
-void initTolowerTable()
+ulong32 get_hash_jbd2(const char* str)
 {
-	for (uint32 i = 0; i < 256; i++) 
-	{
-		uint32 c = dTolower(i);
-		sgHashTable[i] = c * c;
+	ulong32 hash = 5381;
+	int c;
+
+	while (c = *str++) {
+		hash = ((hash << 5) + hash) + c;  /* hash * 33 + c */
 	}
-
-	sgInitTable = false;
-}
-
-uint32 getHashString(const char* str)
-{
-	if (sgInitTable)
-		initTolowerTable();
-
-	uint32 ret = 0;
-	char c;
-	while ((c = *str++) != 0) 
-	{
-		ret <<= 1;
-		ret ^= sgHashTable[c];
-	}
-	return ret;
+	return hash;
 }

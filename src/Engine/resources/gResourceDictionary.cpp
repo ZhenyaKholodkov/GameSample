@@ -35,7 +35,7 @@ GResource* GResourceDictionary::find(const char* key)
 
 	while (resource)
 	{
-		if (resource->mKey == key)
+		if (strcmp(resource->mKey, key) == 0)
 		{
 			break;
 		}
@@ -81,6 +81,6 @@ void GResourceDictionary::remove(GResource* resource)
 
 uint32 GResourceDictionary::getTableID(const char* key)
 {
-	uint32 hash = getHashString(key);
-	return hash % mTableSize;
+	ulong32 hash = get_hash_jbd2(key);
+	return (uint32)(hash % mTableSize);
 }

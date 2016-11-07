@@ -22,6 +22,6 @@ inline char dTolower(const char c)
 }
 
 void initTolowerTable();
-uint32 getHashString(const char* str);
+ulong32 get_hash_jbd2(const char* str);
 
 #endif // !UTILS_H

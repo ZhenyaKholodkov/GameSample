@@ -1,6 +1,8 @@
 #include "gTextureDictinary.h"
 #include "gTextureManager.h"
 
+#include "Utils.h"
+
 
 GTextureDictinary* GTextureDictinary::Instance()
 {
@@ -75,8 +77,8 @@ void GTextureDictinary::remove(GTextureObject* texture)
 
 uint32 GTextureDictinary::getTableID(const char* key)
 {
-	uint32 hash = (uint32)(((size_t)key) >> 2);
-	return hash % mTableSize;
+	ulong32 hash = get_hash_jbd2(key);
+	return (uint32)(hash % mTableSize);
 }
 
 void GTextureDictinary::destroy()

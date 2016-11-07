@@ -1,14 +1,40 @@
-﻿  Utils.cpp
+﻿  IGRender.cpp
 c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\yevge\documents\github\gamesample\src\engine\render\igrender.cpp(702): warning C4018: '>=': signed/unsigned mismatch
   Generating Code...
   Compiling...
+  main.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\yevge\documents\github\gamesample\src\main.cpp(43): warning C4305: '*=': truncation from 'double' to 'float'
+  GGame.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  gTextureAtlas.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
   gResourceDictionary.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  gResource.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  GSprite.cpp
 c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
   GResManager.cpp
 c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
 c:\users\yevge\documents\github\gamesample\src\engine\resources\gresmanager.cpp(16): warning C4018: '<': signed/unsigned mismatch
 c:\users\yevge\documents\github\gamesample\src\engine\resources\gresmanager.cpp(74): warning C4018: '<': signed/unsigned mismatch
-  gPngLoader.cpp
+  GRender.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(39): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(40): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(45): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(46): warning C4010: single-line comment contains line-continuation character
+  gTextureObject.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  gTextureManager.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  gTextureHandle.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  gTextureDictinary.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+  Application.cpp
 c:\users\yevge\documents\github\gamesample\src\engine\types.h(192): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
   Generating Code...
   GameSample.vcxproj -> C:\Users\yevge\Documents\GitHub\GameSample\data\GameSample.exe

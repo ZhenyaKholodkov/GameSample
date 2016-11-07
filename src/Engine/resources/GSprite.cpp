@@ -19,5 +19,5 @@ GSprite::~GSprite()
 
 void GSprite::load()
 {
-	mTextureHandle.Set(mKey);
+	mTextureHandle.Set(mTextureKey);
 }

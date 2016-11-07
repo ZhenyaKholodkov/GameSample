@@ -12,12 +12,8 @@
 #include <stdio.h>
 #include "Types.h"
 
-using namespace std;
-
-class IGFontManager;
-class IHWTexture;
-class HWTexture;
 class IGResModel;
+
 using namespace std;
 
 enum AlphaMode {																				// режимы блендинга в редакторе сцен
@@ -152,11 +148,8 @@ public:
          void  drawRect(float x, float y, float w, float h);							      //!< нарисовать прямоугольник (левый верхний угол - x,y; ширина,высота - w,h
          void  drawRect(float x, float y, float w, float h, 
                         UInt32 color0, UInt32 color1, UInt32 color2, UInt32 color3);	                //!< нарисовать прямоугольник (левый верхний угол - x,y; ширина,высота - w,h с различными цветами вершин по часовой стрелке
-         void  drawSurface(unsigned int textureId, IGResModel* model, int vertexPos, int vertexes);    //!< нарисовать поверхность модели
-			void	setFont( int fontID=0);										         //!< установить шрифт
+         void	setFont( int fontID=0);										         //!< установить шрифт
 			void	setFontSize( int size );									         //!< установить размер шрифта
-			void	setSystemFont( IGFontManager* systemFont );					   //!< установить текущий менеджер шрифта
-			IGFontManager* getSystemFont(){return _systemFont;}					//!< получить текущий менеджер шрифта
 			void	setTextColor( float r, float g, float b, float a = 1.0f );	//!< установить текущий цвет вывода текста по компонентам
 			void	setTextColor( UInt32 c );									         //!< установить текущий цвет вывода текста 
 			UInt32	fontColor() const {return _fontColor;}						   //!< получить цвет шрифта
@@ -171,10 +164,6 @@ public:
 			 GThreadSafeErrors &err,
 			 bool upload = true) = 0;				               //!< создание текстуры из буфера
 
-	      float	textHeight();															   //!< получить высоту текста   
-	      float	textWidth ( const char *st );											//!< получить ширину текта
-         float textWidth( const std::string& utf16Str);
-         float letterWidth(UInt16 ch);                                     //!< получить ширину символа
 			float	getFontR() const {return _fontR;}							      //!< получить красную компоненту шрифта
 			float	getFontG() const {return _fontG;}							      //!< получить зеленую компоненту шрифта
 			float	getFontB() const {return _fontB;}							      //!< получить синююю компоненту шрифта
@@ -216,7 +205,6 @@ protected:
    std::vector<AlphaMode>	      _alphaBlendStack;								//!< стек сохраненных значений блендинга
    std::vector<CullMode>	      _cullModeStack;								//!< стек сохраненных значений отсечений
    std::vector<bool>            _depthTestStack;                       //!< стек сохраненных значений Z буфера
-   std::vector<IHWTexture*>	   _textures;										//!< массив созданных текстур
 
    IGRect                  _currentClipRect;                      //!< текущее отсечение
 
@@ -238,7 +226,6 @@ protected:
    UInt32            _frameNumber;                                //!< номер текущего кадра
 	int					_width;													//!< ширина вьюпорта
 	int					_height;												   //!< высота вьюпорта
-	IGFontManager*		_systemFont;											//!< установленный системный шрифт
 	UInt32				_clearColor;											//!< цвет очистки экрана
 	float				   _globalR;												//!< текущий красный канал рисования
 	float				   _globalG;												//!< текущий зеленый канал рисования
@@ -255,8 +242,6 @@ protected:
                                  IGColor color1, 
                                  IGColor color2, 
                                  IGColor color3);
-   unsigned int         addHWTexture(HWTexture* texture);                  //!< добавляем текстуру в список текстур
-   HWTexture*           getHWTexture(int id);                              //!< получить текстуру
    virtual void			drawBatchedTris() = 0;										//!< рисуем пакет прямоугольников
    virtual void			applyBlending() = 0;	   			                  //!< применить текущие настройки блендинга
    virtual void			applyCullMode() = 0;	   			                  //!< применить текущие настройки отсечения примитивов
@@ -272,36 +257,6 @@ private:
    void				         allocVertexCache();													               //!< резервируем кэш вершин
    void				         reallocVertexCache();													            //!< увеличиваем размер кэша
 };
-
-class IHWTexture
-{
-public:
-
-	enum IHWTextureType{
-		IHWTEXTURE_TYPE_ABGR_STAGE0,               //!< вся текстура ABGR на 0-м уровне 
-		IHWTEXTURE_TYPE_A_STAGE0_BGR_STAGE1,       //!< текстура A на 0-м уровне BGR на 1-м уровне, клеим соотв. шейдером 
-		IHWTEXTURE_TYPE_STAGE0_3                   //!< текстура на 4-х уровнях, клеим текущим шейдером 
-	};
-
-		IHWTexture(UInt16 fid, UInt8 bitsPerPixel, IHWTextureType hwTextureType = IHWTEXTURE_TYPE_ABGR_STAGE0): 
-			_hwTextureType(hwTextureType),
-			_fid(fid), 
-			_bitsPerPixel(bitsPerPixel),
-			_drawCntPF(0){}
-		virtual ~IHWTexture() {}
-		UInt16			fid()			{return _fid;}
-		UInt8			   bitsPerPixel()	{return _bitsPerPixel;}
-		IHWTextureType texType() {return _hwTextureType;}
-		void           texType(IHWTextureType tp) {_hwTextureType = tp;}
-		void           drawCntPF(UInt32 val) {_drawCntPF = val;}
-		UInt32           drawCntPF() {return _drawCntPF;}
-private:
-	IHWTextureType _hwTextureType;//!< тип текущей текстуры
-	UInt16			_fid;			   //!< fid текстуры
-	UInt32           _drawCntPF;    //!< число отрисовок текущего атласа за последний кадр
-	UInt8			   _bitsPerPixel;	//!< количество бит на пиксель
-};
-
 
 //---------------------------------------------------------------------------------------------
 // конвертируем координаты вершин в координатную систему модели

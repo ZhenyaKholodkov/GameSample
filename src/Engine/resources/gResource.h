@@ -7,7 +7,7 @@
 enum ResourceType
 {
 	TYPE_TEXTURE_ATLAS = BIT(1),
-	TYPE_SPRITE = BIT(1)
+	TYPE_SPRITE = BIT(2)
 };
 
 class GResource
@@ -25,6 +25,6 @@ private:
 
 protected:
 	ResourceType mType;
-	const char*  mKey;
+	char*  mKey;
 };
 #endif //GRESOURCE_H

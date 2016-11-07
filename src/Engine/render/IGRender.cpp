@@ -9,7 +9,6 @@ _skipFrame(false),
 _frameNumber( 0 ),
 _width( 0 ),
 _height( 0 ),
-_systemFont ( 0 ),
 _globalR( 1.0f ),
 _globalG( 1.0f ),
 _globalB( 1.0f ),
@@ -122,16 +121,6 @@ void  IGRender::setFontSize( int size )
 {
 	//if( _systemFont )
 	//	_systemFont->setNeedFontSize( (float)size );
-}
-
-//----------------------------------------------------------------------------------------
-//! установить текущий системный шрифт
-//
-void IGRender::setSystemFont( IGFontManager* systemFont )
-{
-	//_systemFont = systemFont;
-	//if( _systemFont )
-	//	_systemFont->setRender( this );
 }
 
 //----------------------------------------------------------------------------------------
@@ -363,42 +352,6 @@ bool IGRender::visible()
 }
 
 //----------------------------------------------------------------------------------------
-//! добавляем текстуру в список текстур
-//
-unsigned int IGRender::addHWTexture(HWTexture* texture)
-{
-   unsigned int freeId = 0;
-
-   for( ; (int)freeId < _textures.size(); ++freeId )
-   {
-      if( _textures[freeId] == 0 )
-      {
-         break;
-      }
-   }
-
-   if( (int)freeId >= _textures.size() )
-   {
-      _textures.push_back( 0 );
-   }
-
-   _textures[freeId] = (IHWTexture*)texture;
-
-   return freeId;
-}
-
-//----------------------------------------------------------------------------------------
-//! получить текстуру
-//
-HWTexture* IGRender::getHWTexture(int id)
-{
-   if (id>=0 && id<(int)_textures.size())
-      return (HWTexture*)_textures[id];
-   else
-      return NULL;
-}
-
-//----------------------------------------------------------------------------------------
 //! рисуем фрагмент текстуры в указанном месте
 //
 void IGRender::drawImage(	unsigned int textureId, 
@@ -413,16 +366,6 @@ void IGRender::drawImage(	unsigned int textureId,
 {	   
    if (!visible())																				      // невидимое не рисуем
       return;
-
-   if( (int)textureId >= _textures.size() )															   // textureId невалидный
-   {
-      return;
-   }
-
-   if( _textures[textureId] == 0 )																   // текстура выгружена с памяти
-   {
-      return;
-   }
 
    IGVector3 tmpVertexData0, tmpVertexData2;												
 
@@ -541,20 +484,6 @@ void IGRender::drawImage(unsigned int textureId,
 {
 	if (!visible())																				      // невидимое не рисуем
 		return;
-
-	if ((int)textureId >= _textures.size())															   // textureId невалидный
-	{
-		return;
-	}
-
-	if (_textures[textureId] == 0)																   // текстура выгружена с памяти
-	{
-		return;
-	}
-
-
-	//if (testOutsideScreen(tmpVertexData0,tmpVertexData2))												// не рисуем то что попадает за пределы видимости камеры
-	//   return;
 
 	_curStage.switchStage(IGRender::STAGE_2D);
 
@@ -762,100 +691,6 @@ inline void	IGRender::drawRect(float x, float y, float w, float h, IGColor color
 }
 
 //----------------------------------------------------------------------------------------
-//! нарисовать поверхность модели
-//
-void  IGRender::drawSurface(unsigned int textureId, IGResModel* model, int vertexPos, int vertexes)
-{
-  /* const int VertexesByImg = 6;
-
-   if(_matrix!=_batchMatrix)
-   {
-      drawBatchedTris();
-      _batchMatrix = _matrix;
-      _batchMatrix.t.z += _curStage.zPos;
-   }
-
-   if (																							// меняем материал если текстура
-      (_currentTextureID < 0) ||															// отсутствует
-      (_currentTextureID != (int)textureId) 										   // или не текущая текстура				
-      )
-   {
-
-      drawBatchedTris();
-      _currentTextureID = textureId;
-
-      if (_printAtlasSwitches && _collectStats)
-		{
-			int newFid = _textures[textureId]->fid();
-			GResFile* resFile = GRes::getResManager()->getResFile(newFid);
-			if (resFile)
-				AbsTrace(L_INFO,IGRender,"drawImage switching atlas by model fid=%d, name=%s, blend=%d",newFid,resFile->fileName(),(int)_drawBlending);
-			else
-				AbsTrace(L_INFO,IGRender,"drawImage switching tmp atlas %d, blend=%d",textureId,(int)_drawBlending);
-		}
-   }
-
-   if ((int)_cacheVertIndex + vertexes>=_vertexData.size())																// кеш закончился, расширяем
-   {
-      reallocVertexCache();
-   }
-
-   int   vertexesToDraw    = vertexes;
-   int   vertexesPosition  = vertexPos;
-   bool  batchFull         = false;
-
-   while(vertexesToDraw>0)
-   {
-      int vertexesInCurrentIteration = vertexesToDraw;
-      if (_batchVertIndex>=_BATCHED_VERTEXES_SIZE - VertexesByImg)
-      {
-         batchFull = true;
-      }
-
-      if(batchFull)
-      {
-         drawBatchedTris();
-         _currentTextureID = textureId;
-         batchFull = false;
-      }
-      if (_batchVertIndex + vertexesToDraw > _BATCHED_VERTEXES_SIZE - VertexesByImg)
-      {
-         vertexesInCurrentIteration  =  _BATCHED_VERTEXES_SIZE - VertexesByImg;
-         batchFull = true;
-      }
-      
-      for (int i=0;i<vertexesInCurrentIteration;i++)
-      {
-         _vertexData[_cacheVertIndex+i] = model->_vertexData[vertexesPosition+i];         
-         //convertVertexDataToModelSpace(_vertexData[_cacheVertIndex+i]);
-         _uvData[_cacheVertIndex+i]     = model->_uvData[vertexesPosition+i];
-         _indexesData[_cacheVertIndex+i]= _batchVertIndex + i;
-      }
-
-      if (model->_isColorData)
-      {
-         for (int i=0;i<vertexesInCurrentIteration;i++)
-         {
-            _colourData[_cacheVertIndex+i] = model->_colourData[vertexesPosition+i];
-         }
-      }
-      else
-      {         
-         IGColor white = IGColor(255,255,255,255);
-         for (int i=0;i<vertexesInCurrentIteration;i++)
-         {
-            _colourData[_cacheVertIndex+i] = white;
-         }
-      }
-
-      vertexesPosition+=vertexesInCurrentIteration;
-      vertexesToDraw-=vertexesInCurrentIteration;
-      _cacheVertIndex+=vertexesInCurrentIteration;
-      _batchVertIndex+=vertexesInCurrentIteration;
-   }*/
-}
-
-//----------------------------------------------------------------------------------------
 //! получить следующий индендекс изображения
 //
 void	IGRender::addBatchTris(int triCnt)
@@ -900,50 +735,6 @@ void	IGRender::reallocVertexCache()
    allocVertexCache();
 }
 
-//----------------------------------------------------------------------------------------
-//! Вывести текст
-//
-void IGRender::drawText( const char* aString , float x, float y)
-{ 
-	if (!visible())																				      // невидимое не рисуем
-		return;
-
-   _curStage.switchStage(IGRender::STAGE_2D);
-
-   updateRenderState();
-
-	save();
-
-	restore();
-}
-
-//----------------------------------------------------------------------------------------
-//! Вывести текст
-//
-void IGRender::drawText(const std::string& utf16Str, float x, float y)
-{
-   if (!visible())																				      // невидимое не рисуем
-      return;
-
-   _curStage.switchStage(IGRender::STAGE_2D);
-
-   updateRenderState();
-
-   save();
-   restore();
-}
-
-//----------------------------------------------------------------------------------------
-//! Вывести букву
-//
-void IGRender::drawLetter( UInt16 ch, float x/* = 0.0f*/, float y/* = 0.0f*/ )
-{ 
-   if (!visible())																				      // невидимое не рисуем
-      return;
-
-   updateRenderState();
-
-}
 
 //----------------------------------------------------------------------------------------
 //! переключить координатную систему

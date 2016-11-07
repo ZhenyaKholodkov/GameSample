@@ -4,41 +4,11 @@
 #include "ext/wglext.h"
 #include "ext/olOpenGL.h"
 
-#ifndef USE_OGL_10
-
-//!< обвертка текстуры загружаемой мармеладом в видеопамять
-class HWTexture: public IHWTexture
-{
-public:
-      HWTexture(UInt32 text0PlatformIDV, int fid, UInt8 bitsPerPixel, IHWTextureType hwTextureType = IHWTEXTURE_TYPE_ABGR_STAGE0);
-      ~HWTexture(); 
-      UInt32         text0PlatformID() {return _text0PlatformID;}
-
-private:
-   UInt32         _text0PlatformID; //!< id основной текстуры
-};
-
-HWTexture::HWTexture(UInt32 text0PlatformIDV, int fid, UInt8 bitsPerPixel, IHWTextureType hwTextureType/* = IHWTEXTURE_TYPE_ABGR_STAGE0*/): 
-IHWTexture(fid,bitsPerPixel,hwTextureType),
-_text0PlatformID(text0PlatformIDV)
-{
-
-}
-
-HWTexture::~HWTexture()
-{
-    glDeleteTextures(1, &_text0PlatformID );
-}
-
-
 IGRender* IGRender::Create()
 {
    _instance = new GRender();
    return _instance;
 }
-
-
-#endif
 
 
 GRender::GRender() :
@@ -137,18 +107,18 @@ void GRender::drawBatchedTris()
 
    if (_currentTextureID>=0)
    {
-      HWTexture* hwTexture = (HWTexture*)_textures[_currentTextureID];
+    /*  HWTexture* hwTexture = (HWTexture*)_textures[_currentTextureID];
 
       if (!hwTexture)
       {
        //  AbsTrace(L_INFO,GRender,"drawBatchedImages() texture %d doesn't exists", _currentTextureID);
          return;
-      }      
+      }     *
 
-      text0ID = hwTexture->text0PlatformID();
+      text0ID = hwTexture->text0PlatformID();*/
 
       glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, text0ID );
+      glBindTexture(GL_TEXTURE_2D, _currentTextureID);
    }
    else
    {
@@ -408,15 +378,12 @@ int GRender::createTexture(TexturePixType format,  unsigned char* data,
       return -1;
    }
    
-   HWTexture* hwTexture = new HWTexture(glTextureID,fid,aBitPerPixel);
-
-   unsigned int textureID = addHWTexture(hwTexture);
 
    static int vramCnt = 0;
 
    vramCnt+=texWidth*texHeight*4;
 
-   return textureID;
+   return glTextureID;
 }
 
 //----------------------------------------------------------------------------------------
@@ -424,17 +391,6 @@ int GRender::createTexture(TexturePixType format,  unsigned char* data,
 //
 void GRender::destroyTexture( unsigned int textureID , bool unload/* = true*/)
 {   
-   if( (textureID>=0) && ((int)textureID < _textures.size()))
-   {	   
-      if( _textures[textureID] )
-      {
-         if (unload)
-         {
-            delete _textures[textureID];
-         }
-      }       		  
-      _textures[textureID] = 0;
-   }
 }
 
 
