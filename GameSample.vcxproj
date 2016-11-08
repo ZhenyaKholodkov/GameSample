@@ -122,6 +122,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Engine\components\gRenderableComponent.cpp" />
+    <ClCompile Include="src\Engine\gEntity.cpp" />
     <ClCompile Include="src\Engine\io\gIOFile.cpp" />
     <ClCompile Include="src\Engine\graphics\gpngloader\gPngLoader.cpp" />
     <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp" />
@@ -137,6 +139,7 @@
     <ClCompile Include="src\Engine\render\GRender.cpp" />
     <ClCompile Include="src\Engine\render\IGRender.cpp" />
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
+    <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\Types.cpp" />
     <ClCompile Include="src\Engine\Utils.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
@@ -179,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Engine\components\gRenderableComponent.h" />
+    <ClInclude Include="src\Engine\gEntity.h" />
     <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="src\Engine\render\GRender.h" />
     <ClInclude Include="src\Engine\render\IGRender.h" />
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
+    <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\Types.h" />
     <ClInclude Include="src\Engine\Utils.h" />
     <ClInclude Include="src\Game\GGame.h" />

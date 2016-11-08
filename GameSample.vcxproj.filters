@@ -50,6 +50,12 @@
     <Filter Include="src\Engine\resources">
       <UniqueIdentifier>{8d26aa6d-d827-48b6-a68c-621c2aa89651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\components">
+      <UniqueIdentifier>{b86cf8a5-2dd5-411c-9e86-8386420b3d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\systems">
+      <UniqueIdentifier>{7bb25c02-25af-4075-91ac-2b0417d3667f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -217,6 +223,15 @@
     <ClCompile Include="src\Engine\Utils.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\components\gRenderableComponent.cpp">
+      <Filter>src\Engine\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gRenderSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\gEntity.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Types.h">
@@ -371,6 +386,15 @@
     </ClInclude>
     <ClInclude Include="src\Engine\resources\gResourceDictionary.h">
       <Filter>src\Engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gRenderableComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gRenderSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\gEntity.h">
+      <Filter>src\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

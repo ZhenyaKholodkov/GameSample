@@ -10,7 +10,6 @@
 #include "IGRender.h"
 #include <windows.h>
 #include <gl/gl.h>
-#include "ext\glext.h"
 
 using namespace std;
 
