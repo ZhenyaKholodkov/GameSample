@@ -256,6 +256,9 @@
     <ClCompile Include="src\Engine\components\gLocationComponent.cpp">
       <Filter>src\Engine\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\components\gBaseComponent.cpp">
+      <Filter>src\Engine\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Types.h">
@@ -436,6 +439,9 @@
       <Filter>src\Engine\components</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\components\gLocationComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gBaseComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include "GResManager.h"
 #include "IGRender.h"
 #include "GSprite.h"
+#include "entity\gEntityManager.h"
 
 
 GGame::GGame():
@@ -24,6 +25,11 @@ IGame* IGame::Instane()
 void GGame::Create()
 {
 	LoadResources();
+
+	GEntityManager* em = GEntityManager::Instance();
+
+	Entity entity1 = em->CreateEntity();
+	AddComponents<GLocationComponent>(5.0f, 10.0f);
 }
 
 void GGame::Update(int dt)

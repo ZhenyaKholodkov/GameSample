@@ -14,6 +14,7 @@ using namespace std;
 #define BIT(x) (1 << (x))   
 #define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
 
+
 typedef signed int int32;
 typedef unsigned int uint32;
 typedef unsigned long ulong32;
@@ -25,6 +26,8 @@ typedef __int64             Int64;
 typedef unsigned short      UInt16;
 typedef unsigned int        UInt32;
 typedef unsigned __int64    UInt64;
+
+typedef uint32 Entity;
 
 template <class T> inline T    Min(const T &x, const T &y) { return x<y ? x : y; }
 template <class T> inline T    Max(const T &x, const T &y) { return x>y ? x : y; }

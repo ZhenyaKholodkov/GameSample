@@ -1,10 +1,12 @@
 #include "gPool.h"
 
 
-GPool::GPool()
+template<class C>
+GPool<C>::GPool()
 {
 }
 
-GPool::~GPool()
+template<class C>
+GPool<C>::~GPool()
 {
 }
