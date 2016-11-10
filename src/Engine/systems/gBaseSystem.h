@@ -6,7 +6,9 @@ class GBaseSystem
 {
 public:
 	GBaseSystem();
-	~GBaseSystem();
+	virtual ~GBaseSystem();
+
+	virtual void update(int dt) = 0;
 };
 
 #endif //GBASE_SYSTEM_H

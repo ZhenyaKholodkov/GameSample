@@ -56,6 +56,12 @@
     <Filter Include="src\Engine\systems">
       <UniqueIdentifier>{7bb25c02-25af-4075-91ac-2b0417d3667f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\utils">
+      <UniqueIdentifier>{06459ab9-bc00-4ec6-9177-3bca00c17146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\entity">
+      <UniqueIdentifier>{d4913bcd-095a-43c4-b0eb-7f73f8c9dffb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -229,8 +235,26 @@
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\gEntity.cpp">
-      <Filter>src\Engine</Filter>
+    <ClCompile Include="src\Engine\utils\gPool.cpp">
+      <Filter>src\Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gBaseSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\entity\gEntity.cpp">
+      <Filter>src\Engine\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\entity\gEntityManager.cpp">
+      <Filter>src\Engine\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gSystemManager.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\components\gComponent.cpp">
+      <Filter>src\Engine\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\components\gLocationComponent.cpp">
+      <Filter>src\Engine\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,8 +417,26 @@
     <ClInclude Include="src\Engine\systems\gRenderSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\gEntity.h">
-      <Filter>src\Engine</Filter>
+    <ClInclude Include="src\Engine\utils\gPool.h">
+      <Filter>src\Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gBaseSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\entity\gEntity.h">
+      <Filter>src\Engine\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\entity\gEntityManager.h">
+      <Filter>src\Engine\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gSystemManager.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gLocationComponent.h">
+      <Filter>src\Engine\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

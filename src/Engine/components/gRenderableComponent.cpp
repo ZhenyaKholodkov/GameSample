@@ -1,5 +1,11 @@
 #include "GRenderableComponent.h"
 
 
-GRenderableComponent::GRenderableComponent() {}
-GRenderableComponent::~GRenderableComponent() {}
+GRenderableComponent::GRenderableComponent() :
+	mSprite(nullptr)
+{
+}
+
+GRenderableComponent::~GRenderableComponent()
+{
+}
