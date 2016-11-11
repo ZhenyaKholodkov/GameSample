@@ -1,0 +1,20 @@
+﻿  GGame.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\eholodkov\documents\github\gamesample\src\engine\components\gcomponent.h(10): warning C4091: 'typedef ': ignored on left of 'ComponentType' when no variable is declared
+  Generating Code...
+  Compiling...
+  gEntityManager.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\eholodkov\documents\github\gamesample\src\engine\components\gcomponent.h(10): warning C4091: 'typedef ': ignored on left of 'ComponentType' when no variable is declared
+  gRenderableComponent.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\eholodkov\documents\github\gamesample\src\engine\components\gcomponent.h(10): warning C4091: 'typedef ': ignored on left of 'ComponentType' when no variable is declared
+  gLocationComponent.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\eholodkov\documents\github\gamesample\src\engine\components\gcomponent.h(10): warning C4091: 'typedef ': ignored on left of 'ComponentType' when no variable is declared
+  gComponent.cpp
+c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\eholodkov\documents\github\gamesample\src\engine\components\gcomponent.h(10): warning C4091: 'typedef ': ignored on left of 'ComponentType' when no variable is declared
+  Generating Code...
+  GameSample.vcxproj -> C:\Users\eholodkov\Documents\GitHub\GameSample\data\GameSample.exe
+  GameSample.vcxproj -> data\GameSample.pdb (Partial PDB)

@@ -10,6 +10,8 @@
 #include "systems\gRenderSystem.h"
 #include "systems\gRenderSystem.h"
 
+using namespace std;
+
 class GEntityManager
 {
 public:
@@ -17,8 +19,9 @@ public:
 
 	Entity CreateEntity();
 
-	template<typename Component, typename ...Args> 
-	void   AddComponentsToEntity(Entity entity, Args && ... args);
+	template<typename C, typename... Args>
+	void   AddComponentsToEntity(Entity entity, Args&& ... args);
+
 
 
 private:
@@ -34,16 +37,17 @@ private:
 	vector<GBaseSystem*> mSystems; // тоже самое
 };
 
-template<typename C, typename ... Args>
-void   AddComponents(Args && ... args)
+template<typename C, typename... Args>
+void   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 {
-	//uint32 index = GComponent<C>::getComponentIndex();
-	C* c = new C(std::forward<Args>(args) ...);
-	/*if (!mComponents[index][entity])
+	uint32 index = GComponent<C>::getComponentIndex();
+	C* new_component = new C(std::forward<Args>(args) ...);
+	if (!mComponents[index][entity])
 	{
-	mComponents[index][entity] = new C(std::forward(srgs) ...);
-	}*/
+		mComponents[index][entity] = static_cast<GBaseComponent*>(new_component);
+	}
 }
+
 
 #endif
 

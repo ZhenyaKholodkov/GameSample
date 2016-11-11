@@ -10,14 +10,21 @@ typedef enum ComponentType
 };
 
 template<typename Component> 
-class GComponent : GBaseComponent
+class GComponent : public GBaseComponent
 {
 public:
-	GComponent();
-	virtual ~GComponent();
+	GComponent() {};
+	virtual ~GComponent() {};
 
 	static uint32 getComponentIndex();
 };
 
+
+template<typename C>
+uint32 GComponent<C>::getComponentIndex()
+{
+	static uint32 index = s_component_counter++;
+	return index;
+}
 #endif //GCOMPONENT_H
 

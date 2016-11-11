@@ -29,7 +29,7 @@ void GGame::Create()
 	GEntityManager* em = GEntityManager::Instance();
 
 	Entity entity1 = em->CreateEntity();
-	AddComponents<GLocationComponent>(5.0f, 10.0f);
+	em->AddComponentsToEntity<GLocationComponent>(entity1, 5.0f, 10.0f);
 }
 
 void GGame::Update(int dt)

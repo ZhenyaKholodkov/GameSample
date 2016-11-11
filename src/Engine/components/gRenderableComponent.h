@@ -4,12 +4,12 @@
 #include "gComponent.h"
 #include "gSprite.h"
 
-class GRenderableComponent : GComponent<GRenderableComponent>
+class GRenderableComponent : public GComponent<GRenderableComponent>
 {
 public:
 	GRenderableComponent() : mSprite(nullptr) {};
 	GRenderableComponent(GSprite* sprite) : mSprite(sprite) {};
-	~GRenderableComponent() {};
+	virtual ~GRenderableComponent() {};
 
 	GSprite* getSprite() { return mSprite;	}
 	void setSprite(GSprite* sprite) { mSprite = sprite; }

@@ -3,10 +3,10 @@
 
 #include "gComponent.h"
 
-class GLocationComponent //: GComponent<GLocationComponent>
+class GLocationComponent : public GComponent<GLocationComponent>
 {
 public:
-	GLocationComponent() : mX(0.0f), mY(0.0f) {};
+	GLocationComponent() :  mX(0.0f), mY(0.0f) {};
 	GLocationComponent(float x, float y) : mX(x), mY(y) {};
 	virtual ~GLocationComponent() {};
 

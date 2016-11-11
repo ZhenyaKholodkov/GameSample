@@ -7,8 +7,8 @@ class GBaseComponent
 {
 	friend class GEntityManager;
 public:
-	GBaseComponent();
-	virtual ~GBaseComponent();
+	GBaseComponent() {};
+	virtual ~GBaseComponent() {};
 protected:
 	static uint32 s_component_counter;
 };

@@ -1,7 +1,5 @@
 #include "gEntityManager.h"
 
-using namespace std;
-
 
 GEntityManager* GEntityManager::Instance()
 {
@@ -51,13 +49,14 @@ Entity GEntityManager::CreateEntity()
 	return mFreeEntity++;
 }
 
-template<typename C, typename ... Args>
-void   GEntityManager::AddComponentsToEntity(Entity entity, Args && ... args)
-{
-	uint32 index = GComponent<C>::getComponentIndex();
-	C* c = new C(std::forward(args) ...);
-	/*if (!mComponents[index][entity])
-	{
-		mComponents[index][entity] = new C(std::forward(srgs) ...);
-	}*/
-}
+//template<typename C, typename... Args>
+//inline void   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
+//{
+//	uint32 index = GComponent<C>::getComponentIndex();
+//	C* c = new C(std::forward(args) ...);
+//	/*if (!mComponents[index][entity])
+//	{
+//		mComponents[index][entity] = new C(std::forward(srgs) ...);
+//	}*/
+//}
+
