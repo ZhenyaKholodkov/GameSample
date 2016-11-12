@@ -77,7 +77,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src/Engine/systems;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -145,6 +145,7 @@
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
     <ClCompile Include="src\Engine\Types.cpp" />
     <ClCompile Include="src\Engine\Utils.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
     <ClInclude Include="src\Engine\systems\gBaseSystem.h" />
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
+    <ClInclude Include="src\Engine\systems\gSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystemManager.h" />
     <ClInclude Include="src\Engine\Types.h" />
     <ClInclude Include="src\Engine\Utils.h" />

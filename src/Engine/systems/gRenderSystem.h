@@ -1,16 +1,22 @@
 #ifndef GRENDER_SYSTEM_H
 #define GRENDER_SYSTEM_H
 
-#include "gBaseSystem.h"
+#include "gSystem.h"
+#include "gEntityManager.h"
+#include "gRenderableComponent.h"
+#include "gLocationComponent.h"
 #include "IGRender.h"
 
-class GRenderSystem : GBaseSystem
+class GRenderSystem : public GSystem<GRenderSystem>
 {
 public:
 	GRenderSystem();
 	~GRenderSystem();
 
 	virtual void update(int dt);
+private:
+	IGRender* mRenderer;
+	GEntityManager* mEntityManager;
 };
 
 #endif //GRENDER_SYSTEM_H

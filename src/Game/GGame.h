@@ -4,6 +4,10 @@
 
 #include "IGame.h"
 
+#include "gEntityManager.h"
+#include "gSystemManager.h"
+#include "gRenderSystem.h"
+
 class GGame: public IGame
 {
 public:
@@ -16,6 +20,9 @@ public:
 	int id;
 	unsigned int mBackgroundColor;
 	void LoadResources();
+
+private:
+	GSystemManager* mSystemManager;
 };
 
 #endif

@@ -11,21 +11,12 @@ GEntityManager::GEntityManager():
 	mFreeEntity(0),
 	defaulEntityCount(100)
 {
-	mComponents.reserve(2);
-	for (auto componentPool : mComponents)
+	mComponents.resize(2);
+	for (int i = 0; i < mComponents.size(); ++i)
 	{
-		componentPool.reserve(defaulEntityCount);
-		for (auto component : componentPool)
-		{
-			component = nullptr;
-		}
+		mComponents[i].resize(defaulEntityCount);
 	}
 
-	mSystems.reserve(2);
-	for (auto system : mSystems)
-	{
-		system = nullptr;
-	}
 }
 
 GEntityManager::~GEntityManager()
@@ -37,15 +28,11 @@ GEntityManager::~GEntityManager()
 			SAFE_DELETE(component);
 		}
 	}
-
-	for (auto system : mSystems)
-	{
-		SAFE_DELETE(system);
-	}
 }
 
 Entity GEntityManager::CreateEntity()
 {
+	mActiveEntities.push_back(mFreeEntity);
 	return mFreeEntity++;
 }
 

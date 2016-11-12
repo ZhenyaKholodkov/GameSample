@@ -2,11 +2,11 @@
 #include "GResManager.h"
 #include "IGRender.h"
 #include "GSprite.h"
-#include "entity\gEntityManager.h"
 
 
 GGame::GGame():
-	mBackgroundColor(0xff0000ff)
+	mBackgroundColor(0xff0000ff),
+	mSystemManager(nullptr)
 {
 	id = -1;
 }
@@ -27,9 +27,12 @@ void GGame::Create()
 	LoadResources();
 
 	GEntityManager* em = GEntityManager::Instance();
+	mSystemManager = GSystemManager::Instatnce();
+	mSystemManager->RegisterSystem<GRenderSystem>();
 
-	Entity entity1 = em->CreateEntity();
-	em->AddComponentsToEntity<GLocationComponent>(entity1, 5.0f, 10.0f);
+	GSprite* sprite = GResManager::Instance()->GetSprite("button1.png");
+	Entity buttonEntity = em->CreateEntity();
+	em->AddComponentsToEntity<GRenderableComponent>(buttonEntity, sprite);
 }
 
 void GGame::Update(int dt)
@@ -37,11 +40,7 @@ void GGame::Update(int dt)
 	IGRender::Instance()->setClearColor(mBackgroundColor);
 	IGRender::Instance()->clear();
 	IGRender::Instance()->startFrame();
-	//Texture* texture = reinterpret_cast<Texture*>(GResManager::Instance()->mResources[0]);
-	GSprite* sprite = GResManager::Instance()->GetSprite("button1.png");
 
-	IGRender::Instance()->drawImage(sprite->mTextureHandle.getTextureGLId(), sprite->mTextureHandle.getTextureWidth(), sprite->mTextureHandle.getTextureHeight(),
-		sprite->GetXPos(), sprite->GetYPos(), sprite->GetWidth(), sprite->GetHeight(), 0.0f, 0.0f, 0.0f);
 	IGRender::Instance()->setLineColor(100, 100, 100);
 	IGRender::Instance()->drawLine(0.0f, 0.0f, 0.0f, 100.0f, 100.0f, 100.0f);
 	IGRender::Instance()->endFrame();
