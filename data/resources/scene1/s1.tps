@@ -190,6 +190,9 @@
         <map type="IndividualSpriteSettingsMap">
             <key type="filename">../../../../../../Desktop/button1.png</key>
             <key type="filename">../../../../../../Desktop/button2.png</key>
+            <key type="filename">../../../../../../Desktop/frame1.png</key>
+            <key type="filename">../../../../../../Desktop/frame2.png</key>
+            <key type="filename">../../../../../../Desktop/frame3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -199,6 +202,9 @@
         <array>
             <filename>../../../../../../Desktop/button1.png</filename>
             <filename>../../../../../../Desktop/button2.png</filename>
+            <filename>../../../../../../Desktop/frame2.png</filename>
+            <filename>../../../../../../Desktop/frame3.png</filename>
+            <filename>../../../../../../Desktop/frame1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

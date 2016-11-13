@@ -3,7 +3,6 @@
 
 #include "Utils.h"
 
-//template<class Component>
 class GBaseSystem
 {
 public:

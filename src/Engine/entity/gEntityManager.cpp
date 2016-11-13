@@ -11,7 +11,7 @@ GEntityManager::GEntityManager():
 	mFreeEntity(0),
 	defaulEntityCount(100)
 {
-	mComponents.resize(2);
+	mComponents.resize(4);
 	for (int i = 0; i < mComponents.size(); ++i)
 	{
 		mComponents[i].resize(defaulEntityCount);
@@ -34,6 +34,11 @@ Entity GEntityManager::CreateEntity()
 {
 	mActiveEntities.push_back(mFreeEntity);
 	return mFreeEntity++;
+}
+
+GBaseComponent* GEntityManager::GetComponent(Entity entity, uint32 index)
+{
+	return mComponents[index][entity];
 }
 
 //template<typename C, typename... Args>

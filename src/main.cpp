@@ -40,7 +40,7 @@ int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, IN
 	float asp = min(aspW, aspH);
 	
 	if (asp<1.0f)
-		asp *= 0.8;						// делаем немного меньше, чтоб вместилось меню пуск
+		asp *= 0.8f;						// делаем немного меньше, чтоб вместилось меню пуск
 	
 	winWConf = (int)(winWConf*asp);
 	winHConf = (int)(winHConf*asp);

@@ -5,12 +5,12 @@
 
 #include "Types.h"
 
-#include "components\gLocationComponent.h"
-#include "components\gRenderableComponent.h"
-#include "systems\gRenderSystem.h"
-#include "systems\gRenderSystem.h"
+#include "gLocationComponent.h"
+#include "gRenderableComponent.h"
+#include "gAnimationComponent.h"
 
-using namespace std;
+#include "gRenderSystem.h"
+#include "gAnimationSystem.h"
 
 class GEntityManager
 {
@@ -20,10 +20,12 @@ public:
 	Entity CreateEntity();
 
 	template<typename C, typename... Args>
-	bool   AddComponentsToEntity(Entity entity, Args&& ... args);
+	C* AddComponentsToEntity(Entity entity, Args&& ... args);
 
 	template<typename C>
 	C* GetComponent(Entity entity);
+
+	GBaseComponent* GetComponent(Entity entity, uint32 index);
 
 	vector<Entity>::const_iterator GetActiveEntitiesBegin() 
 	{
@@ -48,11 +50,11 @@ private:
 };
 
 template<typename C, typename... Args>
-bool   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
+C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 {
 	if (mFreeEntity <= entity)
 	{
-		return false;
+		return nullptr;
 	}
 
 	uint32 index = GComponent<C>::getComponentIndex();
@@ -61,6 +63,7 @@ bool   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 	{
 		mComponents[index][entity] = static_cast<GBaseComponent*>(new_component);
 	}
+	return new_component;
 }
 
 template<typename C>

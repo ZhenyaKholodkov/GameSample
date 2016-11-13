@@ -24,6 +24,8 @@ public :
 
 	void load();
 
+	bool IsLoaded() { return mIsLoaded; }
+
 private:
 	int   mXPos;
 	int   mYPos;
@@ -33,6 +35,8 @@ private:
 	float mPivotY;
 
 	const char* mTextureKey;
+
+	bool mIsLoaded;
 
 };
 #endif //GSPRITE_H

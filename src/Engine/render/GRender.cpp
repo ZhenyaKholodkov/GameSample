@@ -103,20 +103,8 @@ void GRender::drawBatchedTris()
    if (_batchVertIndex==0)
       return;
 
-   UInt32 text0ID = 0;
-
    if (_currentTextureID>=0)
    {
-    /*  HWTexture* hwTexture = (HWTexture*)_textures[_currentTextureID];
-
-      if (!hwTexture)
-      {
-       //  AbsTrace(L_INFO,GRender,"drawBatchedImages() texture %d doesn't exists", _currentTextureID);
-         return;
-      }     *
-
-      text0ID = hwTexture->text0PlatformID();*/
-
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, _currentTextureID);
    }

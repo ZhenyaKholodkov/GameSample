@@ -17,10 +17,10 @@ public:
 	virtual void Create();
 	virtual void Update(int dt);
 
-	int id;
-	unsigned int mBackgroundColor;
-	void LoadResources();
+	virtual void OnMouseDown(GMouse mouse_pos);
+	virtual void OnMouseUp(GMouse mouse_pos);
 
+	void LoadResources();
 private:
 	GSystemManager* mSystemManager;
 };

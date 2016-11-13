@@ -137,7 +137,12 @@ bool GResManager::LoadImage(const char* path, unsigned char** data, uint32* data
 
 GSprite* GResManager::GetSprite(const char* key)
 {
-	return (GSprite*)(GResourceDictionary::Instance()->find(key));
+	GSprite* sprite = static_cast<GSprite*>(GResourceDictionary::Instance()->find(key));
+
+	if (!sprite->IsLoaded())
+		sprite->load();
+
+	return sprite;
 }
 static GSprite* sprite1 = NULL;
 bool GResManager::LoadResources(const char* pathToConfig)

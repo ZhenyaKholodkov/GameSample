@@ -122,7 +122,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Engine\components\gAnimationComponent.cpp" />
     <ClCompile Include="src\Engine\components\gBaseComponent.cpp" />
+    <ClCompile Include="src\Engine\components\gMouseDownEventComponent.cpp" />
     <ClCompile Include="src\Engine\components\gComponent.cpp" />
     <ClCompile Include="src\Engine\components\gLocationComponent.cpp" />
     <ClCompile Include="src\Engine\components\gRenderableComponent.cpp" />
@@ -143,7 +145,9 @@
     <ClCompile Include="src\Engine\render\GRender.cpp" />
     <ClCompile Include="src\Engine\render\IGRender.cpp" />
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
+    <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
@@ -190,7 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
+    <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h" />
     <ClInclude Include="src\Engine\components\gComponent.h" />
     <ClInclude Include="src\Engine\components\gLocationComponent.h" />
     <ClInclude Include="src\Engine\components\gRenderableComponent.h" />
@@ -214,7 +220,9 @@
     <ClInclude Include="src\Engine\render\GRender.h" />
     <ClInclude Include="src\Engine\render\IGRender.h" />
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
+    <ClInclude Include="src\Engine\systems\gAnimationSystem.h" />
     <ClInclude Include="src\Engine\systems\gBaseSystem.h" />
+    <ClInclude Include="src\Engine\systems\gUserInputSystem.h" />
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystemManager.h" />

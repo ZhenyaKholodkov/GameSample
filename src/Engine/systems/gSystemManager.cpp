@@ -3,7 +3,7 @@
 
 GSystemManager::GSystemManager()
 {
-	mSystems.resize(2);
+	mSystems.resize(3);
 	for (auto system : mSystems)
 	{
 		system = nullptr;

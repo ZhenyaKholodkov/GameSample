@@ -1,6 +1,6 @@
- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:7e38ddadf9ada19113ec81c2ac480e72:02eb7e2b274b75b85c7262d9a8ca9ee2:dd6d8c0304e89f23f328daf296e4bd6d$ -->
+<!-- $TexturePacker:SmartUpdate:be0a0b62398a2cbaa517792f28177072:e0aadcdad0ef49a0f5a6b758aecd1c44:dd6d8c0304e89f23f328daf296e4bd6d$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -19,9 +19,24 @@ vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
 verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
-<Resources>
-<TextureAtlas imagePath="texture_1.png" width="400" height="100">
-    <sprite n="button1.png" x="0" y="0" w="200" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="button2.png" x="200" y="0" w="200" h="100" pX="0.5" pY="0.5"/>
+<TextureAtlases>
+<TextureAtlas imagePath="texture_1.png" width="434" height="603">
+    <sprite n="01.png" x="0" y="0" w="15" h="14" pX="0.5" pY="0.5"/>
+    <sprite n="02.png" x="53" y="0" w="67" h="59" pX="0.5" pY="0.5"/>
+    <sprite n="03.png" x="300" y="100" w="125" h="110" pX="0.5" pY="0.5"/>
+    <sprite n="04.png" x="169" y="447" w="180" h="156" pX="0.5" pY="0.5"/>
+    <sprite n="05.png" x="0" y="447" w="169" h="143" pX="0.5" pY="0.5"/>
+    <sprite n="06.png" x="245" y="210" w="156" h="137" pX="0.5" pY="0.5"/>
+    <sprite n="07.png" x="0" y="210" w="112" h="125" pX="0.5" pY="0.5"/>
+    <sprite n="08.png" x="112" y="210" w="133" h="110" pX="0.5" pY="0.5"/>
+    <sprite n="09.png" x="120" y="0" w="114" h="63" pX="0.5" pY="0.5"/>
+    <sprite n="10.png" x="15" y="0" w="38" h="34" pX="0.5" pY="0.5"/>
+    <sprite n="button1.png" x="0" y="347" w="200" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="button1_down.png" x="200" y="347" w="200" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="frame1.png" x="0" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="frame2.png" x="200" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="frame3.png" x="100" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="frame4.png" x="234" y="0" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="frame5.png" x="334" y="0" w="100" h="100" pX="0.5" pY="0.5"/>
 </TextureAtlas>
-</Resources>
+</TextureAtlases>

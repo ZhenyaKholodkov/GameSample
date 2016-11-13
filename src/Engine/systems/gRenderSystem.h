@@ -15,6 +15,8 @@ public:
 
 	virtual void update(int dt);
 private:
+	unsigned int mBackgroundColor;
+
 	IGRender* mRenderer;
 	GEntityManager* mEntityManager;
 };

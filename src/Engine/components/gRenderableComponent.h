@@ -11,8 +11,8 @@ public:
 	GRenderableComponent(GSprite* sprite) : mSprite(sprite) {};
 	virtual ~GRenderableComponent() {};
 
-	GSprite* getSprite() { return mSprite;	}
-	void setSprite(GSprite* sprite) { mSprite = sprite; }
+	GSprite* GetSprite() { return mSprite;	}
+	void SetSprite(GSprite* sprite) { mSprite = sprite; }
 
 private:
 	GSprite* mSprite;

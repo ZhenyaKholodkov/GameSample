@@ -63,15 +63,16 @@ void GTextureDictinary::remove(GTextureObject* texture)
 	else if (texture == mChain)
 		mChain = texture->mNext;
 
-	GTextureObject* curTexture = mTable[getTableID(texture->mKey)];
-	while (curTexture)
+	uint32 index = getTableID(texture->mKey);
+	GTextureObject** curTexture = &mTable[index];
+	while (*curTexture)
 	{
-		if (curTexture == texture)
+		if (*curTexture == texture)
 		{
-			curTexture = texture->mSameHash;
+			*curTexture = texture->mSameHash;
 			break;
 		}
-		texture = texture->mSameHash;
+		curTexture = &((*curTexture)->mSameHash);
 	}
 }
 

@@ -262,6 +262,18 @@
     <ClCompile Include="src\Engine\systems\gSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\components\gAnimationComponent.cpp">
+      <Filter>src\Engine\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\components\gMouseDownEventComponent.cpp">
+      <Filter>src\Engine\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Types.h">
@@ -448,6 +460,18 @@
       <Filter>src\Engine\components</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\systems\gSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gAnimationComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gAnimationSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gUserInputSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
   </ItemGroup>

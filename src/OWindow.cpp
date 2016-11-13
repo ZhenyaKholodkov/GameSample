@@ -195,7 +195,7 @@ int32 Window::Run()
 		}
 		else {
 			MsgWaitForMultipleObjects(0, NULL, 1, iPeriod, QS_ALLINPUT);
-			int32 tm = timeGetTime(), dTime = tm - iLastTime;
+			Int32 tm = timeGetTime(), dTime = tm - iLastTime;
 			if (dTime >= iPeriod) {
 				iLastTime = tm;
 				OnTimer(dTime);                                    // сработало таймерное событие

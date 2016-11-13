@@ -7,7 +7,8 @@ GSprite::GSprite(const char* path):
     mWidth(0),
     mHeight(0),
     mPivotX(0.0f),
-    mPivotY(0.0f)
+    mPivotY(0.0f),
+	mIsLoaded(false)
 {
 
 }
@@ -20,4 +21,5 @@ GSprite::~GSprite()
 void GSprite::load()
 {
 	mTextureHandle.Set(mTextureKey);
+	mIsLoaded = true;
 }
