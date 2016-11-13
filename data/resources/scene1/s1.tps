@@ -86,9 +86,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>512</int>
+            <int>1024</int>
             <key>height</key>
-            <int>512</int>
+            <int>1024</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -188,11 +188,23 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">../../../../../../Desktop/01.png</key>
+            <key type="filename">../../../../../../Desktop/02.png</key>
+            <key type="filename">../../../../../../Desktop/03.png</key>
+            <key type="filename">../../../../../../Desktop/04.png</key>
+            <key type="filename">../../../../../../Desktop/05.png</key>
+            <key type="filename">../../../../../../Desktop/06.png</key>
+            <key type="filename">../../../../../../Desktop/07.png</key>
+            <key type="filename">../../../../../../Desktop/08.png</key>
+            <key type="filename">../../../../../../Desktop/09.png</key>
+            <key type="filename">../../../../../../Desktop/10.png</key>
             <key type="filename">../../../../../../Desktop/button1.png</key>
-            <key type="filename">../../../../../../Desktop/button2.png</key>
+            <key type="filename">../../../../../../Desktop/button1_down.png</key>
             <key type="filename">../../../../../../Desktop/frame1.png</key>
             <key type="filename">../../../../../../Desktop/frame2.png</key>
             <key type="filename">../../../../../../Desktop/frame3.png</key>
+            <key type="filename">../../../../../../Desktop/frame4.png</key>
+            <key type="filename">../../../../../../Desktop/frame5.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -201,10 +213,22 @@
         <key>fileList</key>
         <array>
             <filename>../../../../../../Desktop/button1.png</filename>
-            <filename>../../../../../../Desktop/button2.png</filename>
             <filename>../../../../../../Desktop/frame2.png</filename>
             <filename>../../../../../../Desktop/frame3.png</filename>
             <filename>../../../../../../Desktop/frame1.png</filename>
+            <filename>../../../../../../Desktop/frame5.png</filename>
+            <filename>../../../../../../Desktop/frame4.png</filename>
+            <filename>../../../../../../Desktop/01.png</filename>
+            <filename>../../../../../../Desktop/02.png</filename>
+            <filename>../../../../../../Desktop/03.png</filename>
+            <filename>../../../../../../Desktop/04.png</filename>
+            <filename>../../../../../../Desktop/05.png</filename>
+            <filename>../../../../../../Desktop/06.png</filename>
+            <filename>../../../../../../Desktop/07.png</filename>
+            <filename>../../../../../../Desktop/08.png</filename>
+            <filename>../../../../../../Desktop/09.png</filename>
+            <filename>../../../../../../Desktop/10.png</filename>
+            <filename>../../../../../../Desktop/button1_down.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
