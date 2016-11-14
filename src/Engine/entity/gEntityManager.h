@@ -12,6 +12,13 @@
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
 
+enum ACTIONS
+{
+	ACTION_BEGIN = BIT(1),
+	ACTION_STOP  = BIT(2)
+}ACTIONS;
+
+
 class GEntityManager
 {
 public:

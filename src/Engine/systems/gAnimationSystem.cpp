@@ -49,3 +49,8 @@ void GAnimationSystem::update(int dt)
 		}
 	}
 }
+
+void GAnimationSystem::ProcessActions()
+{
+
+}

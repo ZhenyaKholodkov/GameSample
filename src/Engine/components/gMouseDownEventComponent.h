@@ -13,22 +13,13 @@ public:
 
 	void SetSpriteDown(GSprite* sprite) { mSpriteDown = sprite; }
 
-	template<typename C> 
-	void SetStateToChangeComponent(uint32 state);
+	void SetParamsToNotify(Entity entityToNotify, int actionMask) { mEntityToNotify = entityToNotify; mActionMask = actionMask; }
 
 private:
 	GSprite* mSpriteDown;
 
-	uint32 mComponentIndex;
-	uint32 mStateToChange;
+	Entity mEntityToNotify;
+	int    mActionMask;
 };
-
-
-template<typename C>
-void GMouseDownEventComponent::SetStateToChangeComponent(uint32 state)
-{
-	mComponentIndex = GComponent<GMouseDownEventComponent>::getComponentIndex();
-	mStateToChange = state;
-}
 #endif //GMOUSEDOWNCOMPONENT_H
 
