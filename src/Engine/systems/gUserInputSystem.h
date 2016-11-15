@@ -5,7 +5,7 @@
 #include "Utils.h"
 #include "Types.h"
 
-class GUserInputSystem
+class GUserInputSystem : public GSystem<GUserInputSystem>
 {
 public:
 	GUserInputSystem();

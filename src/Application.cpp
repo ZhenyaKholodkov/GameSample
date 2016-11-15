@@ -238,6 +238,7 @@ void Application::OnLMouseDown(Pixel  mouse_pos)
 {
 	_currMouse.x = (float)mouse_pos.X(); _currMouse.y = (float)mouse_pos.Y();
 	_currMouse.press = true;
+	mGame->OnMouseDown(mouse_pos);
 	//_viewer->mouseDn(_currMouse);
 	//if (::gameDebug)
 	//{
@@ -254,6 +255,7 @@ void Application::OnLMouseUp(Pixel  mouse_pos)
 {
 	_currMouse.x = (float)mouse_pos.X(); _currMouse.y = (float)mouse_pos.Y();
 	_currMouse.press = false;
+	mGame->OnMouseUp(mouse_pos);
 
 	//_viewer->mouseUp(_currMouse);
 }

@@ -7,6 +7,7 @@
 #include "gEntityManager.h"
 #include "gSystemManager.h"
 #include "gRenderSystem.h"
+#include "gUserInputSystem.h"
 
 class GGame: public IGame
 {
@@ -17,8 +18,8 @@ public:
 	virtual void Create();
 	virtual void Update(int dt);
 
-	virtual void OnMouseDown(GMouse mouse_pos);
-	virtual void OnMouseUp(GMouse mouse_pos);
+	virtual void OnMouseDown(Pixel mouse_pos);
+	virtual void OnMouseUp(Pixel mouse_pos);
 
 	void LoadResources();
 private:

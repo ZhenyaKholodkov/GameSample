@@ -13,6 +13,9 @@ public:
 	template<typename S>
 	void RegisterSystem();
 
+	template<typename S>
+	GBaseSystem* GetSystem();
+
 	void update(int dt);
 
 private:
@@ -29,6 +32,13 @@ void GSystemManager::RegisterSystem()
 {
 	uint32 index = GSystem<S>::getSystemIndex();
 	mSystems[index] = new S();
+}
+
+template<typename S>
+GBaseSystem* GSystemManager::GetSystem()
+{
+	uint32 index = GSystem<S>::getSystemIndex();
+	return mSystems[index];
 }
 #endif //GSYSTEM_MANAGER_H
 

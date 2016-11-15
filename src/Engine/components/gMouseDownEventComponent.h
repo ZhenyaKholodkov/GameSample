@@ -8,7 +8,7 @@ class GMouseDownEventComponent : public GComponent<GMouseDownEventComponent>
 {
 	friend class GUserInputSystem;
 public:
-	GMouseDownEventComponent() {};
+	GMouseDownEventComponent(GSprite* spriteDown) : mSpriteDown(spriteDown) {};
 	virtual ~GMouseDownEventComponent() {};
 
 	void SetSpriteDown(GSprite* sprite) { mSpriteDown = sprite; }

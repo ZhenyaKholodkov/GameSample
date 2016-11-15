@@ -11,7 +11,7 @@ GEntityManager::GEntityManager():
 	mFreeEntity(0),
 	defaulEntityCount(100)
 {
-	mComponents.resize(4);
+	mComponents.resize(6);
 	for (int i = 0; i < mComponents.size(); ++i)
 	{
 		mComponents[i].resize(defaulEntityCount);

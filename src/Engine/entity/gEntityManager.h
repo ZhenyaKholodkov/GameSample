@@ -6,17 +6,14 @@
 #include "Types.h"
 
 #include "gLocationComponent.h"
-#include "gRenderableComponent.h"
 #include "gAnimationComponent.h"
+#include "gActionComponent.h"
+#include "gMouseDownEventComponent.h"
+#include "gMouseUpEventComponent.h"
+#include "gRenderableComponent.h"
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
-
-enum ACTIONS
-{
-	ACTION_BEGIN = BIT(1),
-	ACTION_STOP  = BIT(2)
-}ACTIONS;
 
 
 class GEntityManager

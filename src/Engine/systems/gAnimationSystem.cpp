@@ -1,6 +1,7 @@
 #include "gAnimationSystem.h"
 
 #include "gAnimationComponent.h"
+#include "gActionComponent.h"
 
 GAnimationSystem::GAnimationSystem()
 {
@@ -16,6 +17,7 @@ void GAnimationSystem::update(int dt)
 	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
 	{
 		Entity entity = (*iter);
+		ProcessActions(entity);
 
 		GAnimationComponent* animation = mEntityManager->GetComponent<GAnimationComponent>(entity);
 		if (!animation)
@@ -50,7 +52,23 @@ void GAnimationSystem::update(int dt)
 	}
 }
 
-void GAnimationSystem::ProcessActions()
+void GAnimationSystem::ProcessActions(Entity entity)
 {
+	GActionComponent* action = mEntityManager->GetComponent<GActionComponent>(entity);
+	if (!action || !action->DoesContainAnyAction())
+		return;
 
+	GAnimationComponent* animation = mEntityManager->GetComponent<GAnimationComponent>(entity);
+	if (!animation)
+		return;
+
+	if (action->DoesContainAction(ACTIONS::ACTION_BEGIN))
+	{
+		animation->SetState(GAnimationComponent::STATE_RUN);
+	}
+	else if (action->DoesContainAction(ACTIONS::ACTION_STOP))
+	{
+		animation->SetState(GAnimationComponent::STATE_WAIT);
+		animation->Reset();
+	}
 }

@@ -28,24 +28,26 @@ void GGame::Create()
 	mSystemManager = GSystemManager::Instatnce();
 	mSystemManager->RegisterSystem<GRenderSystem>();
 	mSystemManager->RegisterSystem<GAnimationSystem>();
-
-	GSprite* sprite1 = GResManager::Instance()->GetSprite("frame1.png");
-	GSprite* sprite2 = GResManager::Instance()->GetSprite("frame2.png");
-	GSprite* sprite3 = GResManager::Instance()->GetSprite("frame3.png");
-	GSprite* sprite4 = GResManager::Instance()->GetSprite("frame4.png");
-	GSprite* sprite5 = GResManager::Instance()->GetSprite("frame5.png");
-	Entity animationEntity = em->CreateEntity();
-	em->AddComponentsToEntity<GLocationComponent>(animationEntity, 500.0f, 100.0f);
-	em->AddComponentsToEntity<GRenderableComponent>(animationEntity, sprite1);
-
-	GAnimationComponent* animation = em->AddComponentsToEntity<GAnimationComponent>(animationEntity, 1000 / 60, true);
-	animation->AddFrame(sprite1);
-	animation->AddFrame(sprite2);
-	animation->AddFrame(sprite3);
-	animation->AddFrame(sprite4);
-	animation->AddFrame(sprite5);
+	mSystemManager->RegisterSystem<GUserInputSystem>();
 
 	/////////////////////////////////////////////////////////////////////////////////
+	//GSprite* sprite1 = GResManager::Instance()->GetSprite("frame1.png");
+	//GSprite* sprite2 = GResManager::Instance()->GetSprite("frame2.png");
+	//GSprite* sprite3 = GResManager::Instance()->GetSprite("frame3.png");
+	//GSprite* sprite4 = GResManager::Instance()->GetSprite("frame4.png");
+	//GSprite* sprite5 = GResManager::Instance()->GetSprite("frame5.png");
+	//Entity animationEntity = em->CreateEntity();
+	//em->AddComponentsToEntity<GLocationComponent>(animationEntity, 500.0f, 100.0f);
+	//em->AddComponentsToEntity<GRenderableComponent>(animationEntity, sprite1);
+	//
+	//GAnimationComponent* animation = em->AddComponentsToEntity<GAnimationComponent>(animationEntity, 1000 / 60, true);
+	//animation->AddFrame(sprite1);
+	//animation->AddFrame(sprite2);
+	//animation->AddFrame(sprite3);
+	//animation->AddFrame(sprite4);
+	//animation->AddFrame(sprite5);
+	//
+	////////////////////////////////Animation/////////////////////////////////////////////////
 	GSprite* sprite01 = GResManager::Instance()->GetSprite("01.png");
 	GSprite* sprite02 = GResManager::Instance()->GetSprite("02.png");
 	GSprite* sprite03 = GResManager::Instance()->GetSprite("03.png");
@@ -58,8 +60,10 @@ void GGame::Create()
 	Entity animation2Entity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(animation2Entity, 200.0f, 300.0f);
 	em->AddComponentsToEntity<GRenderableComponent>(animation2Entity, sprite01);
+	em->AddComponentsToEntity<GActionComponent>(animation2Entity);
 
 	GAnimationComponent* animation2 = em->AddComponentsToEntity<GAnimationComponent>(animation2Entity, 1000 / 30, true);
+
 	animation2->AddFrame(sprite01);
 	animation2->AddFrame(sprite02);
 	animation2->AddFrame(sprite03);
@@ -69,6 +73,21 @@ void GGame::Create()
 	animation2->AddFrame(sprite07);
 	animation2->AddFrame(sprite08);
 	animation2->AddFrame(sprite09);
+
+	///////////////////////////////////Button//////////////////////////////////////////////
+
+	GSprite* spriteButtonDown = GResManager::Instance()->GetSprite("button1.png");
+	GSprite* spriteButtonUp = GResManager::Instance()->GetSprite("button1_down.png");
+
+	Entity buttonEntity = em->CreateEntity();
+	em->AddComponentsToEntity<GLocationComponent>(buttonEntity, 600.0f, 300.0f);
+	em->AddComponentsToEntity<GRenderableComponent>(buttonEntity, spriteButtonUp);
+
+	GMouseDownEventComponent* buttonDownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(buttonEntity, spriteButtonDown);
+	GMouseUpEventComponent* buttonUpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(buttonEntity, spriteButtonUp);
+
+	buttonDownEvent->SetParamsToNotify(animation2Entity, ACTIONS::ACTION_BEGIN);
+
 }
 
 void GGame::Update(int dt)
@@ -98,12 +117,14 @@ void GGame::LoadResources()
 	*/
 }
 
-void GGame::OnMouseDown(GMouse mouse_pos)
+void GGame::OnMouseDown(Pixel mouse_pos)
 {
-
+	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	inputSystem->OnMouseDown(mouse_pos);
 }
 
-void GGame::OnMouseUp(GMouse mouse_pos)
+void GGame::OnMouseUp(Pixel mouse_pos)
 {
-
+	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	inputSystem->OnMouseUp(mouse_pos);
 }

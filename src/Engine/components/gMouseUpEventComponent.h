@@ -8,15 +8,15 @@ class GMouseUpEventComponent : public GComponent<GMouseUpEventComponent>
 {
 	friend class GUserInputSystem;
 public:
-	GMouseUpEventComponent() {};
+	GMouseUpEventComponent(GSprite* spriteUp) : mSpriteUp(spriteUp) {};
 	virtual ~GMouseUpEventComponent() {};
 
-	void SetSpriteDown(GSprite* sprite) { mSpriteDown = sprite; }
+	void SetSpriteUp(GSprite* sprite) { mSpriteUp = sprite; }
 
 	void SetParamsToNotify(Entity entityToNotify, int actionMask) { mEntityToNotify = entityToNotify; mActionMask = actionMask; }
 
 private:
-	GSprite* mSpriteDown;
+	GSprite* mSpriteUp;
 
 	Entity mEntityToNotify;
 	int    mActionMask;
