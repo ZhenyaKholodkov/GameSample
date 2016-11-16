@@ -31,13 +31,10 @@ public:
 
 	GBaseComponent* GetComponent(Entity entity, uint32 index);
 
-	vector<Entity>::const_iterator GetActiveEntitiesBegin() 
-	{
-		bool d = true;
-		return mActiveEntities.begin(); 
-	}
+	vector<Entity>::const_iterator GetActiveEntitiesBegin() { return mActiveEntities.begin(); }
 	vector<Entity>::const_iterator GetActiveEntitiesEnd() { return mActiveEntities.end(); }
 
+	bool IsInsideEntity(Entity entity, GPoint point);
 
 
 private:

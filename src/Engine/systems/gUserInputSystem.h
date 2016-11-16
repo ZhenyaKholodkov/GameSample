@@ -13,8 +13,8 @@ public:
 
 	virtual void update(int dt) {};
 
-	void OnMouseDown(Pixel mousePos);
-	void OnMouseUp(Pixel mousePos);
+	void OnMouseDown(GPoint point);
+	void OnMouseUp(GPoint point);
 
 private:
 	GEntityManager* mEntityManager;

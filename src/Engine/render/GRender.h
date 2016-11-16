@@ -1,9 +1,4 @@
-﻿//! Класс GRender - рендер рисования, использующий OpenGL версионно зависимые функции рисования
-/*! \file GRender.h
-
-
-*                                                    (с) absolutist.com (abeyn) 2013-12-19
-********************************************************************************************************/
+﻿
 #ifndef _GRENDEROGL_ABS_H
 #define _GRENDEROGL_ABS_H
 
@@ -11,42 +6,35 @@
 #include <windows.h>
 #include <gl/gl.h>
 
-using namespace std;
-
-
-//-----------------------------------------------------------------------------------------
-//! Рендер рисования OpenGL 2.0 и выше
-//
 class GRender: public IGRender
 {
 public:
    GRender::GRender();
 
-   void		init( int w, int h );										      //!< инициализировать контекст рисования
-   void		setClearColor( unsigned int c );							      //!< установить цвет очистки
-   void		clear();													            //!< очистить окно
+   void		init( int w, int h );										      
+   void		setClearColor( unsigned int c );							      
+   void		clear();													      
    void		drawTri( float x1, float y1, 
                      float x2, float y2, 
-                     float x3, float y3);								      //!< нарисовать залитый триугольник
+                     float x3, float y3);								    
 
-   void		drawFrame(float x, float y, float w, float h);							      //!< нарисовать прямоугольник (левый верхний угол - x,y; ширина,высота - w,h
-   void		drawLine(float x1, float y1, float z1, float x2, float y2, float z2);	//!< нарисовать линию (между вершинами - x1,y1,z1 и x2,y2,z2)
+   void		drawFrame(float x, float y, float w, float h);							     
+   void		drawLine(float x1, float y1, float z1, float x2, float y2, float z2);	
 
    uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
    void   UnloadTexture(uint32 textureId);
 
-   void		destroyTexture( unsigned int glId , bool unload = true);	//!< удаление текстуры
-   void		setClipRect( int aX, int aY, int aWidth, int aHeight);	//!< установить прямоулольник отсечения
-   void		clearClipRect();											         //!< убрать режим отсечения
-   void     applyBlending();				                              //!< применить текущие настройки блендинга. ВНИМАНИЕ - старые НЕ сохраняются автоматически
-   void     applyCullMode();	   			                           //!< применить текущие настройки отсечения примитивов
-   void		applyTransform();			                                 //!< установить матрицу трансформации. Операция дорогая так как идет пересчет view матрицы!!! 
-   void		applyDepthTest();	   			                           //!< применить текущие настройки Z-буфера
-   void		clearDepthBuffer();	   			                        //!< очистить Z-буфер
+   void		setClipRect( int aX, int aY, int aWidth, int aHeight);	
+   void		clearClipRect();										
+   void     applyBlending();				                        
+   void     applyCullMode();	   			                        
+   void		applyTransform();			                            
+   void		applyDepthTest();	   			                        
+   void		clearDepthBuffer();	   			                        
 
-   void		startFrame();												         //!< начать рисование нового кадра
-   void		endFrame();													         //!< завершить рисование текущего кадра
-   void		draw();														         //!< нарисовать все
+   void		startFrame();											
+   void		endFrame();												
+   void		draw();													
 
 protected:
 	class PlatformMatrix {
@@ -56,24 +44,22 @@ protected:
 		void SetIdentity();
 	};
 	void              convertToPlatformMatrix(IGMatrix& matrix, PlatformMatrix& platformMatrix);
-   void		drawBatchedTris();											      //!< рисуем пакет триугольников
+   void		drawBatchedTris();											     
    PlatformMatrix    _curTransformMatrix;
-   std::vector<IGRect>		_clipRect;															   //!< стек сохраненных прямоугольников отсечения
    float				   _clearColorR, _clearColorG, _clearColorB;
 
-   static float _angle3DVert;											                  //!< угол вертикального переворота в 3D
-   static float _globalScale;											                  //!< глобальный скейл; нужен для пост-обработки вершин
-   static float _farSideScale;											               //!< скейл дальней стороны трапеции при имитации 3D-переворота
+   static float _angle3DVert;											              
+   static float _globalScale;											              
+   static float _farSideScale;											              
 
 private:
 
-   GLint                   _glMajorVer;                              //!< основная версия OpenGL
-   GLint                   _glMinorVer;                              //!< вторичная версия OpenGL
+   GLint                   _glMajorVer;                             
+   GLint                   _glMinorVer;                             
 };
 
 inline int checkForGLErrors( GThreadSafeErrors &err )
 {
-	//return 0;
    int errors = 0 ;
 
    while ( true )

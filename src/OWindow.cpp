@@ -22,16 +22,8 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 Window::Window() :
 	iPeriod(100),
-	iPeriodFPS(1000),
-	iNocaption(false),
-	iNoresize(true),
 	iColorBkground(0x000000),
-	iLastID(100),
-	iNotWasWM_PAINT(true),
-	iCursorVisible(true),
-	iFPS(1000),
 	iSlowTimer(0),
-	iFullscreen(false),
 	mIcon(0)
 {
 	sInstance = this;
@@ -46,10 +38,10 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 {
 
 	iWndMode = mode;
-	iWindowBrush = (HBRUSH)CreateSolidBrush(iColorBkground.Color());
+	iWindowBrush = (HBRUSH)CreateSolidBrush(iColorBkground.getColor());
 	WNDCLASSEX wcl;                                             // window class.
 
-	wcl.hInstance = GetModuleHandle(NULL);;                     // handle to this instance
+	wcl.hInstance = GetModuleHandle(NULL);                     // handle to this instance
 
 	mIcon = 0;
 
@@ -78,13 +70,11 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW | WS_POPUP | CS_DBLCLKS;
 
-	if (iNocaption) dwStyle &= ~(WS_CAPTION);
-	if (iNocaption) dwStyle &= ~(WS_SYSMENU);
-	if (iNoresize)
-	{
-		dwStyle &= ~WS_SIZEBOX;
-		dwStyle &= ~WS_MAXIMIZEBOX;
-	}
+	//no resize
+	dwStyle &= ~WS_SIZEBOX;
+	dwStyle &= ~WS_MAXIMIZEBOX;
+	//
+
 	dwStyle |= WS_SYSMENU;
 	dwStyle |= WS_CLIPCHILDREN;
 	dwStyle |= WS_CLIPSIBLINGS;
@@ -290,7 +280,6 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 			{
 			case VK_RETURN:         // Alt + Enter
 			{
-				SetFullScreen(!iFullscreen);
 				break;
 			}
 			default:		return DefWindowProc(iHWND, message, wParam, lParam);
@@ -345,10 +334,6 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 		if (wParam == WA_INACTIVE)
 		{
 			onDeactivate();
-			if (iFullscreen && altPressed && (!cntrlPressed))
-			{
-				::CloseWindow(iHWND);
-			}
 		}
 		else
 		{

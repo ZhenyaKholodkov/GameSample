@@ -57,12 +57,14 @@ void Application::OnKeyUp(uint32 msKey)
 
 void Application::OnLMouseDown(Pixel  mouse_pos)
 {
-	mGame->OnMouseDown(mouse_pos);
+	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	mGame->OnMouseDown(point);
 }
 
 void Application::OnLMouseUp(Pixel  mouse_pos)
 {
-	mGame->OnMouseUp(mouse_pos);
+	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	mGame->OnMouseUp(point);
 }
 
 void Application::OnMouseMove(Pixel mouse_pos)
@@ -85,12 +87,12 @@ void Application::OnMouseMove(Pixel mouse_pos)
 
 void Application::OnMouseWheelDown(Pixel mouse_pos)
 {
-	GMouse m; m.x = (float)mouse_pos.X(); m.y = (float)mouse_pos.Y(); m.press = false;
+	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
 }
 
 void Application::OnMouseWheelUp(Pixel mouse_pos)
 {
-	GMouse m; m.x = (float)mouse_pos.X(); m.y = (float)mouse_pos.Y(); m.press = false;
+	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
 }
 
 void Application::onActivate()

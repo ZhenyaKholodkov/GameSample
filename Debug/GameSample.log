@@ -1,11 +1,8 @@
-﻿  Application.cpp
-c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
-  Generating Code...
-  Compiling...
-  main.cpp
-c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
-  OWindow.cpp
-c:\users\eholodkov\documents\github\gamesample\src\engine\types.h(195): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
-  Generating Code...
-  GameSample.vcxproj -> C:\Users\eholodkov\Documents\GitHub\GameSample\data\GameSample.exe
+﻿  GRender.cpp
+c:\users\yevge\documents\github\gamesample\src\engine\types.h(149): warning C4244: 'return': conversion from 'double' to 'Int32', possible loss of data
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(39): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(40): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(45): warning C4010: single-line comment contains line-continuation character
+c:\users\yevge\documents\github\gamesample\src\engine\render\ext\olopengl.h(46): warning C4010: single-line comment contains line-continuation character
+  GameSample.vcxproj -> C:\Users\yevge\Documents\GitHub\GameSample\data\GameSample.exe
   GameSample.vcxproj -> data\GameSample.pdb (Partial PDB)

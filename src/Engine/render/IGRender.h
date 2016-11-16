@@ -27,8 +27,6 @@ public:
 	virtual	void	drawTri(float x1, float y1, float x2, float y2, float x3, float y3) = 0;
 
 	virtual	void	drawLine(float x1, float y1, float z1, float x2, float y2, float z2) = 0;
-	virtual	void	setClipRect(int aX, int aY, int aWidth, int aHeight) = 0;
-	virtual	void	clearClipRect() = 0;
 	virtual	void	applyTransform() = 0;
 	virtual void   restoreContext() {}
 	virtual uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih) = 0;
@@ -90,7 +88,6 @@ protected:
 	std::stack<float>		      _alphaStack;
 	std::vector<bool>            _depthTestStack;
 
-	IGRect                  _currentClipRect;
 
 	bool                    _isDraw;
 

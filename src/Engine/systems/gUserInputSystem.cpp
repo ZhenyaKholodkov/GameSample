@@ -14,7 +14,7 @@ GUserInputSystem::~GUserInputSystem()
 {
 }
 
-void GUserInputSystem::OnMouseDown(Pixel mousePos)
+void GUserInputSystem::OnMouseDown(GPoint point)
 {
 	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
 	{
@@ -33,7 +33,7 @@ void GUserInputSystem::OnMouseDown(Pixel mousePos)
 	}
 }
 
-void GUserInputSystem::OnMouseUp(Pixel mousePos)
+void GUserInputSystem::OnMouseUp(GPoint point)
 {
 	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
 	{

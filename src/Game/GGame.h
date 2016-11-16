@@ -18,8 +18,8 @@ public:
 	virtual void Create();
 	virtual void Update(int dt);
 
-	virtual void OnMouseDown(Pixel mouse_pos);
-	virtual void OnMouseUp(Pixel mouse_pos);
+	virtual void OnMouseDown(GPoint point);
+	virtual void OnMouseUp(GPoint point);
 
 	void LoadResources();
 private:

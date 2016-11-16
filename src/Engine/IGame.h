@@ -13,8 +13,8 @@ public:
 	virtual void Create() = 0;
 	virtual void Update(int dt) = 0;
 
-	virtual void OnMouseDown(Pixel mouse_pos) = 0;
-	virtual void OnMouseUp(Pixel mouse_pos) = 0;
+	virtual void OnMouseDown(GPoint point) = 0;
+	virtual void OnMouseUp(GPoint point) = 0;
 };
 
 #endif
