@@ -12,15 +12,18 @@ public:
 	virtual ~GSystem() {};
 
 	virtual void update(int dt) = 0;
-	static uint32 getSystemIndex();
+	static uint32 getSystemId();
+private:
+	static uint32 s_system_id;
 };
 
+template<typename C>
+uint32 GSystem<C>::s_system_id = GBaseSystem::s_system_counter++;
 
 template<typename C>
-uint32 GSystem<C>::getSystemIndex()
+uint32 GSystem<C>::getSystemId()
 {
-	static uint32 index = s_system_counter++;
-	return index;
+	return s_system_id;
 }
 
 #endif //GBASE_SYSTEM_H

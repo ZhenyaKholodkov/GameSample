@@ -20,14 +20,8 @@ _clearColorB(1.0f)
    _glMinorVer = 0;
 }
 
-//--------------------------------------------------------------------------------------
-//! инициализировать контекст рисования
-//
 void GRender::init( int w, int h )
-{
-   Stage::firstStageZPos = 0;                                  //!< позиция первой сцены
-   Stage::stage3DZDepth  = -400;                               //!< глубина сцены
-
+{                        
    IGRender::init(w,h);
 
    GThreadSafeErrors err;
@@ -35,11 +29,9 @@ void GRender::init( int w, int h )
    glGetIntegerv(GL_MAJOR_VERSION, &_glMajorVer);
    glGetIntegerv(GL_MINOR_VERSION, &_glMinorVer);
 
-  // AbsTrace(L_INFO,GRender,"init (%dx%d) OpenGL version %d.%d",w,h,_glMajorVer,_glMinorVer);
-
    glViewport( 0, 0, _width, _height );
 
-   glClearColor( 100, 100, 100, 1 );                                      // цвет фона белый
+   glClearColor( 100, 100, 100, 1 );        
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
 
@@ -57,23 +49,8 @@ void GRender::init( int w, int h )
 
    glMatrixMode(GL_MODELVIEW);
    glShadeModel(GL_SMOOTH);
-
-   //glEnable(GL_TEXTURE_2D);
-
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glEnable(GL_BLEND);
-
-   //glEnableClientState(GL_VERTEX_ARRAY);
-
-   setDepthTest(false);    // For 3D true, for other false
-   applyDepthTest();
-
-   //GLint status = 0; glGetShaderiv(shaderId, GL_COMPILE_STATUS, &status);
-
-   if (checkForGLErrors( err )>0)
-   {
-    //  AbsTrace(L_INFO,GRender,"init GL error %s", err[0].c_str());
-   }
 
 }
 
@@ -83,21 +60,14 @@ void GRender::setClearColor( unsigned int c )
    _clearColorG = ((c>> 8)&0xFF)/255.0f;
    _clearColorB = ((  c  )&0xFF)/255.0f;
 
-   //glClearColor(100, 100, 100, 0);
    glClearColor( _clearColorR, _clearColorG, _clearColorB, 1 ); 
 }
 
-//----------------------------------------------------------------------------------------
-//! очистить окно
-//
 void GRender::clear()
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-//----------------------------------------------------------------------------------------
-//! рисуем пакет изображений
-//
 void GRender::drawBatchedTris()
 {
    if (_batchVertIndex==0)
@@ -118,14 +88,7 @@ void GRender::drawBatchedTris()
 
    save();
 
-   if (_curSpace == SPACE_MODEL)
-   {
-      convertToPlatformMatrix(_batchMatrix, _curTransformMatrix);
-   }
-   else
-   {
-      _curTransformMatrix.SetIdentity();	// т.к. вершины уже в модельных координатах
-   }
+   _curTransformMatrix.SetIdentity();	
 
    applyTransform();
 
@@ -155,15 +118,9 @@ void GRender::drawBatchedTris()
    _batchVertIndex = 0;
 }
 
-
-//----------------------------------------------------------------------------------------
-//! нарисовать залитый триугольник
-//
 void GRender::drawTri(float x1, float y1,float x2, float y2,float x3, float y3)
 {
    drawBatchedTris();
-
-   updateRenderState();
 
    convertToPlatformMatrix(_matrix, _curTransformMatrix);
 
@@ -184,42 +141,9 @@ void GRender::drawTri(float x1, float y1,float x2, float y2,float x3, float y3)
    glEnable(GL_BLEND);  
 }
 
-//----------------------------------------------------------------------------------------
-//! нарисовать прямоугольник (левый верхний угол - x,y; ширина,высота - w,h
-//
-void GRender::drawFrame(float x, float y, float w, float h)					
-{
-   drawBatchedTris();
-
-   updateRenderState();
-
-   convertToPlatformMatrix(_matrix, _curTransformMatrix);
-
-   applyTransform();
-
-   glDisable(GL_TEXTURE_2D);
-   glDisable(GL_BLEND);
-
-   glPushAttrib(GL_ALL_ATTRIB_BITS);
-   glColor4f(_lineR, _lineG, _lineB, 1.0f);
-   glBegin(GL_LINE_LOOP);
-   glVertex2f(x, y);
-   glVertex2f(x+w, y);
-   glVertex2f(x+w, y+h);
-   glVertex2f(x,   y+h);
-   glEnd();
-   glPopAttrib();
-   glEnable(GL_BLEND);
-}
-
-//----------------------------------------------------------------------------------------
-//! Нарисовать линию (между вершинами - x1,y1,z1 и x2,y2,z2
-//
 void GRender::drawLine(float x1, float y1, float z1, float x2, float y2, float z2)
 {
    drawBatchedTris();
-
-   updateRenderState();
 
    convertToPlatformMatrix(_matrix, _curTransformMatrix);
 
@@ -273,150 +197,7 @@ void  GRender::UnloadTexture(uint32 textureId)
 {
 	glDeleteTextures(1, &textureId);
 }
-//----------------------------------------------------------------------------------------
-//! Создание текстуры из буфера
-//
-int GRender::createTexture(TexturePixType format,  unsigned char* data, 
-                                       int texWidth, int texHeight, 
-                                       int fid,
-                                       GThreadSafeErrors &err, bool upload/*=true*/)
-{
-   checkForGLErrors(err);
-   err.clear();
 
-   bool  compressedTexture = false;
-   int   imgSize = 0;
-   int   glFormt = GL_RGBA;
-   int   aBitPerPixel   = 32;
-
-   switch(format)
-   {
-      case TPT_BGRA_8888:     glFormt = GL_BGRA;                           aBitPerPixel = 32;  compressedTexture = false;   break;
-      case TPT_ABGR_8888:     glFormt = GL_RGBA;                           aBitPerPixel = 32;  compressedTexture = false;   break;
-      case TPT_BGR_888:       glFormt = GL_RGB;                            aBitPerPixel = 24;  compressedTexture = false;   break;
-      case TPT_COMPRESS_BC3:  glFormt = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;  aBitPerPixel = 8;   compressedTexture = true;    break;
-   }
-
-   imgSize = texWidth*texHeight*aBitPerPixel/8;
-
-   if (format==GL_RGB && (texWidth%4)>0)	// текстуры с форматом RGB и шириной некратной 4-м загружаются некорректно
-   {
-     // AbsTrace(L_INFO,GRender,"createTexture: ERROR: format==GL_RGB && (texWidth%%4)>0\n");
-      return -1;
-   }
-   
-   unsigned int glTextureID;
-
-   glEnable(GL_TEXTURE_2D);
-   glGenTextures(1, &glTextureID);
-
-   if( checkForGLErrors( err ) > 0 )
-   {
-     // AbsTrace(L_INFO,GRender,"createTexture error glGenTextures: %s;\n",err[0].c_str());
-      return -1;
-   }
-
-   glBindTexture(GL_TEXTURE_2D, glTextureID);
-   
-   /*
-   if (_glMajorVer < 2)
-   {
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   }
-   else
-   {
-      glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-   }
-   */
-
-   glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-   
-   
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-
-   
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-   if( checkForGLErrors( err ) > 0 )
-      return -1;
-
-#ifdef SAVE_VRAM_TEXTURES 
-   static int textNum = 0;
-   char textName[1024];
-   sprintf(textName,"rtext_%d_f%d_w%d_h%d.dat",glTextureID,glFormt,texWidth,texHeight);
-   s3eFile* f = s3eFileOpen(textName,"wb");
-   s3eFileWrite(data,imgSize,1,f);
-   s3eFileClose(f);
-#endif
-   
-   
- //  if (compressedTexture)
-     // glCompressedTexImage2D(GL_TEXTURE_2D, 0, glFormt, texWidth, texHeight, 0, imgSize, data );
- //  else
-      glTexImage2D(GL_TEXTURE_2D, 0, glFormt, texWidth, texHeight, 0, glFormt, GL_UNSIGNED_BYTE, data );
-
-   if( checkForGLErrors( err ) > 0 )
-   {
-    //  AbsTrace(L_INFO,GRender,"createTexture error: format %d, (w,h)=(%d,%d);\n",format,texWidth,texHeight);
-      return -1;
-   }
-   
-
-   static int vramCnt = 0;
-
-   vramCnt+=texWidth*texHeight*4;
-
-   return glTextureID;
-}
-
-//----------------------------------------------------------------------------------------
-//! Удаление текстуры
-//
-void GRender::destroyTexture( unsigned int textureID , bool unload/* = true*/)
-{   
-}
-
-
-//! Установить текущие настройки блендинга. ВНИМАНИЕ - старые НЕ сохраняются автоматически
-void GRender::applyBlending()
-{
-   drawBatchedTris();
-
-   _drawBlending = _curBlending;
-
-   switch (_drawBlending)
-   {
-      case ALPHA_NONE:	   glDisable(GL_BLEND);														               break;
-      case ALPHA_HALF:	   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	glEnable(GL_BLEND);		break;
-      case ALPHA_ADD:		glBlendFunc(GL_SRC_ALPHA, GL_LINES);				   glEnable(GL_BLEND);		break;
-      case ALPHA_SUB:		glBlendFunc(GL_POINTS, GL_ONE_MINUS_SRC_COLOR);		glEnable(GL_BLEND);		break;
-      case ALPHA_BLEND:	   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	glEnable(GL_BLEND);		break;
-   }
-}	
-
-//--------------------------------------------------------------------------------------
-//! Применить текущие настройки отсечения примитивов
-//
-void GRender::applyCullMode()
-{
-   drawBatchedTris();
-
-   switch (_curCullMode)
-   {
-   case CULL_NONE:	glDisable(GL_CULL_FACE);		                  break;
-   case CULL_BACK:	glCullFace(GL_BACK); glEnable(GL_CULL_FACE);		break;
-   case CULL_FRONT:	glCullFace(GL_FRONT); glEnable(GL_CULL_FACE);	break;
-   }
-}
-
-//----------------------------------------------------------------------------------------
-//! применить текущие настройки Z-буфера
-//
 void GRender::applyDepthTest()
 {
    drawBatchedTris();
@@ -439,9 +220,6 @@ void GRender::clearDepthBuffer()
    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-//----------------------------------------------------------------------------------------
-//! установить прямоулольник отсечения
-//
 void GRender::setClipRect( int aX, int aY, int aWidth, int aHeight)
 {
    drawBatchedTris();
@@ -463,7 +241,6 @@ void GRender::setClipRect( int aX, int aY, int aWidth, int aHeight)
    aWidth  = (aX+aWidth) >_width? _width -aX:aWidth;
    aHeight = (aY+aHeight)>_height?_height-aY:aHeight;
 
-   // вложенное отсечение должно быть внутри текущего
    if (aX<_currentClipRect.x)
    {
       aWidth -= _currentClipRect.x - aX;
@@ -494,9 +271,7 @@ void GRender::setClipRect( int aX, int aY, int aWidth, int aHeight)
    glEnable(GL_SCISSOR_TEST);
    glScissor((GLint)aX, (GLint)( _height - aY - aHeight ), (GLsizei)aWidth, (GLsizei)aHeight);
 }
-//----------------------------------------------------------------------------------------
-//! убрать режим отсечения
-//
+
 void GRender::clearClipRect()
 {
    drawBatchedTris();
@@ -523,42 +298,22 @@ void GRender::applyTransform()
    glLoadMatrixf((GLfloat*)_curTransformMatrix.m);
 }
 
-
-//----------------------------------------------------------------------------------------
-//! начать рисование нового кадра
-//
 void GRender::startFrame()
 {
 	IGRender::startFrame();
-	//AbsTrace(L_INFO,GRender,"startFrame()\n");   
 	clear();
 }
 
-//----------------------------------------------------------------------------------------
-//! завершить рисование текущего кадра
-//
 void GRender::endFrame()
 {
 	draw();
 
 	_isDraw = false;
-
-	if (!_skipFrame)
-	{
-		// Application::GetInstance()->Draw3D();   // Обновить экран после 3D вывода - вызвать в конце OnTimer или DrawScene
-	}
-
 	_skipFrame = false;
 }
 
-//----------------------------------------------------------------------------------------
-//! нарисовать все
-//
 void GRender::draw()
 {
-	/*if (!_isDraw)
-	return;*/
-
 	drawBatchedTris();
 
 	_cacheVertIndex = 0;

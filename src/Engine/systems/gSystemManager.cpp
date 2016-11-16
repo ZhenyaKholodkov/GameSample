@@ -3,7 +3,7 @@
 
 GSystemManager::GSystemManager()
 {
-	mSystems.resize(3);
+	mSystems.resize(GetSystemCount());
 	for (auto system : mSystems)
 	{
 		system = nullptr;
@@ -24,6 +24,10 @@ GSystemManager* GSystemManager::Instatnce()
 	return instance;
 }
 
+uint32 GSystemManager::GetSystemCount()
+{
+	return GBaseSystem::s_system_counter;
+}
 
 void GSystemManager::update(int dt)
 {

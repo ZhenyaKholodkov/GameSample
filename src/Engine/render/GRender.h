@@ -35,12 +35,6 @@ public:
    uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
    void   UnloadTexture(uint32 textureId);
 
-   int      createTexture(   TexturePixType format,					
-                                 unsigned char* data, 
-                                 int texWidth, int texHeight, 
-                                 int fid,
-                                 GThreadSafeErrors &err,
-                                 bool upload=true);	               //!< создание текстуры из буфера
    void		destroyTexture( unsigned int glId , bool unload = true);	//!< удаление текстуры
    void		setClipRect( int aX, int aY, int aWidth, int aHeight);	//!< установить прямоулольник отсечения
    void		clearClipRect();											         //!< убрать режим отсечения

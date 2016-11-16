@@ -89,7 +89,6 @@ private:
 	GResManager();
 	~GResManager();
 	GResFile* CreateRes(const char* name);
-	bool LoadTextureToVRAM(int id);
 	bool LoadImage(const char* path, unsigned char** data, uint32* dataSize);
 
 	const char*     mResDir;

@@ -65,6 +65,7 @@ void GAnimationSystem::ProcessActions(Entity entity)
 	if (action->DoesContainAction(ACTIONS::ACTION_BEGIN))
 	{
 		animation->SetState(GAnimationComponent::STATE_RUN);
+		//animation->Reset();
 	}
 	else if (action->DoesContainAction(ACTIONS::ACTION_STOP))
 	{

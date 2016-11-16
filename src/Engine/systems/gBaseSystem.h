@@ -5,6 +5,7 @@
 
 class GBaseSystem
 {
+	friend class GSystemManager;
 public:
 	GBaseSystem();
 	virtual ~GBaseSystem();

@@ -22,6 +22,8 @@ private:
 	GSystemManager();
 	~GSystemManager();
 
+	uint32 GetSystemCount();
+private:
 	vector<GBaseSystem*>            mSystems; // тоже самое
 };
 
@@ -30,14 +32,14 @@ private:
 template<typename S>
 void GSystemManager::RegisterSystem()
 {
-	uint32 index = GSystem<S>::getSystemIndex();
+	uint32 index = GSystem<S>::getSystemId();
 	mSystems[index] = new S();
 }
 
 template<typename S>
 GBaseSystem* GSystemManager::GetSystem()
 {
-	uint32 index = GSystem<S>::getSystemIndex();
+	uint32 index = GSystem<S>::getSystemId();
 	return mSystems[index];
 }
 #endif //GSYSTEM_MANAGER_H

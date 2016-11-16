@@ -1,28 +1,3 @@
-//!                                    Класс окна в оконной системе.
-/*!  \file Window.h
-
-Для создания оконного приложения необходимо создать наследника от Window, переопределить
-его событийные функции, такие как OnTimer, OnMouseMove, OnKeyUp и т.д.:
-
-struct MainWindow: Window
-{
-void OnTimer     (int32 dTime);                               // Будет вызываться с периодм iPeriod ms
-void OnMouseMove (Pixel mouse_pos);                        // Вызывается при движении мыши
-};
-
-int32 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32 mode)
-{
-MainWindow wnd;
-if(!wnd.Create("Main","MainWindow",800,600,mode)) return 0; // создаем окно 800x600
-wnd.Period(5);                                              // период таймера = 5 ms
-wnd.Show();                                                 // показываем окно
-return wnd.Run();                                           // запускаем петлю сообщений
-}
-
-(!) Для работы с полноэкранным режимом необходимо подключить (Add file to project) в Builder
-ddraw.lib из директории LIB Билдера.
-(c) n-th.com (steps)  v.1.00   16-dec-2001..2005
-*****************************************************************************************/
 #ifndef OWindowH
 #define OWindowH
 
@@ -31,12 +6,9 @@ ddraw.lib из директории LIB Билдера.
 #include <windows.h>
 #include <stdio.h>
 
-#include <gl/gl.h>                                             // 3D рендеринг для openGL
-#include <gl/glu.h>
-#include <float.h>                                             // _control87() : only for Borland (floating error)
+#include <gl/gl.h>  
 
 #ifdef _MSC_VER
-// Компиляция производится Visual Studio:
 #pragma comment (lib,"OpenGL32.lib")
 #pragma comment (lib,"GLu32.Lib")
 #pragma comment (lib,"WinMm.lib")
@@ -44,81 +16,77 @@ ddraw.lib из директории LIB Билдера.
 #pragma warning(disable: 4312)     // 'type cast' : conversion from 'LONG' to 'Window *' of greater size
 #endif
 
-
-//========================================================================================
-//! Класс окна в оконной смстеме.
-//
 struct Window
 {
 	Window();
 	virtual ~Window();
 
-	int  Create(char *caption, char *name, int32 w, int32 h, int32 mode);// Создать окно.
+	int  Create(char *caption, char *name, int32 w, int32 h, int32 mode);
 
 	int CreateGLContext();
 	void DestroyGLContext();
 	void UpdateContext();
 
-	void Show();                                                // Показать окно
-	int  Run();                                                 // Запустить петлю сообщений
-	void Close();                                               // Закрыть окно
+	void Show();                                           
+	int  Run();                                            
+	void Close();                                          
 
-	void ClearWindow(Rect *rect = 0);                          // Очистка окна, если rect==0 то всего
+	void ClearWindow(Rect *rect = 0);                      
 
-	virtual int  OnCreate() { return 1; }//!< Вызывается один раз при создании окна.
-	virtual void OnClose() {};         //!< Вызывается один раз при уничтожении окна.
-	virtual void OnTimer(int) {};         //!< Вызывается с интервалом задаваемым iPeriod
+	virtual int  OnCreate() { return 1; }
+	virtual void OnClose() {};           
+	virtual void OnTimer(int) {};        
 
-	virtual void OnMouseMove(Pixel) {};         //!< Вызывается при движение мыши.
-	virtual void OnLMouseDown(Pixel) {};         //!< Вызывается если левая кнопка мыши нажимается
-	virtual void OnRMouseDown(Pixel) {};         //!< Вызывается если правая кнопка мыши нажимается
-	virtual void OnLMouseUp(Pixel) {};         //!< Вызывается если левая кнопка мыши отжимается
-	virtual void OnRMouseUp(Pixel) {};         //!< Вызывается если правая кнопка мыши отжимается
-	virtual void OnDblClick(Pixel) {};         //!< Вызывается если было двойное нажатие клавиши
+	virtual void OnMouseMove(Pixel) {};        
+	virtual void OnLMouseDown(Pixel) {};       
+	virtual void OnRMouseDown(Pixel) {};       
+	virtual void OnLMouseUp(Pixel) {};         
+	virtual void OnRMouseUp(Pixel) {};         
+	virtual void OnDblClick(Pixel) {};         
 	virtual void OnMouseWheelDown(Pixel) {};
 	virtual void OnMouseWheelUp(Pixel) {};
 
-	virtual void OnKeyUp(uint32) {};							   //!< Вызывается если клавиша отжимается
-	virtual void OnKeyDown(uint32) {};                            //!< Вызывается если клавиша нажимается
-	virtual void OnChar(uint32) {};                            //!< Вызывается если нажатая клавиша была символом
+	virtual void OnKeyUp(uint32) {};			
+	virtual void OnKeyDown(uint32) {};         
+	virtual void OnChar(uint32) {};            
 
-	virtual void OnResize() {};         //!< Вызывается если было изменение размера экрана
-	virtual void OnPaint(Rect *rect = 0) {};         //!< Вызывается на событие on_paint
-	virtual void	SetFullScreen(bool aFullScreen) {};		   //!< Включить полноэкранный режим
-	virtual void onActivate() {};		   //!< Вызывается при активации окна
-	virtual void onDeactivate() {};		   //!< Вызывается при деактивации окна
-	virtual void onMinimize() {};		   //!< Вызывается при сворачивании окна
-	virtual void onMaximize() {};		   //!< Вызывается при разворачивании окна
+	virtual void OnResize() {};        
+	virtual void OnPaint(Rect *rect = 0) {};           
+	virtual void	SetFullScreen(bool aFullScreen) {};
+	virtual void onActivate() {};		   
+	virtual void onDeactivate() {};		   
+	virtual void onMinimize() {};		   
+	virtual void onMaximize() {};		   
 
-	void   Caption(const char *format, ...);                  //  Установить заголовок окна (как printf!)
-	void   SetFocus() { ::SetFocus(iMainHWND); }                 //!< Сделать окно активным
+	void   Caption(const char *format, ...);         
+	void   SetFocus() { ::SetFocus(iMainHWND); }     
 
-	void   Period(int32 period) { iPeriod = period; }              //!< Задать период вызова OnTimer в ms
-	int32    Period() { return iPeriod; }            //!< Получить период вызова OnTimer в ms
-	void   SlowTimer() { iSlowTimer = 1; SetTimer(iMainHWND, 1, Period(), 0); } //!< Установить флаг медленного таймера (перед Run!)
+	void   Period(int32 period) { iPeriod = period; }
+	int32    Period() { return iPeriod; }            
+	void   SlowTimer() { iSlowTimer = 1; SetTimer(iMainHWND, 1, Period(), 0); } 
 
-	int32    Time() { return timeGetTime(); };       //!< Получить текущее время.
+	int32    Time() { return timeGetTime(); };     
 
-	float  FPS() { return iFPS; }                               //!< Число кадров в секунду
-	void   PeriodFPS(int32 period) { iPeriodFPS = period; }          //!< время для накопления fps-ов
+	float  FPS() { return iFPS; }                          
+	void   PeriodFPS(int32 period) { iPeriodFPS = period; }
 
-	Pixel ScreenSize();                                        // Абсолютные размеры монитора
+	Pixel ScreenSize();                                    
 
-	void   Size(int32 w, int32 h);                                  // Изменить размер окна.
-	Pixel Size() { return iSize; }                           //!< Размеры окна
-	void   Pos(int32 x, int32 y);                               // Изменить положение окна.
-	Pixel Pos() { return iPos; }                           //!< Положение окна
-	Rect  GetRect() { return Rect(0, 0, iSize.W(), iSize.H()); }//!< Прямоугольник окна
-	int32   Width() { return iSize.X(); }                       //!< ширина окна
-	int32   Height() { return iSize.Y(); }                       //!< высота окна
+	void   Size(int32 w, int32 h);                         
+	Pixel Size() { return iSize; }                         
+	void   Pos(int32 x, int32 y);                          
+	Pixel Pos() { return iPos; }                           
+	Rect  GetRect() { return Rect(0, 0, iSize.W(), iSize.H()); }
+	int32   Width() { return iSize.X(); }                       
+	int32   Height() { return iSize.Y(); }                      
 
-	Pixel MousePos();                                        // Получить положение мыши
+	Pixel MousePos();                                        
 
-															  //void Show(OBitmap *bmp, int32 x=0, int32 y=0, Rect *r=0);    // вывести битмап в точке x,y с отсечение r
+															 
 
-	void NoCaption(int32 no) { iNocaption = no; }              //!< нет заголовка
-	void ColorBkground(OColor c) { iColorBkground = c; }           //!< установить цвет фона окна
-																//----------------------------------------------------------------------- Не использовать !
+	void NoCaption(int32 no) { iNocaption = no; }            
+	void ColorBkground(OColor c) { iColorBkground = c; }     
+															
 	int32 OnWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static Window* GetInstance();
@@ -128,33 +96,33 @@ struct Window
 	HGLRC GetOpenGlContext() { return mHGLRC; }
 
 protected:
-	Pixel iSize;                                               //!< ширина, высота окна
-	Pixel iPos;                                                //!< положение окна на экране
+	Pixel iSize;                                            
+	Pixel iPos;                                             
 
-	Int32  iPeriod;                                             //!< перидичность вызова фу-ии OnTimer
-	char   iCaption[1024];                                      //!< заголовок окна
+	Int32  iPeriod;                                         
+	char   iCaption[1024];                                  
 
-	OColor iColorBkground;                                      //!< цвет фона
-	int32    iNocaption;                                          //!< нет заголовка
-	int32    iNoresize;                                           //!< не может изменять размеры
-	float  iFPS;                                                //!< число кадров в секунду
-	Int32  iPeriodFPS;                                          //!< время для накопления fps-ов
-	int32    iSlowTimer;                                          //!< таймер запускается не по Run а по WM_TIMER
+	OColor iColorBkground;                                  
+	int32    iNocaption;                                    
+	int32    iNoresize;                                     
+	float  iFPS;                                            
+	Int32  iPeriodFPS;                                      
+	int32    iSlowTimer;                                    
 
-	HWND   iMainHWND;                                           //! хендел главного окна.
-																//HWND   iGameHWND;										   //! хендел игрового окна.
+	HWND   iMainHWND;                                       
+															
 	int32    iWndMode;
-	int32    iLastTime;                                           //! время с момента запуска системы
-	int32    iLastID;                                             //! для нумерации Windows контролов
-	int32    iNotWasWM_PAINT;                                     //! для исп. DC полученного от BeginPaint
-	HBRUSH iWindowBrush;                                        //! кисть фона
-	bool   iCursorVisible;                                      // Флаг того, видимый или нет курсор мыши
-	bool	  iFullscreen;										   //!< Флаг включения полноэкранного режима
-	HICON  mIcon;											   //!< Иконка проекта
+	int32    iLastTime;                                     
+	int32    iLastID;                                       
+	int32    iNotWasWM_PAINT;                               
+	HBRUSH iWindowBrush;                                    
+	bool   iCursorVisible;                                  
+	bool	  iFullscreen;									
+	HICON  mIcon;											
 
 
-	static Window* sInstance;									//для доступа к opengl контекту
-	HGLRC mHGLRC;												//opengl контект
+	static Window* sInstance;								
+	HGLRC mHGLRC;											
 };
 
 #endif

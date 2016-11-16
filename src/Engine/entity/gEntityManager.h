@@ -44,6 +44,8 @@ private:
 	GEntityManager();
 	~GEntityManager();
 	
+	uint32 GetComponentCount();
+
 private:
 	Entity mFreeEntity;
 
@@ -61,7 +63,7 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 		return nullptr;
 	}
 
-	uint32 index = GComponent<C>::getComponentIndex();
+	uint32 index = GComponent<C>::GetComponentId();
 	C* new_component = new C(std::forward<Args>(args) ...);
 	if (!mComponents[index][entity])
 	{
@@ -73,7 +75,7 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 template<typename C>
 C* GEntityManager::GetComponent(Entity entity)
 {
-	uint32 index = GComponent<C>::getComponentIndex();
+	uint32 index = GComponent<C>::GetComponentId();
 	return dynamic_cast<C*>(mComponents[index][entity]);
 }
 

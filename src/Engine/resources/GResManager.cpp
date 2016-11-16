@@ -107,18 +107,8 @@ bool GResManager::LoadResource(int id)
 	{
 		Texture* texture = reinterpret_cast<Texture*>(resource);
 		//LoadPngImage(path.c_str(), &texture->mData, &texture->mWeight, &texture->mHeight);
-		LoadTextureToVRAM(id);
+		//LoadTextureToVRAM(id);
 	}
-	return true;
-}
-
-bool GResManager::LoadTextureToVRAM(int id)
-{
-	GResFile* resource = mResources[id];
-	Texture* texture = reinterpret_cast<Texture*>(resource);
-	GThreadSafeErrors err;
-	texture->mTextureId = IGRender::Instance()->createTexture(IGRender::TPT_ABGR_8888,
-		texture->mData, texture->mWeight, texture->mHeight, id, err);
 	return true;
 }
 

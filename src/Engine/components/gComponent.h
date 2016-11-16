@@ -18,15 +18,20 @@ public:
 
 	virtual void SetState(uint32 state) {};
 	virtual void Reset() {};
-	static uint32 getComponentIndex();
+
+	static uint32 GetComponentId();
+private:
+	static uint32 s_component_id;
 };
 
+template<typename C>
+uint32 GComponent<C>::s_component_id = GBaseComponent::s_component_counter++;
 
 template<typename C>
-uint32 GComponent<C>::getComponentIndex()
+uint32 GComponent<C>::GetComponentId()
 {
-	static uint32 index = s_component_counter++;
-	return index;
+//	static uint32 index = s_component_counter++;
+	return s_component_id;
 }
 #endif //GCOMPONENT_H
 
