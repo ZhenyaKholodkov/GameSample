@@ -62,6 +62,9 @@
     <Filter Include="src\Engine\entity">
       <UniqueIdentifier>{d4913bcd-095a-43c4-b0eb-7f73f8c9dffb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\events">
+      <UniqueIdentifier>{a6e8e142-5425-47fd-948b-25b4da596dc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -252,6 +255,9 @@
     </ClCompile>
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp">
       <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\events\gEventManager.cpp">
+      <Filter>src\Engine\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,6 +460,15 @@
       <Filter>src\Engine\components</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\components\gActionComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\events\gEventManager.h">
+      <Filter>src\Engine\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\events\IEventListener.h">
+      <Filter>src\Engine\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gSizeComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
   </ItemGroup>

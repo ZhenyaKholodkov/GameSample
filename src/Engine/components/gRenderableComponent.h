@@ -14,6 +14,16 @@ public:
 	GSprite* GetSprite() { return mSprite;	}
 	void SetSprite(GSprite* sprite) { mSprite = sprite; }
 
+	bool IsPiontInsideWH(GPoint localPoint)
+	{
+		if ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY())
+			|| (localPoint.x >= mSprite->GetWidth()) || (localPoint.y >= mSprite->GetHeight()))
+		{
+			return false;
+		}
+		return true;
+	}
+
 private:
 	GSprite* mSprite;
 };

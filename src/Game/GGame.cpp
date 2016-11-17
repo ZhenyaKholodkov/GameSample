@@ -138,14 +138,14 @@ void GGame::LoadResources()
 	*/
 }
 
-void GGame::OnMouseDown(Pixel mouse_pos)
+void GGame::OnMouseDown(GPoint point)
 {
 	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
-	inputSystem->OnMouseDown(mouse_pos);
+	inputSystem->OnMouseDown(point);
 }
 
-void GGame::OnMouseUp(Pixel mouse_pos)
+void GGame::OnMouseUp(GPoint point)
 {
 	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
-	inputSystem->OnMouseUp(mouse_pos);
+	inputSystem->OnMouseUp(point);
 }

@@ -17,6 +17,12 @@ public:
 	float getX() { return mX; }
 	float getY() { return mY; }
 
+	void LocalPoint(GPoint& point, GPoint& localPoint)
+	{
+		localPoint.x = ((point.x - mX) + (point.y - mY));
+		localPoint.y = ((point.x - mX) + (point.y - mY));
+	}
+
 private: 
 	float mX;
 	float mY;

@@ -52,7 +52,7 @@ struct Window
 
 	virtual void OnResize() {};        
 	virtual void OnPaint(Rect *rect = 0) {};           
-	virtual void	SetFullScreen(bool aFullScreen) {};
+	virtual void SetFullScreen(bool aFullScreen) {};
 	virtual void onActivate() {};		   
 	virtual void onDeactivate() {};		   
 	virtual void onMinimize() {};		   
@@ -62,67 +62,51 @@ struct Window
 	void   SetFocus() { ::SetFocus(iMainHWND); }     
 
 	void   Period(int32 period) { iPeriod = period; }
-	int32    Period() { return iPeriod; }            
+	int32  Period() { return iPeriod; }            
 	void   SlowTimer() { iSlowTimer = 1; SetTimer(iMainHWND, 1, Period(), 0); } 
 
-	int32    Time() { return timeGetTime(); };     
+	int32  Time() { return timeGetTime(); };     
 
-	float  FPS() { return iFPS; }                          
-	void   PeriodFPS(int32 period) { iPeriodFPS = period; }
-
-	Pixel ScreenSize();                                    
+	Pixel  ScreenSize();                                    
 
 	void   Size(int32 w, int32 h);                         
-	Pixel Size() { return iSize; }                         
+	Pixel  Size() { return iSize; }                         
 	void   Pos(int32 x, int32 y);                          
-	Pixel Pos() { return iPos; }                           
-	Rect  GetRect() { return Rect(0, 0, iSize.W(), iSize.H()); }
-	int32   Width() { return iSize.X(); }                       
-	int32   Height() { return iSize.Y(); }                      
+	Pixel  Pos() { return iPos; }                           
+	Rect   GetRect() { return Rect(0, 0, iSize.W(), iSize.H()); }
+	int32  Width() { return iSize.X(); }                       
+	int32  Height() { return iSize.Y(); }                      
 
-	Pixel MousePos();                                        
-
-															 
-
-	void NoCaption(int32 no) { iNocaption = no; }            
-	void ColorBkground(OColor c) { iColorBkground = c; }     
+	Pixel  MousePos();   
+	void   ColorBkground(IGColor c) { iColorBkground = c; }     
 															
-	int32 OnWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	int32  OnWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static Window* GetInstance();
 
-	HDC GetHDC() { return GetDC(iMainHWND); }
+	HDC   GetHDC() { return GetDC(iMainHWND); }
 
 	HGLRC GetOpenGlContext() { return mHGLRC; }
 
 protected:
-	Pixel iSize;                                            
-	Pixel iPos;                                             
+	static Window* sInstance;
+
+	Pixel  iSize;                                            
+	Pixel  iPos;                                             
 
 	Int32  iPeriod;                                         
 	char   iCaption[1024];                                  
 
-	OColor iColorBkground;                                  
-	int32    iNocaption;                                    
-	int32    iNoresize;                                     
-	float  iFPS;                                            
-	Int32  iPeriodFPS;                                      
-	int32    iSlowTimer;                                    
+	IGColor iColorBkground;
+	int32  iSlowTimer;                                    
 
 	HWND   iMainHWND;                                       
 															
-	int32    iWndMode;
-	int32    iLastTime;                                     
-	int32    iLastID;                                       
-	int32    iNotWasWM_PAINT;                               
-	HBRUSH iWindowBrush;                                    
-	bool   iCursorVisible;                                  
-	bool	  iFullscreen;									
-	HICON  mIcon;											
-
-
-	static Window* sInstance;								
-	HGLRC mHGLRC;											
+	int32  iWndMode;
+	int32  iLastTime;                                    
+	HBRUSH iWindowBrush;     								
+	HICON  mIcon;			
+	HGLRC  mHGLRC;											
 };
 
 #endif

@@ -26,7 +26,6 @@ _BATCHED_VERTEXES_SIZE(4092),
 _isDraw(false)
 {
    allocVertexCache();
-   _currentClipRect.set(0,0,1024,1024);
 	int val = 0;
 }
 
@@ -35,7 +34,6 @@ void	IGRender::init( int w, int h )
    _width = w;
 	_height = h;
    _batchMatrix.setIdentity();
-   _currentClipRect.set(0,0,_width,_height); 
 }
 
 void	IGRender::startFrame()
@@ -172,11 +170,6 @@ bool IGRender::visible()
 
    if (fabsf(_matrix.m[0][0]*_matrix.m[1][1] - _matrix.m[0][1]*_matrix.m[1][0])<0.0001f)
       return false;
-
-   if (_currentClipRect.w == 0 || _currentClipRect.h == 0)                          
-   {
-      return false;
-   }
 
    return true;
 }

@@ -59,14 +59,7 @@ uint32 GEntityManager::GetComponentCount()
 	return GBaseComponent::s_component_counter;
 }
 
-//template<typename C, typename... Args>
-//inline void   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
-//{
-//	uint32 index = GComponent<C>::GetComponentId();
-//	C* c = new C(std::forward(args) ...);
-//	/*if (!mComponents[index][entity])
-//	{
-//		mComponents[index][entity] = new C(std::forward(srgs) ...);
-//	}*/
-//}
-
+bool GEntityManager::IsInsideEntity(Entity entity, GPoint point)
+{
+	return false;
+}
