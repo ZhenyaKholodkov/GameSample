@@ -107,6 +107,7 @@ void GGame::Create()
 	GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, sprite2ButtonDown);
 	GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, sprite2ButtonUp);
 
+	em->DestroyEntity(buttonEntity);
 
 }
 

@@ -8,15 +8,17 @@ GEntityManager* GEntityManager::Instance()
 }
 
 GEntityManager::GEntityManager():
-	mFreeEntity(0),
 	defaulEntityCount(100)
 {
 	mComponents.resize(GetComponentCount());
-	for (int i = 0; i < mComponents.size(); ++i)
+	for (int index = 0; index < mComponents.size(); ++index)
 	{
-		mComponents[i].resize(defaulEntityCount);
+		mComponents[index].resize(defaulEntityCount);
 	}
-
+	for (uint32 index = 0; index < defaulEntityCount; ++index)
+	{
+		mAvailableEntities.push(index);
+	}
 }
 
 GEntityManager::~GEntityManager()
@@ -32,8 +34,19 @@ GEntityManager::~GEntityManager()
 
 Entity GEntityManager::CreateEntity()
 {
-	mActiveEntities.push_back(mFreeEntity);
-	return mFreeEntity++;
+	Entity newEntity = mAvailableEntities.front();
+	mAvailableEntities.pop();
+	mActiveEntities.push_back(newEntity);
+	return newEntity;
+}
+
+void GEntityManager::DestroyEntity(Entity entity)
+{
+	for (int index = 0; index < mComponents.size(); ++index)
+	{
+		SAFE_DELETE(mComponents[index][entity]);
+	}
+	mAvailableEntities.push(entity);
 }
 
 GBaseComponent* GEntityManager::GetComponent(Entity entity, uint32 index)

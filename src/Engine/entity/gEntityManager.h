@@ -2,6 +2,7 @@
 #define GENTITYMANAGER_H
 
 #include <vector>
+#include <queue>
 
 #include "Types.h"
 
@@ -22,6 +23,7 @@ public:
 	static GEntityManager* Instance();
 
 	Entity CreateEntity();
+	void   DestroyEntity(Entity entity);
 
 	template<typename C, typename... Args>
 	C* AddComponentsToEntity(Entity entity, Args&& ... args);
@@ -47,9 +49,9 @@ private:
 	uint32 GetComponentCount();
 
 private:
-	Entity mFreeEntity;
-
 	uint32 defaulEntityCount;
+
+	queue<Entity>                   mAvailableEntities;
 
 	vector<vector<GBaseComponent*>> mComponents; // заменить на другой контейнер
 	vector<Entity>                  mActiveEntities;
@@ -58,11 +60,6 @@ private:
 template<typename C, typename... Args>
 C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 {
-	if (mFreeEntity <= entity)
-	{
-		return nullptr;
-	}
-
 	uint32 index = GComponent<C>::GetComponentId();
 	C* new_component = new C(std::forward<Args>(args) ...);
 	if (!mComponents[index][entity])
