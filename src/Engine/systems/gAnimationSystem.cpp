@@ -37,6 +37,7 @@ void GAnimationSystem::update(int dt)
 				}
 				else
 				{
+					animation->mCurrentFrame = 0;
 					animation->mState = GAnimationComponent::STATE_WAIT;
 				}
 			}

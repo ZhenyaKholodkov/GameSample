@@ -15,6 +15,11 @@ public:
 
 	void SetParamsToNotify(Entity entityToNotify, int actionMask) { mEntityToNotify = entityToNotify; mActionMask = actionMask; }
 
+public: /*signals*/
+	sigslot::signal0<>                 signal_MouseDown;
+	sigslot::signal1<Entity>           signal_MouseDownOnEntity;
+	sigslot::signal2<Entity, GSprite*> signal_MouseDownNewSprite;
+
 private:
 	GSprite* mSpriteDown;
 

@@ -12,7 +12,7 @@ public:
 	virtual ~GAnimationSystem();
 
 	virtual void update(int dt);
-
+	\
 private:
 	void ProcessActions(Entity entity);
 

@@ -26,10 +26,12 @@ void GUserInputSystem::OnMouseDown(GPoint point)
 		if (!mouseDown || !render)
 			continue;
 
-		render->SetSprite(mouseDown->mSpriteDown);
-		GActionComponent* actions = mEntityManager->GetComponent<GActionComponent>(mouseDown->mEntityToNotify);
-		if(actions)
-			actions->AddActions(mouseDown->mActionMask);
+		if (mEntityManager->IsInsideEntity(entity, point))
+		{
+			mouseDown->signal_MouseDown.emit();
+			mouseDown->signal_MouseDownOnEntity.emit(entity);
+			mouseDown->signal_MouseDownNewSprite.emit(entity, mouseDown->mSpriteDown);
+		}
 	}
 }
 
@@ -45,9 +47,11 @@ void GUserInputSystem::OnMouseUp(GPoint point)
 		if (!upDown || !render)
 			continue;
 
-		render->SetSprite(upDown->mSpriteUp);
-		GActionComponent* actions = mEntityManager->GetComponent<GActionComponent>(upDown->mEntityToNotify);
-		if (actions)
-		   actions->AddActions(upDown->mActionMask);
+		if (mEntityManager->IsInsideEntity(entity, point))
+		{
+			upDown->signal_MouseUp.emit();
+			upDown->signal_MouseUpOnEntity.emit(entity);
+			upDown->signal_MouseUpNewSprite.emit(entity, upDown->mSpriteUp);
+		}
 	}
 }

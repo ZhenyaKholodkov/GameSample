@@ -1,0 +1,5 @@
+#ifndef GCONTROLMANAGER_H
+#define GCONTROLMANAGER_H
+
+
+#endif // !GCONTROLMANAGER_H

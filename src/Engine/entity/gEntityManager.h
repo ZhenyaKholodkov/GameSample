@@ -25,19 +25,23 @@ public:
 	Entity CreateEntity();
 	void   DestroyEntity(Entity entity);
 
-	template<typename C, typename... Args>
-	C* AddComponentsToEntity(Entity entity, Args&& ... args);
-
-	template<typename C>
-	C* GetComponent(Entity entity);
-
 	GBaseComponent* GetComponent(Entity entity, uint32 index);
 
 	vector<Entity>::const_iterator GetActiveEntitiesBegin() { return mActiveEntities.begin(); }
 	vector<Entity>::const_iterator GetActiveEntitiesEnd() { return mActiveEntities.end(); }
 
 	bool IsInsideEntity(Entity entity, GPoint point);
+	void LocalPoint(Entity entity, GPoint& point, GPoint& localPoint);
 
+public:
+	template<typename C, typename... Args>
+	C* AddComponentsToEntity(Entity entity, Args&& ... args);
+
+	template<typename C>
+	C* GetComponent(Entity entity);
+
+	template<typename C>
+	bool DoesHaveComponent(Entity entity);
 
 private:
 	GEntityManager();
@@ -70,9 +74,15 @@ template<typename C>
 C* GEntityManager::GetComponent(Entity entity)
 {
 	uint32 index = GComponent<C>::GetComponentId();
-	return dynamic_cast<C*>(mComponents[index][entity]);
+	return static_cast<C*>(mComponents[index][entity]);
 }
 
+template<typename C>
+bool GEntityManager::DoesHaveComponent(Entity entity)
+{
+	uint32 index = GComponent<C>::GetComponentId();
+	return mComponents[index][entity] != nullptr;
+}
 
 #endif
 

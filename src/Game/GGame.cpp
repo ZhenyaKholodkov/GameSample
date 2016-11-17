@@ -69,7 +69,7 @@ void GGame::Create()
 	em->AddComponentsToEntity<GRenderableComponent>(animation2Entity, sprite01);
 	em->AddComponentsToEntity<GActionComponent>(animation2Entity);
 
-	GAnimationComponent* animation2 = em->AddComponentsToEntity<GAnimationComponent>(animation2Entity, 1000 / 30, false);
+	GAnimationComponent* animation2 = em->AddComponentsToEntity<GAnimationComponent>(animation2Entity, 1000 / 60, false);
 
 	animation2->AddFrame(sprite01);
 	animation2->AddFrame(sprite02);
@@ -88,13 +88,15 @@ void GGame::Create()
 
 	Entity buttonEntity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(buttonEntity, 600.0f, 300.0f);
-	em->AddComponentsToEntity<GRenderableComponent>(buttonEntity, spriteButtonUp);
+	GRenderableComponent* renderable = em->AddComponentsToEntity<GRenderableComponent>(buttonEntity, spriteButtonUp);
 
 	GMouseDownEventComponent* buttonDownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(buttonEntity, spriteButtonDown);
 	GMouseUpEventComponent* buttonUpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(buttonEntity, spriteButtonUp);
 
 	buttonDownEvent->SetParamsToNotify(animation2Entity, ACTIONS::ACTION_BEGIN);
 
+	buttonDownEvent->signal_MouseDownNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
+	buttonUpEvent->signal_MouseUpNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
 	///////////////////////////////////Button//////////////////////////////////////////////
 
 	GSprite* sprite2ButtonDown = GResManager::Instance()->GetSprite("btn_2.png");
@@ -102,13 +104,14 @@ void GGame::Create()
 
 	Entity button2Entity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(button2Entity, 400.0f, 600.0f);
-	em->AddComponentsToEntity<GRenderableComponent>(button2Entity, sprite2ButtonUp);
+	GRenderableComponent* renderable2 = em->AddComponentsToEntity<GRenderableComponent>(button2Entity, sprite2ButtonUp);
 
 	GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, sprite2ButtonDown);
 	GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, sprite2ButtonUp);
 
-	em->DestroyEntity(buttonEntity);
-
+	button2DownEvent->signal_MouseDown.connect(animation2, &GAnimationComponent::slot_RunAnimation);
+	button2DownEvent->signal_MouseDownNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
+	button2UpEvent->signal_MouseUpNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 }
 
 void GGame::Update(int dt)

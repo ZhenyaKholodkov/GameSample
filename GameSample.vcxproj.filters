@@ -65,6 +65,12 @@
     <Filter Include="src\Engine\events">
       <UniqueIdentifier>{a6e8e142-5425-47fd-948b-25b4da596dc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\thirdparty\sigslot">
+      <UniqueIdentifier>{ddb80474-614a-444a-ab13-f1c891460785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\control">
+      <UniqueIdentifier>{a20a20c0-fc4b-4132-b1d6-d45ccdbbe1ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -258,6 +264,9 @@
     </ClCompile>
     <ClCompile Include="src\Engine\events\gEventManager.cpp">
       <Filter>src\Engine\events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\control\gControlManager.cpp">
+      <Filter>src\Engine\control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +479,12 @@
     </ClInclude>
     <ClInclude Include="src\Engine\components\gSizeComponent.h">
       <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thirdparty\sigslot\sigslot.h">
+      <Filter>src\thirdparty\sigslot</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\control\gControlManager.h">
+      <Filter>src\Engine\control</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

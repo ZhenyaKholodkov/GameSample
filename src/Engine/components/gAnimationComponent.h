@@ -6,7 +6,7 @@
 #include "gComponent.h"
 #include <vector>
 
-class GAnimationComponent : public GComponent<GAnimationComponent>
+class GAnimationComponent : public GComponent<GAnimationComponent>, public sigslot::has_slots<>
 {
 	friend class GAnimationSystem;
 public:
@@ -28,6 +28,23 @@ public:
 	virtual void SetState(uint32 state) { mState = state; }
 
 	virtual void Reset() { mCurrentFrame = 0; mCurrentFrameTime = 0; };
+
+public:/*slots*/
+	void slot_RunAnimation()
+	{
+		SetState(GAnimationComponent::STATE_RUN);
+	}
+
+	void slot_StopAnimation()
+	{
+		Reset();
+		SetState(GAnimationComponent::STATE_WAIT);
+	}
+
+	void slot_PauseAnimation()
+	{
+		SetState(GAnimationComponent::STATE_WAIT);
+	}
 private:
 	vector<GSprite*> mFrames;
 	uint32           mCurrentFrame;

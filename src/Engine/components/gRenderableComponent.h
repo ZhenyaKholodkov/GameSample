@@ -4,7 +4,7 @@
 #include "gComponent.h"
 #include "gSprite.h"
 
-class GRenderableComponent : public GComponent<GRenderableComponent>
+class GRenderableComponent : public GComponent<GRenderableComponent>, public sigslot::has_slots<>
 {
 public:
 	GRenderableComponent() : mSprite(nullptr) {};
@@ -16,13 +16,17 @@ public:
 
 	bool IsPiontInsideWH(GPoint localPoint)
 	{
-		if ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY())
-			|| (localPoint.x >= mSprite->GetWidth()) || (localPoint.y >= mSprite->GetHeight()))
+		if ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY()) ||
+			(localPoint.x >= mSprite->GetWidth()) || 
+			(localPoint.y >= mSprite->GetHeight()))
 		{
 			return false;
 		}
 		return true;
 	}
+
+public:/*slots*/
+	void slot_ChangeSprite(Entity entity, GSprite* newSprite) { mSprite = newSprite; };
 
 private:
 	GSprite* mSprite;

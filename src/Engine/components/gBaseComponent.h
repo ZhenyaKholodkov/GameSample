@@ -2,6 +2,7 @@
 #define GBASECOMPONENT_H
 
 #include "Types.h"
+#include "sigslot.h"
 
 class GBaseComponent
 {
