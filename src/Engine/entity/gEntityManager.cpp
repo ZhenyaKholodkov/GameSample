@@ -19,6 +19,13 @@ GEntityManager::GEntityManager():
 	{
 		mAvailableEntities.push(index);
 	}
+
+/*	GPool<GLocationComponent> mComponentPool = GPool<GLocationComponent>(100);
+	mComponentPool.CreateComponent(0, 2.0f, 3.0f);
+	mComponentPool.CreateComponent(5, 2.0f, 3.0f);
+	mComponentPool.CreateComponent(3, 2.0f, 3.0f);
+
+	mComponentPool.DestroyComponent(3);*/
 }
 
 GEntityManager::~GEntityManager()
@@ -47,6 +54,11 @@ void GEntityManager::DestroyEntity(Entity entity)
 		SAFE_DELETE(mComponents[index][entity]);
 	}
 	mAvailableEntities.push(entity);
+	for (std::vector<Entity>::const_iterator iter = mActiveEntities.begin(); iter != mActiveEntities.end(); iter++)
+	{
+		if ((*iter) == entity)
+			mActiveEntities.erase(iter);
+	}
 }
 
 GBaseComponent* GEntityManager::GetComponent(Entity entity, uint32 index)

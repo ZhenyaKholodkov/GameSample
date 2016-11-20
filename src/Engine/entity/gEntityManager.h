@@ -6,6 +6,8 @@
 
 #include "Types.h"
 
+#include "gPool.h"
+
 #include "gLocationComponent.h"
 #include "gAnimationComponent.h"
 #include "gActionComponent.h"
@@ -71,7 +73,7 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 }
 
 template<typename C>
-C* GEntityManager::GetComponent(Entity entity)
+C* GEntityManager::GetComponent (Entity entity)
 {
 	uint32 index = GComponent<C>::GetComponentId();
 	return static_cast<C*>(mComponents[index][entity]);
