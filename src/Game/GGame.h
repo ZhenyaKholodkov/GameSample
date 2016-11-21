@@ -6,8 +6,6 @@
 
 #include "gEntityManager.h"
 #include "gSystemManager.h"
-#include "gRenderSystem.h"
-#include "gUserInputSystem.h"
 
 class GGame: public IGame
 {

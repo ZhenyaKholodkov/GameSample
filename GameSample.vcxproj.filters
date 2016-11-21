@@ -268,6 +268,9 @@
     <ClCompile Include="src\Engine\control\gControlManager.cpp">
       <Filter>src\Engine\control</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\systems\gMoveableSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Types.h">
@@ -485,6 +488,12 @@
     </ClInclude>
     <ClInclude Include="src\Engine\control\gControlManager.h">
       <Filter>src\Engine\control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gMoveableComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gMoveableSystem.h">
+      <Filter>src\Engine\systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

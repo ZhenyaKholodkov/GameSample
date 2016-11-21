@@ -16,7 +16,6 @@ public:
 	GComponent() {};
 	virtual ~GComponent() {};
 
-	virtual void SetState(uint32 state) {};
 	virtual void Reset() {};
 
 	static uint32 GetComponentId();

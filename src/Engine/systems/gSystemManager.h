@@ -2,7 +2,9 @@
 #define GSYSTEM_MANAGER_H
 
 #include "gBaseSystem.h"
-#include "gRenderableComponent.h"
+#include "gRenderSystem.h"
+#include "gMoveableSystem.h"
+#include "gUserInputSystem.h"
 
 //template<class Component>
 class GSystemManager
@@ -33,7 +35,10 @@ template<typename S>
 void GSystemManager::RegisterSystem()
 {
 	uint32 index = GSystem<S>::getSystemId();
-	mSystems[index] = new S();
+	if (mSystems[index] == nullptr) 
+	{
+		mSystems[index] = new S();
+	}
 }
 
 template<typename S>

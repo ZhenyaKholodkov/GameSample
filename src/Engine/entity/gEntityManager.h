@@ -12,6 +12,7 @@
 #include "gMouseDownEventComponent.h"
 #include "gMouseUpEventComponent.h"
 #include "gRenderableComponent.h"
+#include "gMoveableComponent.h"
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
