@@ -36,6 +36,7 @@ void GGame::Create()
 	mSystemManager->RegisterSystem<GRenderSystem>();
 	mSystemManager->RegisterSystem<GAnimationSystem>();
 	mSystemManager->RegisterSystem<GUserInputSystem>();
+	mSystemManager->RegisterSystem<GMoveableSystem>();
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//GSprite* sprite1 = GResManager::Instance()->GetSprite("frame1.png");
@@ -81,6 +82,13 @@ void GGame::Create()
 	animation2->AddFrame(sprite08);
 	animation2->AddFrame(sprite09);
 
+	///////////////////////////////////Moveable////////////////////////////////////////////
+	GSprite* spriteMove = GResManager::Instance()->GetSprite("frame1.png");
+	Entity animationEntity = em->CreateEntity();
+	em->AddComponentsToEntity<GLocationComponent>(animationEntity, 100.0f, 100.0f);
+	em->AddComponentsToEntity<GRenderableComponent>(animationEntity, spriteMove);
+	GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(animationEntity, 500.f, 200.0f, 1000);
+
 	///////////////////////////////////Button//////////////////////////////////////////////
 
 	GSprite* spriteButtonDown = GResManager::Instance()->GetSprite("button1.png");
@@ -97,6 +105,7 @@ void GGame::Create()
 
 	buttonDownEvent->signal_MouseDownNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
 	buttonUpEvent->signal_MouseUpNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
+	buttonUpEvent->signal_MouseUp.connect(moveable, &GMoveableComponent::slot_Move);
 	///////////////////////////////////Button//////////////////////////////////////////////
 
 	GSprite* sprite2ButtonDown = GResManager::Instance()->GetSprite("btn_2.png");
