@@ -64,6 +64,11 @@ private:
 template<typename C, typename... Args>
 C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 {
+	GPool<GLocationComponent> mComponentPool = GPool<GLocationComponent>(100);
+	GLocationComponent* co1m = static_cast<GLocationComponent*>(mComponentPool.create(entity, 200.0f, 300.0f));
+	mComponentPool.destroy(entity);
+	GLocationComponent* com2 = static_cast<GLocationComponent*>(mComponentPool.create(entity, 500.0f, 600.0f));
+
 	uint32 index = GComponent<C>::GetComponentId();
 	C* new_component = new C(std::forward<Args>(args) ...);
 	if (!mComponents[index][entity])

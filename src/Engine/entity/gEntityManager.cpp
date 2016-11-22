@@ -20,12 +20,6 @@ GEntityManager::GEntityManager():
 		mAvailableEntities.push(index);
 	}
 
-/*	GPool<GLocationComponent> mComponentPool = GPool<GLocationComponent>(100);
-	mComponentPool.CreateComponent(0, 2.0f, 3.0f);
-	mComponentPool.CreateComponent(5, 2.0f, 3.0f);
-	mComponentPool.CreateComponent(3, 2.0f, 3.0f);
-
-	mComponentPool.DestroyComponent(3);*/
 }
 
 GEntityManager::~GEntityManager()
@@ -44,6 +38,7 @@ Entity GEntityManager::CreateEntity()
 	Entity newEntity = mAvailableEntities.front();
 	mAvailableEntities.pop();
 	mActiveEntities.push_back(newEntity);
+
 	return newEntity;
 }
 

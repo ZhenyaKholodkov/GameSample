@@ -12,19 +12,32 @@ public:
 template<typename C>
 class GPool //: public GBasePool
 {
-	struct Entry
+	/*struct Entry
 	{
 	public:
 		Entry(Entity entity): mEntity(entity) {}
 		Entity mEntity;
 		C      mComponent;
+	};*/
+private:
+	const int DATA_SIZE = sizeof(C);
+	struct Block
+	{
+		Entity mEntity;
+		C mComponent;
 	};
+
+	const int BLOCK_SIZE = sizeof(Block);
 public:
 	GPool(size_t capacity) :
 		mCapacity(capacity)
 	{
 		mIndexes.resize(capacity);
-		mData = mCapacity > 0 ? operator new[](mCapacity * sizeof(Entry)) : nullptr;
+		for (int i = 0; i < capacity; ++i)
+		{
+			mIndexes[i] = -1;
+		}
+		mData = mCapacity > 0 ? operator new[](mCapacity * BLOCK_SIZE) : nullptr;
 	}
 	~GPool() {}
 
@@ -38,43 +51,53 @@ public:
 	size_t Size() { return mSize; }
 	size_t Capacity() { return mCapacity; }
 
-	void* GetComponent(Entity entity)
+	C* getByEntity(Entity entity)
 	{
-		if (entity >= mIndexes)
-			return nullptr;
 		uint32 index = mIndexes[entity];
-		Entry* entry = static_cast<Entry*>(mData[index]);
-		return &entry->mComponent;
+		if (index == -1)
+			return nullptr;
+
+		Block* ptr = static_cast<Block*>(mData);
+		Block* ptrToBlock = &ptr[index];
+		return &(ptrToBlock->mComponent);
 	}
-	
-	template<typename... Args>
-	void* CreateComponent(Entity entity, Args&& ... args)
+
+	Entity getEntity(uint32 index)
 	{
+		Block* ptr = static_cast<Block*>(mData);
+		Block* ptrToBlock = &ptr[index];
+		return ptrToBlock->mEntity;
+	}
+
+	template<typename... Args>
+	C* create(Entity entity, Args&& ... args)
+	{
+		if (mIndexes[entity] != -1)
+			return nullptr;
+
 		size_t index = mSize++;
 		mIndexes[entity] = index;
 
-		Entry* ptr = static_cast<Entry*>(mData);
-		Entry* entry = &ptr[index];
-		//new (entry) Entry(entity);
-
-		entry->mEntity = entity;
-		entry->mComponent = C(args...);
-
-		return &entry->mComponent;
+		Block* ptr = static_cast<Block*>(mData);
+		Block* ptrToBlock = &ptr[index];
+		ptrToBlock->mEntity = entity;
+		new (&ptrToBlock->mComponent) C(args...);
+		return &(ptrToBlock->mComponent);
 	}
 	
-	void DestroyComponent(Entity entity)
+	void destroy(Entity entity)
 	{
 		uint32 index = mIndexes[entity];
 
-		Entry* ptr = static_cast<Entry*>(mData);
-		Entry* entryToDestroy = &ptr[index];
-		entryToDestroy->mComponent.~C();
+		Block* ptr = static_cast<Block*>(mData);
+		Block* ptrDestroy = &ptr[index];
+		ptrDestroy->mComponent.~C();
+		mIndexes[entity] = -1;
 
 		if (index != mSize - 1)
 		{
-			memcpy(entryToDestroy, &ptr[mSize - 1], sizeof(Entry));
-			mIndexes[entryToDestroy->mEntity] = index;
+			memcpy(ptrDestroy, &ptr[mSize - 1], BLOCK_SIZE);
+			mIndexes[ptrDestroy->mEntity] = index;
 		}
 		--mSize;
 	}
