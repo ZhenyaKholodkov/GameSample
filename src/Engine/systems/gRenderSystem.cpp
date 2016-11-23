@@ -19,11 +19,12 @@ void GRenderSystem::update(int dt)
 	mRenderer->clear();
 	mRenderer->startFrame();
 
-	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
+	for (auto iter = mEntityManager->GetBeginPairComponent<GRenderableComponent>(); iter != mEntityManager->GetEndPairComponent<GRenderableComponent>(); iter++)
 	{
-		Entity entity = (*iter);
+		Entity entity = (*iter)->first;
+		GRenderableComponent* renderable = (*iter)->second;
+
 		GLocationComponent* location = mEntityManager->GetComponent<GLocationComponent>(entity);
-		GRenderableComponent* renderable = mEntityManager->GetComponent<GRenderableComponent>(entity);
 		GSprite* sprite = renderable->GetSprite();
 
 		mRenderer->save();

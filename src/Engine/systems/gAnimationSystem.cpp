@@ -14,17 +14,16 @@ GAnimationSystem::~GAnimationSystem()
 
 void GAnimationSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
+	for (auto iter = mEntityManager->GetBeginPairComponent<GAnimationComponent>(); iter != mEntityManager->GetEndPairComponent<GAnimationComponent>(); iter++)
 	{
-		Entity entity = (*iter);
-		ProcessActions(entity);
+		Entity entity = (*iter)->first;
+		GAnimationComponent* animation = (*iter)->second;
 
-		GAnimationComponent* animation = mEntityManager->GetComponent<GAnimationComponent>(entity);
-		if (!animation)
+		if (!animation || !mEntityManager->DoesHaveComponent<GRenderableComponent>(entity))
 			continue;
 
 		if (animation->mState == GAnimationComponent::STATE_WAIT)
-			return;
+			continue;
 
 		animation->mCurrentFrameTime += dt;
 		if (animation->mCurrentFrameTime >= animation->mFrameTime)

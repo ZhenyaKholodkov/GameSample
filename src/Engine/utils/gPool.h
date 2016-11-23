@@ -6,21 +6,16 @@ class GBasePool
 {
 public:
 	GBasePool() {}
-	~GBasePool() {}
+	virtual ~GBasePool() {}
+
+	virtual size_t Size() = 0;
+	virtual size_t Capacity() = 0;
 };
 
 template<typename C>
-class GPool //: public GBasePool
+class GPool : public GBasePool
 {
-	/*struct Entry
-	{
-	public:
-		Entry(Entity entity): mEntity(entity) {}
-		Entity mEntity;
-		C      mComponent;
-	};*/
 private:
-	const int DATA_SIZE = sizeof(C);
 	struct Block
 	{
 		Entity mEntity;
@@ -39,19 +34,120 @@ public:
 		}
 		mData = mCapacity > 0 ? operator new[](mCapacity * BLOCK_SIZE) : nullptr;
 	}
-	~GPool() {}
+	~GPool() 
+	{
+	}
 
-	//std::iterator<Entry*> Begin() { return (std::iterator<Entry*>(mSize == 0 ? nullptr : static_cast<Entry*>(mData))); }
-	//std::iterator<Entry*> End()
-	//{
-	//	Entry* ptr = static_cast<Entry*>(mData);
-	//	return (std::iterator<Entry*>(mSize == 0 ? nullptr : static_cast<Entry*>(&ptr[mSize])));
-	//}
+	class GPoolIterator : public std::iterator<std::forward_iterator_tag, C*>
+	{
+	private:
+		Block* mCurrentBlock;
+	public:
+		GPoolIterator(Block* block) : mCurrentBlock(block)
+		{}
+		GPoolIterator& operator=(const GPoolIterator& iter) 
+		{
+			mCurrentBlock = iter.mCurrentBlock;
+			return *this;
+		}
+		C* operator*() const
+		{
+			return &mCurrentBlock->mComponent;
+		}
+		GPoolIterator& operator++()
+		{
+			++mCurrentBlock;
+			return *this;
+		}
 
-	size_t Size() { return mSize; }
-	size_t Capacity() { return mCapacity; }
+		GPoolIterator operator++(int)
+		{
+			GPoolIterator tmp(*this);
+			++(*this);
+			return tmp;
+		}
 
-	C* getByEntity(Entity entity)
+		bool operator==(const GPoolIterator& iter)
+		{
+			return mCurrentBlock == iter.mCurrentBlock;
+		}
+		bool operator!=(const GPoolIterator& iter)
+		{
+			return mCurrentBlock != iter.mCurrentBlock;
+		}
+
+	};
+
+	class GPoolPairIterator : public std::iterator<std::forward_iterator_tag, std::pair<Entity, C*>>
+	{
+	private:
+		Block* mCurrentBlock;
+		typedef std::pair<Entity, C*> ValuePair;
+		mutable ValuePair pair;
+
+	public:
+		GPoolPairIterator(Block* block) : mCurrentBlock(block)
+		{}
+		GPoolPairIterator& operator=(const GPoolIterator& iter)
+		{
+			mCurrentBlock = iter.mCurrentBlock;
+			return *this;
+		}
+		ValuePair* operator*() const
+		{
+			pair.first = mCurrentBlock->mEntity;
+			pair.second = &mCurrentBlock->mComponent;
+			return &pair;
+		}
+		GPoolPairIterator& operator++()
+		{
+			++mCurrentBlock;
+			return *this;
+		}
+
+		GPoolPairIterator operator++(int)
+		{
+			GPoolPairIterator tmp(*this);
+			++(*this);
+			return tmp;
+		}
+
+		bool operator==(const GPoolPairIterator& iter)
+		{
+			return mCurrentBlock == iter.mCurrentBlock;
+		}
+		bool operator!=(const GPoolPairIterator& iter)
+		{
+			return mCurrentBlock != iter.mCurrentBlock;
+		}
+
+	};
+
+	GPoolIterator begin() 
+	{ 
+		Block* ptr = static_cast<Block*>(mData);
+		return(GPoolIterator(mSize == 0 ? nullptr : ptr));
+	}
+
+	GPoolIterator end()
+	{
+		Block* ptr = static_cast<Block*>(mData);
+		return(GPoolIterator(mSize == 0 ? nullptr : &ptr[mSize]));
+	}
+
+	GPoolPairIterator beginPair()
+	{
+		Block* ptr = static_cast<Block*>(mData);
+		return(GPoolPairIterator(mSize == 0 ? nullptr : ptr));
+	}
+
+	GPoolPairIterator endPair()
+	{
+		Block* ptr = static_cast<Block*>(mData);
+		return(GPoolPairIterator(mSize == 0 ? nullptr : &ptr[mSize]));
+	}
+
+	C* get(Entity entity)
 	{
 		uint32 index = mIndexes[entity];
 		if (index == -1)
@@ -102,11 +198,19 @@ public:
 		--mSize;
 	}
 
+	bool doesContainComponent(Entity entity)
+	{
+		return mIndexes[entity] != -1;
+	}
+
+	size_t Size() { return mSize; }
+	size_t Capacity() { return mCapacity; }
+
 private :
 	size_t mCapacity;
 	size_t mSize;
 
-	std::vector<uint32> mIndexes;
+	std::vector<int> mIndexes;
 	void*               mData;
 };
 #endif

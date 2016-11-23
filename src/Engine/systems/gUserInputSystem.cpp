@@ -16,14 +16,12 @@ GUserInputSystem::~GUserInputSystem()
 
 void GUserInputSystem::OnMouseDown(GPoint point)
 {
-	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
+	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseDownEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseDownEventComponent>(); iter++)
 	{
-		Entity entity = (*iter);
+		Entity entity = (*iter)->first;
+		GMouseDownEventComponent* mouseDown = (*iter)->second;
 
-		GMouseDownEventComponent* mouseDown = mEntityManager->GetComponent<GMouseDownEventComponent>(entity);
-		GRenderableComponent*     render    = mEntityManager->GetComponent<GRenderableComponent>(entity);
-
-		if (!mouseDown || !render)
+		if (!mouseDown)
 			continue;
 
 		if (mEntityManager->IsInsideEntity(entity, point))
@@ -37,14 +35,12 @@ void GUserInputSystem::OnMouseDown(GPoint point)
 
 void GUserInputSystem::OnMouseUp(GPoint point)
 {
-	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
+	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseUpEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseUpEventComponent>(); iter++)
 	{
-		Entity entity = (*iter);
+		Entity entity = (*iter)->first;
+		GMouseUpEventComponent* upDown = (*iter)->second;
 
-		GMouseUpEventComponent*   upDown = mEntityManager->GetComponent<GMouseUpEventComponent>(entity);
-		GRenderableComponent*     render = mEntityManager->GetComponent<GRenderableComponent>(entity);
-
-		if (!upDown || !render)
+		if (!upDown)
 			continue;
 
 		if (mEntityManager->IsInsideEntity(entity, point))
