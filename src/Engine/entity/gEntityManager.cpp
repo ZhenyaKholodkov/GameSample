@@ -20,11 +20,6 @@ GEntityManager::GEntityManager():
 		mAvailableEntities.push(index);
 	}
 
-	mComponentPools.resize(GetComponentCount());
-	for (int index = 0; index < GetComponentCount(); ++index)
-	{
-		mComponentPools[index] = nullptr;
-	}
 }
 
 GEntityManager::~GEntityManager()
@@ -81,13 +76,15 @@ bool GEntityManager::IsInsideEntity(Entity entity, GPoint point)
 	GPoint localPoint;       //localized relativly the entity
 	LocalPoint(entity, point, localPoint);
 
-	GRenderableComponent* renderable = GetComponent<GRenderableComponent>(entity);
+	uint32 index = GComponent<GRenderableComponent>::GetComponentId();
+	GRenderableComponent* renderable = static_cast<GRenderableComponent*>(mComponents[index][entity]);
 	return renderable->IsPiontInsideWH(localPoint);
 }
 
 void GEntityManager::LocalPoint(Entity entity, GPoint& point, GPoint& localPoint)
 {
-	GLocationComponent* location = GetComponent<GLocationComponent>(entity);
+	uint32 index = GComponent<GLocationComponent>::GetComponentId();
+	GLocationComponent* location = static_cast<GLocationComponent*>(mComponents[index][entity]);
 
 	float ang = 0;                          // градусы в радианы
 	float c = cosf(ang), s = sinf(ang);

@@ -13,14 +13,14 @@ GMoveableSystem::~GMoveableSystem()
 
 void GMoveableSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMoveableComponent>(); iter != mEntityManager->GetEndPairComponent<GMoveableComponent>(); iter++)
+	for (auto iter = mEntityManager->GetActiveEntitiesBegin(); iter != mEntityManager->GetActiveEntitiesEnd(); iter++)
 	{
-		Entity entity = (*iter)->first;
-		GMoveableComponent* moveable = (*iter)->second;
-
+		Entity entity = (*iter);
 		if (!mEntityManager->DoesHaveComponent<GLocationComponent>(entity) || !mEntityManager->DoesHaveComponent<GMoveableComponent>(entity))
 			continue;
-		
+
+		GMoveableComponent* moveable = mEntityManager->GetComponent<GMoveableComponent>(entity);
+
 		if (moveable->mState == GMoveableComponent::STATE_WAIT)
 			continue;
 
