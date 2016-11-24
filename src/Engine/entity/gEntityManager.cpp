@@ -8,7 +8,7 @@ GEntityManager* GEntityManager::Instance()
 }
 
 GEntityManager::GEntityManager():
-	defaulEntityCount(100)
+	defaulEntityCount(150)
 {
 	mComponents.resize(GetComponentCount());
 	for (int index = 0; index < mComponents.size(); ++index)

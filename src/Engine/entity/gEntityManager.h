@@ -81,7 +81,7 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 	GPool<C>* componentPool = static_cast<GPool<C>*>(mComponentPools[index]);
 	if (componentPool == nullptr)
 	{
-		componentPool = new GPool<C>(100);
+		componentPool = new GPool<C>(150);
 		mComponentPools[index] = static_cast<GBasePool*>(componentPool);
 	}
 	C* new_component = componentPool->create(entity, std::forward<Args>(args) ...);

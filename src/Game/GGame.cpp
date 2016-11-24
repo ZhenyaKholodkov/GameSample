@@ -3,6 +3,7 @@
 #include "IGRender.h"
 #include "GSprite.h"
 
+#include <time.h>
 
 GGame::GGame():
 	mSystemManager(nullptr)
@@ -121,6 +122,25 @@ void GGame::Create()
 	button2DownEvent->signal_MouseDown.connect(animation2, &GAnimationComponent::slot_RunAnimation);
 	button2DownEvent->signal_MouseDownNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 	button2UpEvent->signal_MouseUpNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
+
+	////////////////test/////////////////
+
+	for (int i = 0; i < 100; i++)
+	{
+		srand(time(0));
+		float randX = (float)(rand() % 1000 + 100);
+		float randY = (float)(rand() % 800 + 80);
+		GSprite* spriteMove = GResManager::Instance()->GetSprite("frame1.png");
+		Entity animationEntity = em->CreateEntity();
+		em->AddComponentsToEntity<GLocationComponent>(animationEntity, randX, randY);
+		em->AddComponentsToEntity<GRenderableComponent>(animationEntity, spriteMove);
+		GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(animationEntity, 500.f, 200.0f, 1000);
+
+		GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, spriteMove);
+		GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, spriteMove);
+
+	}
+	////////////////test end///////////////////////////////
 }
 
 void GGame::Update(int dt)
