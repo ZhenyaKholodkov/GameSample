@@ -38,7 +38,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 
 	texture = new GTextureObject();
 	texture->mKey = name;
-	texture->mGLTextureId = IGRender::Instance()->LoadTexture(data, width, height);
+	texture->mGLTextureId = GRenderManager::Instance()->loadTexture(data, width, height);
 	texture->mWidth = width;
 	texture->mHeight = height;
 

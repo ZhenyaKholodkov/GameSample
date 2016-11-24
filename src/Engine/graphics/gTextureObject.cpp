@@ -1,6 +1,6 @@
 #include "gTextureObject.h"
 
-#include "IGRender.h"
+#include "gRenderManager.h"
 
 GTextureObject::GTextureObject() :
 	mKey(nullptr),
@@ -14,5 +14,5 @@ GTextureObject::GTextureObject() :
 
 GTextureObject::~GTextureObject()
 {
-	IGRender::Instance()->UnloadTexture(mGLTextureId);
+	GRenderManager::Instance()->unloadTexture(mGLTextureId);
 }

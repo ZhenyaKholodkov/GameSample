@@ -1,6 +1,6 @@
 #include "GResManager.h"
 #include "Utils.h"
-#include "IGRender.h"
+#include "gRenderManager.h"
 #include "tinyxml.h"
 
 #include <stdio.h>

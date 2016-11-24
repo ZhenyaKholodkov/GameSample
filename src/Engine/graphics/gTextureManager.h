@@ -2,7 +2,7 @@
 #include "GTextureObject.h"
 #include "GTextureDictinary.h"
 
-#include "IGRender.h"
+#include "gRenderManager.h"
 
 class GTextureManager
 {

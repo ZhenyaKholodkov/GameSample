@@ -2,6 +2,7 @@
 #define GPOOL_H
 
 #include "Types.h"
+#include "GDefines.h"
 class GBasePool
 {
 public:
@@ -28,7 +29,7 @@ public:
 		mCapacity(capacity),
 		mChunkSize(chunkSize)
 	{
-		mIndexes.resize(capacity);
+		mIndexes.resize(MAX_ENTITY_COUNT);
 		for (int i = 0; i < capacity; ++i)
 		{
 			mIndexes[i] = -1;
@@ -150,6 +151,8 @@ public:
 
 	C* get(Entity entity)
 	{
+		if (entity >= mIndexes.size())
+			return nullptr;
 		uint32 index = mIndexes[entity];
 		if (index == -1)
 			return nullptr;
@@ -169,6 +172,9 @@ public:
 	template<typename... Args>
 	C* create(Entity entity, Args&& ... args)
 	{
+		if (entity >= mIndexes.size())
+			return nullptr;
+
 		if (mIndexes[entity] != -1)
 			return nullptr;
 

@@ -27,8 +27,7 @@ int32 Application::OnCreate()
 	ResDictionary dict;
 	int32 hash1 = dict.hash("/temp/", "image.png");
 	int32 hash2 = dict.hash("/temp/", "image.png");
-	mRenderContext = IGRender::Create();
-	mRenderContext->init(mWidth, mHeight);
+	GRenderManager::Instance()->init(mWidth, mHeight);
 
 	mGame = IGame::Instane();
 	mGame->Create();
@@ -43,7 +42,6 @@ void Application::OnClose()
 void Application::OnTimer(int32 dt)
 {
 	mGame->Update(dt);
-	mRenderContext->endFrame();
 	UpdateContext();
 }
 

@@ -5,6 +5,7 @@
 #include <queue>
 
 #include "Types.h"
+#include "GDefines.h"
 
 #include "gPool.h"
 
@@ -18,7 +19,6 @@
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
-
 
 class GEntityManager
 {
@@ -63,8 +63,6 @@ private:
 	uint32 GetComponentCount();
 
 private:
-	uint32 defaulEntityCount;
-
 	queue<Entity>                   mAvailableEntities;
 
 	vector<vector<GBaseComponent*>> mComponents; // заменить на другой контейнер

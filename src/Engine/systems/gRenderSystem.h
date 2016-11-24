@@ -5,7 +5,7 @@
 #include "gEntityManager.h"
 #include "gRenderableComponent.h"
 #include "gLocationComponent.h"
-#include "IGRender.h"
+#include "gRenderManager.h"
 
 class GRenderSystem : public GSystem<GRenderSystem>
 {
@@ -17,7 +17,7 @@ public:
 private:
 	unsigned int mBackgroundColor;
 
-	IGRender* mRenderer;
+	GRenderManager* mRenderer;
 	GEntityManager* mEntityManager;
 };
 

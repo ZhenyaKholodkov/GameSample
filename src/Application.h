@@ -4,7 +4,7 @@
 #include "OWindow.h"
 #include "GResManager.h"
 #include "IGame.h"
-#include "IGRender.h"
+#include "gRenderManager.h"
 
 #include <time.h>
 
@@ -47,7 +47,6 @@ private:
 
 	static Application*	_instance;							
 	IGame*           mGame;
-	IGRender *		 mRenderContext;                            
 	int 			_screenWidth;								
 	int			    _screenHeight;								
 };

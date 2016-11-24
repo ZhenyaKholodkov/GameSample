@@ -1,6 +1,6 @@
 #include "GGame.h"
 #include "GResManager.h"
-#include "IGRender.h"
+#include "gRenderManager.h"
 #include "GSprite.h"
 
 #include <time.h>

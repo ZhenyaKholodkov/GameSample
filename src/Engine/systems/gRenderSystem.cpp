@@ -4,7 +4,7 @@
 GRenderSystem::GRenderSystem() :
 	mBackgroundColor(0xff0000ff)
 {
-	mRenderer = IGRender::Instance();
+	mRenderer = GRenderManager::Instance();
 	mEntityManager = GEntityManager::Instance();
 }
 

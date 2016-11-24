@@ -7,15 +7,14 @@ GEntityManager* GEntityManager::Instance()
 	return instance;
 }
 
-GEntityManager::GEntityManager():
-	defaulEntityCount(150)
+GEntityManager::GEntityManager()
 {
 	mComponents.resize(GetComponentCount());
 	for (int index = 0; index < mComponents.size(); ++index)
 	{
-		mComponents[index].resize(defaulEntityCount);
+		mComponents[index].resize(MAX_ENTITY_COUNT);
 	}
-	for (uint32 index = 0; index < defaulEntityCount; ++index)
+	for (uint32 index = 0; index < MAX_ENTITY_COUNT; ++index)
 	{
 		mAvailableEntities.push(index);
 	}

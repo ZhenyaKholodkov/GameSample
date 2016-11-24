@@ -1,10 +1,11 @@
 ﻿
 #ifndef _GRENDEROGL_ABS_H
 #define _GRENDEROGL_ABS_H
-
+/*
 #include "IGRender.h"
 #include <windows.h>
-#include <gl/gl.h>
+#include <gl\GL.h>
+#include <gl\GLU.h>
 
 class GRender: public IGRender
 {
@@ -17,45 +18,21 @@ public:
    void		drawTri( float x1, float y1, 
                      float x2, float y2, 
                      float x3, float y3);								    
-
-   void		drawFrame(float x, float y, float w, float h);							     
+						     
    void		drawLine(float x1, float y1, float z1, float x2, float y2, float z2);	
 
-   uint32 LoadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
-   void   UnloadTexture(uint32 textureId);
-
-   void		setClipRect( int aX, int aY, int aWidth, int aHeight);	
-   void		clearClipRect();										
-   void     applyBlending();				                        
-   void     applyCullMode();	   			                        
-   void		applyTransform();			                            
-   void		applyDepthTest();	   			                        
-   void		clearDepthBuffer();	   			                        
+   uint32 loadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
+   void   unloadTexture(uint32 textureId);		                        
 
    void		startFrame();											
    void		endFrame();												
    void		draw();													
 
-protected:
-	class PlatformMatrix {
-	public:
-		PlatformMatrix();
-		float m[4][4];
-		void SetIdentity();
-	};
-	void              convertToPlatformMatrix(IGMatrix& matrix, PlatformMatrix& platformMatrix);
-   void		drawBatchedTris();											     
-   PlatformMatrix    _curTransformMatrix;
-   float				   _clearColorR, _clearColorG, _clearColorB;
-
-   static float _angle3DVert;											              
-   static float _globalScale;											              
-   static float _farSideScale;											              
-
 private:
-
-   GLint                   _glMajorVer;                             
-   GLint                   _glMinorVer;                             
+   void	 drawBatchedTris();				
+   float mClearColorR;
+   float mClearColorG;
+   float mClearColorB;
 };
 
 inline int checkForGLErrors( GThreadSafeErrors &err )
@@ -91,6 +68,6 @@ inline int checkForGLErrors( GThreadSafeErrors &err )
    }
 
    return errors;
-}
+}*/
 
 #endif
