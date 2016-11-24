@@ -24,8 +24,9 @@ private:
 
 	const int BLOCK_SIZE = sizeof(Block);
 public:
-	GPool(size_t capacity) :
-		mCapacity(capacity)
+	GPool(size_t capacity = 5, size_t chunkSize = 5) :
+		mCapacity(capacity),
+		mChunkSize(chunkSize)
 	{
 		mIndexes.resize(capacity);
 		for (int i = 0; i < capacity; ++i)
@@ -171,6 +172,11 @@ public:
 		if (mIndexes[entity] != -1)
 			return nullptr;
 
+		if (mSize == mCapacity)
+		{
+			if (!reserve(mChunkSize))
+				return nullptr;
+		}
 		size_t index = mSize++;
 		mIndexes[entity] = index;
 
@@ -205,10 +211,26 @@ public:
 
 	size_t Size() { return mSize; }
 	size_t Capacity() { return mCapacity; }
+private:
+	bool reserve(size_t chunk)
+	{
+		void* newData = operator new[]((mCapacity + chunk) * BLOCK_SIZE);
+		if (newData == nullptr)
+			return false;
 
+		if (mCapacity != 0)
+		{
+			memcpy(newData, mData, (mCapacity * BLOCK_SIZE));
+			operator delete[] (mData);
+		}
+		mCapacity += chunk;
+		mData = newData;
+		return true;
+	}
 private :
 	size_t mCapacity;
 	size_t mSize;
+	size_t mChunkSize;
 
 	std::vector<int> mIndexes;
 	void*               mData;
