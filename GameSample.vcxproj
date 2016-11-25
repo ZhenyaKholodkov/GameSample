@@ -194,9 +194,12 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
+    <ClInclude Include="src\Engine\components\gKeyDownEventComponent.h" />
+    <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h" />
     <ClInclude Include="src\Engine\components\gComponent.h" />
     <ClInclude Include="src\Engine\components\gLocationComponent.h" />
+    <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseUpEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMoveableComponent.h" />
     <ClInclude Include="src\Engine\components\gRenderableComponent.h" />

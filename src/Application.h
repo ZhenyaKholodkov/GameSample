@@ -50,6 +50,7 @@ private:
 	int 			mScreenWidth;								
 	int			    mScreenHeight;	
 
+	bool            mCurrentMousePressed;
 };
 
 #endif

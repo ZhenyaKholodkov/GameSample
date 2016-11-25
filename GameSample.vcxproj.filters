@@ -471,6 +471,15 @@
     <ClInclude Include="src\Engine\systems\gMoveableSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gKeyDownEventComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">
