@@ -84,7 +84,7 @@ void GRenderManager::setLineColor( float r, float g, float b )
 	mLineB = b;
 }
 
-void GRenderManager::setLineColor(UInt32 c )
+void GRenderManager::setLineColor(uint32 c )
 {
 	mLineR = ((c>>16)&0xFF)/255.0f;
 	mLineG = ((c>> 8)&0xFF)/255.0f;
@@ -98,7 +98,7 @@ void GRenderManager::setFillColor( float r, float g, float b )
 	mFillB = b;
 }
 
-void GRenderManager::setFillColor(UInt32 c )
+void GRenderManager::setFillColor(uint32 c )
 {
 	mFillR = ((c>>16)&0xFF)/255.0f;
 	mFillG = ((c>> 8)&0xFF)/255.0f;
@@ -203,7 +203,7 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
    IGVector3 tmpVertexData0, tmpVertexData2;												
 
    tmpVertexData0.x = x;			tmpVertexData0.y = y;			tmpVertexData0.z = z;		
-   tmpVertexData2.x = x+tex_w;	tmpVertexData2.y = y+tex_h;	tmpVertexData2.z = z;
+   tmpVertexData2.x = x + tex_w;	tmpVertexData2.y = y + tex_h;	tmpVertexData2.z = z;
 
    convertVertexDataToModelSpace(tmpVertexData0);
    convertVertexDataToModelSpace(tmpVertexData2);
@@ -218,8 +218,8 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
    vertexData0 = tmpVertexData0;
    vertexData2 = tmpVertexData2;
 
-   vertexData1.x = x;			vertexData1.y = y+tex_h;	vertexData1.z = z;
-   vertexData3.x = x+tex_w;	vertexData3.y = y;			vertexData3.z = z;
+   vertexData1.x = x;	        vertexData1.y = y + tex_h;	vertexData1.z = z;
+   vertexData3.x = x + tex_w;	vertexData3.y = y;			vertexData3.z = z;
 
    convertVertexDataToModelSpace(vertexData1);
    convertVertexDataToModelSpace(vertexData3);
@@ -239,30 +239,30 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
 
    }
 
-   IGVector2 &uvData0 = mTextCoordData[mCacheVertIndex];
-   IGVector2 &uvData1 = mTextCoordData[mCacheVertIndex+1];
-   IGVector2 &uvData2 = mTextCoordData[mCacheVertIndex+2];
-   IGVector2 &uvData3 = mTextCoordData[mCacheVertIndex+3];
-   IGVector2 &uvData4 = mTextCoordData[mCacheVertIndex+4];
-   IGVector2 &uvData5 = mTextCoordData[mCacheVertIndex+5];
+   IGVector2 &textCoordData0 = mTextCoordData[mCacheVertIndex];
+   IGVector2 &textCoordData1 = mTextCoordData[mCacheVertIndex+1];
+   IGVector2 &textCoordData2 = mTextCoordData[mCacheVertIndex+2];
+   IGVector2 &textCoordData3 = mTextCoordData[mCacheVertIndex+3];
+   IGVector2 &textCoordData4 = mTextCoordData[mCacheVertIndex+4];
+   IGVector2 &textCoordData5 = mTextCoordData[mCacheVertIndex+5];
 
    float texLeft  = (float)tex_x / (float)( full_tex_w );											
    float texUp    = (float)tex_y / (float)( full_tex_h );
    float texRight = (float)( tex_w + tex_x ) / (float)( full_tex_w );
    float texDown  = (float)( tex_h + tex_y ) / (float)( full_tex_h );
 
-   uvData0.x = texLeft;	   uvData0.y = texUp;														
-   uvData1.x = texLeft;	   uvData1.y = texDown;	
-   uvData2.x = texRight;	uvData2.y = texDown;	
-   uvData3.x = texRight;	uvData3.y = texUp;	
+   textCoordData0.x = texLeft;	textCoordData0.y = texUp;														
+   textCoordData1.x = texLeft;	textCoordData1.y = texDown;	
+   textCoordData2.x = texRight;	textCoordData2.y = texDown;	
+   textCoordData3.x = texRight;	textCoordData3.y = texUp;	
 
-   uvData5 = uvData3; 
-   uvData3 = uvData0; 
-   uvData4 = uvData2; 
+   textCoordData5 = textCoordData3; 
+   textCoordData3 = textCoordData0; 
+   textCoordData4 = textCoordData2; 
 
    int firstImgIndex = mBatchVertIndex;
 
-   mIndexesData[mCacheVertIndex]	  = firstImgIndex++;
+   mIndexesData[mCacheVertIndex]   = firstImgIndex++;
    mIndexesData[mCacheVertIndex+1] = firstImgIndex++;
    mIndexesData[mCacheVertIndex+2] = firstImgIndex++;
    mIndexesData[mCacheVertIndex+3] = firstImgIndex++;
@@ -278,7 +278,7 @@ void	GRenderManager::addBatchTris(int triCnt)
    mCacheVertIndex+=VertexesByTris;
    mBatchVertIndex+=VertexesByTris;
 
-   if ((int)mCacheVertIndex + VertexesByTris>=mVertexData.size())													
+   if ((mCacheVertIndex + (uint32)VertexesByTris)>=mVertexData.size())
    {
       reallocVertexCache();
    }

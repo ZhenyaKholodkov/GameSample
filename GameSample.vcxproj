@@ -82,6 +82,7 @@
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>src\thirdparty\zlib\LIB;src\thirdparty\libpng\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -93,6 +94,9 @@
       <AdditionalUsingDirectories>_CRT_SECURE_NO_WARNINGS;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <Profile>true</Profile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -137,9 +141,7 @@
     <ClCompile Include="src\Engine\resources\gResource.cpp" />
     <ClCompile Include="src\Engine\resources\GSprite.cpp" />
     <ClCompile Include="src\Engine\IGame.cpp" />
-    <ClCompile Include="src\Engine\render\ext\olOpenGL.cpp" />
-    <ClCompile Include="src\Engine\render\GRender.cpp" />
-    <ClCompile Include="src\Engine\render\IGRender.cpp" />
+    <ClCompile Include="src\Engine\render\gRenderManager.cpp" />
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
     <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp" />
@@ -190,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Engine\components\gActionComponent.h" />
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h" />
@@ -216,11 +217,7 @@
     <ClInclude Include="src\Engine\resources\gResource.h" />
     <ClInclude Include="src\Engine\resources\GSprite.h" />
     <ClInclude Include="src\Engine\IGame.h" />
-    <ClInclude Include="src\Engine\render\ext\glext.h" />
-    <ClInclude Include="src\Engine\render\ext\olOpenGL.h" />
-    <ClInclude Include="src\Engine\render\ext\wglext.h" />
-    <ClInclude Include="src\Engine\render\GRender.h" />
-    <ClInclude Include="src\Engine\render\IGRender.h" />
+    <ClInclude Include="src\Engine\render\gRenderManager.h" />
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
     <ClInclude Include="src\Engine\systems\gAnimationSystem.h" />
     <ClInclude Include="src\Engine\systems\gBaseSystem.h" />

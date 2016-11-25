@@ -21,9 +21,9 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 }
 
 Window::Window() :
-	iPeriod(100),
-	iColorBkground(0x000000),
-	iSlowTimer(0),
+	mPeriod(100),
+	mColorBkground(0x000000),
+	mSlowTimer(0),
 	mIcon(0)
 {
 	sInstance = this;
@@ -37,8 +37,8 @@ Window::~Window()
 int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 {
 
-	iWndMode = mode;
-	iWindowBrush = (HBRUSH)CreateSolidBrush(iColorBkground.getColor());
+	mWndMode = mode;
+	mWindowBrush = (HBRUSH)CreateSolidBrush(mColorBkground.getColor());
 	WNDCLASSEX wcl;                                             // window class.
 
 	wcl.hInstance = GetModuleHandle(NULL);                     // handle to this instance
@@ -58,7 +58,7 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 	wcl.lpszMenuName = NULL;                                    // no menu
 	wcl.cbClsExtra = 0;                                         // no extra
 	wcl.cbWndExtra = 0;                                         // information needed
-	wcl.hbrBackground = iWindowBrush;
+	wcl.hbrBackground = mWindowBrush;
 
 	if (!RegisterClassEx(&wcl)) {                                 // Register the window class
 		MessageBox(NULL, "Can\'t register window class", "Error", MB_OK);
@@ -66,14 +66,13 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 	}
 
 	// Now that a window class has been registered, a window  can be created.
-	if (w == 0 || h == 0) w = h = CW_USEDEFAULT; 
+	if (w == 0 || h == 0) w = h = CW_USEDEFAULT;
 
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW | WS_POPUP | CS_DBLCLKS;
 
 	//no resize
 	dwStyle &= ~WS_SIZEBOX;
 	dwStyle &= ~WS_MAXIMIZEBOX;
-	//
 
 	dwStyle |= WS_SYSMENU;
 	dwStyle |= WS_CLIPCHILDREN;
@@ -85,7 +84,7 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 	int t_w = rc.right - rc.left;
 	int t_h = rc.bottom - rc.top;
 
-	iMainHWND = CreateWindow(
+	mMainHWND = CreateWindow(
 		name, caption,                                           // name of window class && title
 		dwStyle,                                                 // window style - normal
 		CW_USEDEFAULT, CW_USEDEFAULT,                            // X,Y coordinate - let Windows decide
@@ -94,45 +93,45 @@ int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 		NULL,                                                    // no menu
 		wcl.hInstance,                                           // handle of this instance of the program
 		NULL                                                     // no additional arguments
-	);
+		);
 
-	if (!iMainHWND) {
+	if (!mMainHWND) {
 		MessageBox(NULL, "Can\'t create window", "Error", MB_OK);
 		return false;
 	}
-	SetWindowLong(iMainHWND, GWL_USERDATA, LONG(this)); 
+	SetWindowLong(mMainHWND, GWL_USERDATA, LONG(this));
 
-	strcpy(iCaption, caption);                              
+	strcpy(mCaption, caption);
 
-	RECT Rect;                                              
-	GetClientRect(iMainHWND, &Rect);
-	iSize.Set(int32(Rect.right - Rect.left), int32(Rect.bottom - Rect.top));
+	RECT Rect;
+	GetClientRect(mMainHWND, &Rect);
+	mSize.Set(int32(Rect.right - Rect.left), int32(Rect.bottom - Rect.top));
 
-	if (!OnCreate()) { OnClose(); return false; }                
+	if (!OnCreate()) { OnClose(); return false; }
 	return true;
 }
 
 void Window::Show()
 {
-	ShowWindow(iMainHWND, iWndMode); 
-	UpdateWindow(iMainHWND);
+	ShowWindow(mMainHWND, mWndMode); 
+	UpdateWindow(mMainHWND);
 }
 
 void Window::Pos(int32 x, int32 y)
 {
-	iPos.Set(x, y);
-	SetWindowPos(iMainHWND, HWND_NOTOPMOST, iPos.X(), iPos.Y(), iSize.X(), iSize.Y(), SWP_SHOWWINDOW);
+	mPos.Set(x, y);
+	SetWindowPos(mMainHWND, HWND_NOTOPMOST, mPos.X(), mPos.Y(), mSize.X(), mSize.Y(), SWP_SHOWWINDOW);
 }
 
 void Window::Size(int32 w, int32 h)
 {
-	iSize.Set(w, h);
-	SetWindowPos(iMainHWND, HWND_NOTOPMOST, iPos.X(), iPos.Y(), iSize.X(), iSize.Y(), SWP_SHOWWINDOW);
+	mSize.Set(w, h);
+	SetWindowPos(mMainHWND, HWND_NOTOPMOST, mPos.X(), mPos.Y(), mSize.X(), mSize.Y(), SWP_SHOWWINDOW);
 }
 
 int32 Window::Run()
 {
-	if (iSlowTimer) 
+	if (mSlowTimer) 
 	{
 		MSG msg;
 		while (GetMessage(&msg, (HWND)NULL, 0, 0))
@@ -141,8 +140,8 @@ int32 Window::Run()
 			DispatchMessage(&msg);
 		}
 		OnClose();                        
-		KillTimer(iMainHWND, 1);
-		DeleteObject(iWindowBrush);
+		KillTimer(mMainHWND, 1);
+		DeleteObject(mWindowBrush);
 		return int32(msg.wParam);
 	}
 
@@ -151,8 +150,8 @@ int32 Window::Run()
 		if (timeBeginPeriod(tc.wPeriodMin) != TIMERR_NOERROR) tc.wPeriodMin = 0;
 
 	MSG msg;
-	iLastTime = timeGetTime();
-	//the message loop
+	mLastTime = timeGetTime();
+	//the game loop
 	do
 	{ 
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) 
@@ -162,11 +161,11 @@ int32 Window::Run()
 		}
 		else
 		{
-			MsgWaitForMultipleObjects(0, NULL, 1, iPeriod, QS_ALLINPUT);
-			Int32 tm = timeGetTime(), dTime = tm - iLastTime;
-			if (dTime >= iPeriod) 
+			MsgWaitForMultipleObjects(0, NULL, 1, mPeriod, QS_ALLINPUT);
+			int32 tm = timeGetTime(), dTime = tm - mLastTime;
+			if (dTime >= mPeriod) 
 			{
-				iLastTime = tm;
+				mLastTime = tm;
 				OnTimer(dTime);  
 			}
 		}
@@ -175,20 +174,20 @@ int32 Window::Run()
 	if (tc.wPeriodMin) timeEndPeriod(tc.wPeriodMin); 
 
 	OnClose();                                                
-	DeleteObject(iWindowBrush);
+	DeleteObject(mWindowBrush);
 	return (int32)msg.wParam;
 }
 
 void Window::Close()
 {
-	SendMessage(iMainHWND, WM_CLOSE, 0, 0);
+	SendMessage(mMainHWND, WM_CLOSE, 0, 0);
 }
 
 void  Window::ClearWindow(Rect  *rect)
 {
 	HRGN  hRgn = (rect) ? CreateRectRgn(rect->X1(), rect->Y1(), rect->X2(), rect->Y2()) : 0;
-	InvalidateRgn(iMainHWND, hRgn, 1);
-	UpdateWindow(iMainHWND);
+	InvalidateRgn(mMainHWND, hRgn, 1);
+	UpdateWindow(mMainHWND);
 	if (hRgn) DeleteObject(hRgn);
 }
 
@@ -196,7 +195,7 @@ Pixel Window::MousePos()
 {
 	POINT mouse = { 0,0 };
 	GetCursorPos(&mouse);
-	ScreenToClient(iMainHWND, &mouse);
+	ScreenToClient(mMainHWND, &mouse);
 	Pixel pos(int32(mouse.x), int32(mouse.y));
 	return pos;
 };
@@ -205,10 +204,10 @@ void Window::Caption(const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	vsprintf(iCaption, format, args);
+	vsprintf(mCaption, format, args);
 
 	unsigned long result;
-	SendMessageTimeout(iMainHWND, WM_SETTEXT, 0, (LPARAM)iCaption, SMTO_ABORTIFHUNG | SMTO_NORMAL, 100, &result);
+	SendMessageTimeout(mMainHWND, WM_SETTEXT, 0, (LPARAM)mCaption, SMTO_ABORTIFHUNG | SMTO_NORMAL, 100, &result);
 
 	va_end(args);
 }
@@ -218,7 +217,7 @@ Pixel Window::ScreenSize()
 	Pixel size;
 	HDC iDC = GetDC(0);
 	size.Set(GetDeviceCaps(iDC, HORZRES), GetDeviceCaps(iDC, VERTRES));
-	ReleaseDC(iMainHWND, iDC);
+	ReleaseDC(mMainHWND, iDC);
 	return size;
 }
 int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lParam)
@@ -229,13 +228,13 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 	static bool cntrlPressed = false;
 	switch (message) {
 	case WM_TIMER:
-		if (iSlowTimer) {
-			int32 tm = timeGetTime(), dTime = tm - iLastTime;
-			if (dTime >= iPeriod) { iLastTime = tm; OnTimer(dTime); } // сработало таймерное событие
+		if (mSlowTimer) {
+			int32 tm = timeGetTime(), dTime = tm - mLastTime;
+			if (dTime >= mPeriod) { mLastTime = tm; OnTimer(dTime); } // сработало таймерное событие
 		}
 		break;
 	case WM_CREATE:
-		iLastTime = timeGetTime();
+		mLastTime = timeGetTime();
 		break;
 	case WM_MOUSEMOVE:
 		OnMouseMove(Pixel(LOWORD(lParam), HIWORD(lParam)));
@@ -310,7 +309,7 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 		break;
 	case WM_SIZE:
 		GetClientRect(iHWND, &rect);                            // get windows sizes:
-		iSize.Set(int32(rect.right - rect.left), int32(rect.bottom - rect.top));
+		mSize.Set(int32(rect.right - rect.left), int32(rect.bottom - rect.top));
 		OnResize();
 		if (wParam == SIZE_RESTORED)
 		{
@@ -324,7 +323,7 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 	case WM_COMMAND:
 		break;
 	case WM_DESTROY://------------------------------------- terminate the program
-		if (iSlowTimer) OnClose();                             // free all memory
+		if (mSlowTimer) OnClose();                             // free all memory
 		PostQuitMessage(0);
 		break;
 	case WM_SYSCOMMAND:
@@ -377,7 +376,7 @@ int Window::CreateGLContext()
 	pfd.cStencilBits = 0;
 	pfd.iLayerType = PFD_MAIN_PLANE;
 	//--------------------------------------------------------------------------------------
-	HDC hDC = GetDC(iMainHWND);
+	HDC hDC = GetDC(mMainHWND);
 	int iPixelFormat = ChoosePixelFormat(hDC, &pfd);
 	if (iPixelFormat == 0)
 	{
@@ -404,7 +403,7 @@ int Window::CreateGLContext()
 		return 0;
 	}
 
-	ReleaseDC(iMainHWND, hDC);
+	ReleaseDC(mMainHWND, hDC);
 	return 1;
 }
 
@@ -413,7 +412,7 @@ void Window::DestroyGLContext()
 	if (mHGLRC == 0) return;
 	HDC hDC = wglGetCurrentDC();
 	wglMakeCurrent(0, 0);
-	ReleaseDC(iMainHWND, hDC);
+	ReleaseDC(mMainHWND, hDC);
 	wglDeleteContext(mHGLRC);
 }
 
@@ -421,7 +420,7 @@ void Window::UpdateContext()
 {
 	glFinish();
 
-	HDC hDC = GetDC(iMainHWND);
+	HDC hDC = GetDC(mMainHWND);
 	SwapBuffers(hDC);
-	ReleaseDC(iMainHWND, hDC);
+	ReleaseDC(mMainHWND, hDC);
 }

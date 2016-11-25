@@ -13,8 +13,6 @@ public:
 
 	void SetSpriteUp(GSprite* sprite) { mSpriteUp = sprite; }
 
-	void SetParamsToNotify(Entity entityToNotify, int actionMask) { mEntityToNotify = entityToNotify; mActionMask = actionMask; }
-
 public: /*signals*/
 	sigslot::signal0<>                 signal_MouseUp;
 	sigslot::signal1<Entity>           signal_MouseUpOnEntity;
@@ -22,9 +20,6 @@ public: /*signals*/
 
 private:
 	GSprite* mSpriteUp;
-
-	Entity mEntityToNotify;
-	int    mActionMask;
 };
 #endif //GMOUSEUPCOMPONENT_H
 

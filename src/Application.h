@@ -19,13 +19,13 @@ public:
 	Application();
 	~Application();
 
-	static  Application* GetInstance() { return _instance; }
-	HWND	GetMainWndHandle()         { return iMainHWND; }
+	static  Application* GetInstance() { return sInstance; }
+	HWND	GetMainWndHandle()         { return mMainHWND; }
 
-	void	screenWidth(int val)  { _screenWidth = val;   }
-	void	screenHeight(int val) { _screenHeight = val;  }
-	int	    screenWidth()         { return _screenWidth;  }
-	int	    screenHeight()        { return _screenHeight; }
+	void	screenWidth(int val)  { mScreenWidth = val;   }
+	void	screenHeight(int val) { mScreenHeight = val;  }
+	int	    screenWidth()         { return mScreenWidth;  }
+	int	    screenHeight()        { return mScreenHeight; }
 
 	
 private:
@@ -45,10 +45,11 @@ private:
 	void onMinimize();										
 	void onMaximize();										
 
-	static Application*	_instance;							
+	static Application*	sInstance;							
 	IGame*           mGame;
-	int 			_screenWidth;								
-	int			    _screenHeight;								
+	int 			mScreenWidth;								
+	int			    mScreenHeight;	
+
 };
 
 #endif

@@ -53,9 +53,9 @@ public:
 
 	void  	setTransform(IGMatrix val) { mMatrix = val; }
 	void	setLineColor(float r, float g, float b);
-	void	setLineColor(UInt32 c);
+	void	setLineColor(uint32 c);
 	void	setFillColor(float r, float g, float b);
-	void	setFillColor(UInt32 c);
+	void	setFillColor(uint32 c);
 
 private:
 	IGMatrix 	           mMatrix;
@@ -64,14 +64,14 @@ private:
 						   
 	std::vector<IGVector3> mVertexData;
 	std::vector<IGVector2> mTextCoordData;
-	std::vector<UInt16>    mIndexesData;
+	std::vector<uint16>    mIndexesData;
 
 	float                  mClearColorR;
 	float                  mClearColorG;
 	float                  mClearColorB;
-	const	UInt32		   BATCHED_VERTEXES_SIZE;
-	UInt32				   mCacheVertIndex;
-	UInt32				   mBatchVertIndex;
+	const	uint32		   BATCHED_VERTEXES_SIZE;
+	uint32				   mCacheVertIndex;
+	uint32				   mBatchVertIndex;
 	int                    mVertexes;
 
 	int			           mCurrentTextureID;

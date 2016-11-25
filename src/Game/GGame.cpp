@@ -28,9 +28,17 @@ void GGame::Create()
 	int i1 = GComponent<GLocationComponent>::GetComponentId();
 	int i2 = GComponent<GRenderableComponent>::GetComponentId();
 	int i3 = GComponent<GAnimationComponent>::GetComponentId();
-	int i4 = GComponent<GActionComponent>::GetComponentId();
 	int i5 = GComponent<GMouseDownEventComponent>::GetComponentId();
 	int i6 = GComponent<GMouseUpEventComponent>::GetComponentId();
+
+
+	size_t size1 = sizeof(GLocationComponent);
+	size_t size2 = sizeof(GRenderableComponent);
+	size_t size3 = sizeof(GAnimationComponent);
+	size_t size4 = sizeof(GMouseDownEventComponent);
+	size_t size5 = sizeof(GMouseUpEventComponent);
+
+	size_t size6 = sizeof(sigslot::has_slots<>);
 
 	GEntityManager* em = GEntityManager::Instance();
 	mSystemManager = GSystemManager::Instatnce();
@@ -69,7 +77,6 @@ void GGame::Create()
 	Entity animation2Entity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(animation2Entity, 200.0f, 300.0f);
 	em->AddComponentsToEntity<GRenderableComponent>(animation2Entity, sprite01);
-	em->AddComponentsToEntity<GActionComponent>(animation2Entity);
 
 	GAnimationComponent* animation2 = em->AddComponentsToEntity<GAnimationComponent>(animation2Entity, 1000 / 60, false);
 

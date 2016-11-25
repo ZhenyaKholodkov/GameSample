@@ -1,14 +1,14 @@
 #include "Application.h"
 
-Application*	Application::_instance = NULL;
+Application*	Application::sInstance = NULL;
 
 Application::Application() :
 	Window(),
 	mGame(NULL),
-	_screenWidth(1024),
-	_screenHeight(768)
+	mScreenWidth(1024),
+	mScreenHeight(768)
 {
-	_instance = this;
+	sInstance = this;
 }
 
 int32 Application::OnCreate()
@@ -18,8 +18,8 @@ int32 Application::OnCreate()
 		return 0;
 	}
 
-	int aScreenWidth = _screenWidth;
-	int aScreenHeight = _screenHeight;
+	int aScreenWidth = mScreenWidth;
+	int aScreenHeight = mScreenHeight;
 
 	int mWidth = (aScreenWidth > aScreenHeight) ? aScreenWidth : aScreenHeight;
 	int mHeight = (aScreenWidth > aScreenHeight) ? aScreenHeight : aScreenWidth;

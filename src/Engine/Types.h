@@ -11,21 +11,20 @@ using namespace std;
 #define WindowMutex "GameMutex"
 #define WindowCaption "Game"
 
+#define MAX_ENTITY_COUNT 3000
+
 #define BIT(x) (1 << (x))   
 #define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
 
 
-typedef signed int int32;
-typedef unsigned int uint32;
-typedef unsigned long ulong32;
-typedef int      Int32;
-typedef unsigned char       uint8;
-typedef unsigned char       UInt8;
-typedef __int64             Int64;
+typedef int           int32;
+typedef __int64       int64;
 
-typedef unsigned short      UInt16;
-typedef unsigned int        UInt32;
-typedef unsigned __int64    UInt64;
+typedef unsigned char    uint8;
+typedef unsigned short   uint16;
+typedef unsigned int     uint32;
+typedef unsigned __int64 uint64;
+typedef unsigned long    ulong32;
 
 typedef uint32 Entity;
 
@@ -49,14 +48,14 @@ public:
 	uint8   b;     //!< 8-bit blue component.
 	uint8   a;     //!< 8-bit alpha component. 
 	void set(uint8 rV, uint8 gV, uint8 bV, uint8 aV) { r = rV;g = gV;b = bV;a = aV; }
-	void set(UInt32 rgba) { *(UInt32*)this = rgba; }
-	UInt32 getColor() { return  *(UInt32*)this;	}
+	void set(uint32 rgba) { *(uint32*)this = rgba; }
+	uint32 getColor() { return  *(uint32*)this;	}
 	IGColor() :r(0), g(0), b(0), a(0) {}
 	IGColor(uint8 red, uint8 green, uint8 blue, uint8 alpha = 0) : r(red), g(green), b(blue), a(alpha) {}
-	IGColor(UInt32 rgba) : r((rgba >> 24) & 0xFF), g((rgba >> 16) & 0xFF), b((rgba >> 8) & 0xFF), a(rgba & 0xFF) {}
-	static UInt32  colorToUintARGB(uint8 r, uint8 g, uint8 b, uint8 a = 0) { return (a << 24) | (r << 16) | (g << 8) | (b); }			     
-	static IGColor uintrgbaToColor(UInt32 col) { return IGColor((col >> 24) & 0xFF, (col >> 16) & 0xFF, (col >> 8) & 0xFF, (col & 0xFF)); }	 
-	static IGColor uintargbToColor(UInt32 col) { return IGColor((col & 0xFF), (col >> 8) & 0xFF, (col >> 16) & 0xFF, ((col >> 24) & 0xFF)); }
+	IGColor(uint32 rgba) : r((rgba >> 24) & 0xFF), g((rgba >> 16) & 0xFF), b((rgba >> 8) & 0xFF), a(rgba & 0xFF) {}
+	static uint32  colorToUintARGB(uint8 r, uint8 g, uint8 b, uint8 a = 0) { return (a << 24) | (r << 16) | (g << 8) | (b); }
+	static IGColor uintrgbaToColor(uint32 col) { return IGColor((col >> 24) & 0xFF, (col >> 16) & 0xFF, (col >> 8) & 0xFF, (col & 0xFF)); }
+	static IGColor uintargbToColor(uint32 col) { return IGColor((col & 0xFF), (col >> 8) & 0xFF, (col >> 16) & 0xFF, ((col >> 24) & 0xFF)); }
 
 };
 
@@ -91,32 +90,34 @@ private:
 struct GPoint
 {
 	float x, y;  
+	
+	bool mWasPressed;
 
-	GPoint() : x(0.0f), y(0.0f) {}
-	GPoint(float aX, float aY) : x(aX), y(aY) {}
+	GPoint() : x(0.0f), y(0.0f), mWasPressed(false) {}
+	GPoint(float aX, float aY) : x(aX), y(aY), mWasPressed(false) {}
 };
 
 struct  Pixel
 {
 	Pixel() {}
-	Pixel(Int32 xx, Int32 yy) { x = xx; y = yy; }
+	Pixel(int32 xx, int32 yy) { x = xx; y = yy; }
 
-	Int32   X() { return x; }                
-	Int32   Y() { return y; }                
-	void   X(Int32 xx) { x = xx; }           
-	void   Y(Int32 yy) { y = yy; }           
+	int32   X() { return x; }                
+	int32   Y() { return y; }                
+	void   X(int32 xx) { x = xx; }           
+	void   Y(int32 yy) { y = yy; }           
 
-	Int32   W() { return x; }                
-	Int32   H() { return y; }                
-	void   W(Int32 w) { x = w; }             
-	void   H(Int32 h) { y = h; }             
+	int32   W() { return x; }                
+	int32   H() { return y; }                
+	void   W(int32 w) { x = w; }             
+	void   H(int32 h) { y = h; }             
 
 	void Set() { x = 0; y = 0; }             
-	void Set(Int32 xx, Int32 yy) { x = xx;  y = yy; }            
+	void Set(int32 xx, int32 yy) { x = xx;  y = yy; }            
 
-	void Shift(Int32 dx, Int32 dy) { x += dx; y += dy; }    
-	void ShiftX(Int32 dx) { x += dx; }                      
-	void ShiftY(Int32 dy) { y += dy; }                      
+	void Shift(int32 dx, int32 dy) { x += dx; y += dy; }    
+	void ShiftX(int32 dx) { x += dx; }                      
+	void ShiftY(int32 dy) { y += dy; }                      
 
 	bool Null() { return x == 0 && y == 0; }     
 
@@ -129,33 +130,33 @@ struct  Pixel
 
 	Pixel operator +  (const Pixel &p) { return Pixel(x + p.x, y + p.y); }
 	Pixel operator -  (const Pixel &p) { return Pixel(x - p.x, y - p.y); }
-	Int32    operator *  (const Pixel &a) { return x*a.x + y*a.y; }
+	int32    operator *  (const Pixel &a) { return x*a.x + y*a.y; }
 	void   operator += (const Pixel &p) { x += p.x;  y += p.y; }
 	void   operator -= (const Pixel &p) { x -= p.x;  y -= p.y; }
 
-	Pixel operator *  (const Int32   &a) { return Pixel(x*a, y*a); }
-	Pixel operator /  (const Int32   &a) { return Pixel(x / a, y / a); }
-	void   operator *= (const Int32   &a) { x *= a;    y *= a; }
-	void   operator /= (const Int32   &a) { x /= a;    y /= a; }
+	Pixel operator *  (const int32   &a) { return Pixel(x*a, y*a); }
+	Pixel operator /  (const int32   &a) { return Pixel(x / a, y / a); }
+	void   operator *= (const int32   &a) { x *= a;    y *= a; }
+	void   operator /= (const int32   &a) { x /= a;    y /= a; }
 
-	Int32 Norm(Pixel p1, Pixel p2)
+	int32 Norm(Pixel p1, Pixel p2)
 	{
-		Pixel dp = p2 - p1, dp0 = *this - p1; Int32 dp2 = dp*dp;
+		Pixel dp = p2 - p1, dp0 = *this - p1; int32 dp2 = dp*dp;
 		if (dp2 == 0) return dp0*dp0; 
 		else {
-			Int32 t = (1000 * (dp0*dp)) / dp2;
+			int32 t = (1000 * (dp0*dp)) / dp2;
 			if (t<0)        return (*this - p1)*(*this - p1);              
 			else if (t>1000)     return (*this - p2)*(*this - p2);         
-			else                return sqrt(dp.x*dp0.y - dp.y*dp0.x) / dp2;
+			else                return (int32)sqrt(dp.x*dp0.y - dp.y*dp0.x) / dp2;
 		}
 	}
 
-	friend Int32 DistManh(Pixel p1, Pixel p2) { return abs(p2.X() - p1.X()) + abs(p2.Y() - p1.Y()); } 
-	friend Int32 DistSqr(Pixel p1, Pixel p2) { return Sqr(p2.X() - p1.X()) + Sqr(p2.Y() - p1.Y()); }  
+	friend int32 DistManh(Pixel p1, Pixel p2) { return abs(p2.X() - p1.X()) + abs(p2.Y() - p1.Y()); } 
+	friend int32 DistSqr(Pixel p1, Pixel p2) { return Sqr(p2.X() - p1.X()) + Sqr(p2.Y() - p1.Y()); }  
 
 	friend class Rect;
 private:
-	Int32 x, y;                                                 
+	int32 x, y;                                                 
 };
 
 class Rect
@@ -163,43 +164,43 @@ class Rect
 public:
 	Rect() {                     }
 	Rect(Pixel pp1, Pixel pp2) { Set(pp1, pp2); }
-	Rect(Int32 x1, Int32 y1, Int32 x2, Int32 y2) { Set(x1, y1, x2, y2); }
+	Rect(int32 x1, int32 y1, int32 x2, int32 y2) { Set(x1, y1, x2, y2); }
 
 	void Set() { x1 = x2 = y1 = y2 = 0; }                   
 	void Set(const Rect  &r) { x1 = r.x1; y1 = r.y1; x2 = r.x2; y2 = r.y2; }
 	void Set(const Pixel &p1, const Pixel &p2) { x1 = p1.x; y1 = p1.x; x2 = p2.x; y2 = p2.x; }
-	void Set(Int32 xx1, Int32 yy1, Int32 xx2, Int32 yy2) { x1 = xx1;  y1 = yy1;  x2 = xx2;  y2 = yy2; }
+	void Set(int32 xx1, int32 yy1, int32 xx2, int32 yy2) { x1 = xx1;  y1 = yy1;  x2 = xx2;  y2 = yy2; }
 
-	Int32   W() { return abs(x2 - x1); }                     
-	Int32   H() { return abs(y2 - y1); }                     
+	int32   W() { return abs(x2 - x1); }                     
+	int32   H() { return abs(y2 - y1); }                     
 	Pixel Size() { return Pixel(W(), H()); }                 
 
 	Pixel P1() { return Pixel(x1, y1); }                    
 	Pixel P2() { return Pixel(x2, y2); }                    
 
-	Int32   X1() { return x1; }                             
-	Int32   Y1() { return y1; }                             
-	Int32   X2() { return x2; }                             
-	Int32   Y2() { return y2; }                             
+	int32   X1() { return x1; }                             
+	int32   Y1() { return y1; }                             
+	int32   X2() { return x2; }                             
+	int32   Y2() { return y2; }                             
 
-	void   X1(Int32 xx1) { x1 = xx1; }                      
-	void   Y1(Int32 yy1) { y1 = yy1; }                      
-	void   X2(Int32 xx2) { x2 = xx2; }                      
-	void   Y2(Int32 yy2) { y2 = yy2; }                      
+	void   X1(int32 xx1) { x1 = xx1; }                      
+	void   Y1(int32 yy1) { y1 = yy1; }                      
+	void   X2(int32 xx2) { x2 = xx2; }                      
+	void   Y2(int32 yy2) { y2 = yy2; }                      
 
-	Int32   LF() { return x1; }                             
-	Int32   RT() { return x2; }                             
-	Int32   UP() { return y1; }                             
-	Int32   DN() { return y2; }                             
+	int32   LF() { return x1; }                             
+	int32   RT() { return x2; }                             
+	int32   UP() { return y1; }                             
+	int32   DN() { return y2; }                             
 
-	void Shift(Int32  dx, Int32  dy) { x1 += dx; x2 += dx; y1 += dy; y2 += dy; } 
+	void Shift(int32  dx, int32  dy) { x1 += dx; x2 += dx; y1 += dy; y2 += dy; } 
 	void MoveTo(Pixel &p) { x2 = p.x + W(); y2 = p.y + H(); x1 = p.x; y1 = p.y; }
-	void MoveTo(Int32 x, Int32 y) { MoveToX(x); MoveToY(y); } 
-	void MoveToX(Int32 x) { x2 = x + W(); x1 = x; } 
-	void MoveToY(Int32 y) { y2 = y + H(); y1 = y; } 
-	void Scale(float sx, float sy) { x2 = Int32(x1 + W()*sx); y2 = Int32(y1 + H()*sy); } 
-	void ScaleC(float sx, float sy) { Int32 x = (x2 + x1) / 2, y = (y2 + y1) / 2; Scale(sx, sy); Center(x, y); }  
-	void Center(Int32 x, Int32 y) { Int32 x0 = x - W() / 2, y0 = y - H() / 2;MoveTo(x0, y0); }  
+	void MoveTo(int32 x, int32 y) { MoveToX(x); MoveToY(y); } 
+	void MoveToX(int32 x) { x2 = x + W(); x1 = x; } 
+	void MoveToY(int32 y) { y2 = y + H(); y1 = y; } 
+	void Scale(float sx, float sy) { x2 = int32(x1 + W()*sx); y2 = int32(y1 + H()*sy); } 
+	void ScaleC(float sx, float sy) { int32 x = (x2 + x1) / 2, y = (y2 + y1) / 2; Scale(sx, sy); Center(x, y); }  
+	void Center(int32 x, int32 y) { int32 x0 = x - W() / 2, y0 = y - H() / 2;MoveTo(x0, y0); }  
 	void Center(Pixel &p) { Center(p.x, p.y); } 
 
 	bool   In(const Pixel &p) { return x1 <= p.x && p.x <= x2 && y1 <= p.y && p.y <= y2; }
@@ -216,8 +217,8 @@ public:
 			Min(r1.x2, r2.x2), Min(r1.y2, r2.y2));
 	}
 private:
-	Int32 x1, y1;                
-	Int32 x2, y2;                
+	int32 x1, y1;                
+	int32 x2, y2;                
 };
 
 

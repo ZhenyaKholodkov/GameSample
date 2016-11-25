@@ -2,7 +2,7 @@
 
 #include "gMouseDownEventComponent.h"
 #include "gMouseUpEventComponent.h"
-#include "gActionComponent.h"
+#include "gMouseMoveEventComponent.h"
 #include "gRenderableComponent.h"
 
 GUserInputSystem::GUserInputSystem()
@@ -50,4 +50,32 @@ void GUserInputSystem::OnMouseUp(GPoint point)
 			upDown->signal_MouseUpNewSprite.emit(entity, upDown->mSpriteUp);
 		}
 	}
+}
+
+void GUserInputSystem::OnMouseMove(GPoint point)
+{
+	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseMoveEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseMoveEventComponent>(); iter++)
+	{
+		Entity entity = (*iter)->first;
+		GMouseMoveEventComponent* moveDown = (*iter)->second;
+
+		if (!moveDown)
+			continue;
+
+		if (mEntityManager->IsInsideEntity(entity, point))
+		{
+			moveDown->signal_MouseMove.emit();
+			moveDown->signal_MouseMoveOnEntity.emit(entity, moveDown->mSpriteMove);
+		}
+	}
+}
+
+void GUserInputSystem::OnKeyUp(uint32 msKey)
+{
+
+}
+
+void GUserInputSystem::OnKeyDown(uint32 msKey)
+{
+
 }

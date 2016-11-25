@@ -59,52 +59,52 @@ struct Window
 	virtual void onMaximize() {};		   
 
 	void   Caption(const char *format, ...);         
-	void   SetFocus() { ::SetFocus(iMainHWND); }     
+	void   SetFocus() { ::SetFocus(mMainHWND); }     
 
-	void   Period(int32 period) { iPeriod = period; }
-	int32  Period() { return iPeriod; }            
-	void   SlowTimer() { iSlowTimer = 1; SetTimer(iMainHWND, 1, Period(), 0); } 
+	void   Period(int32 period) { mPeriod = period; }
+	int32  Period() { return mPeriod; }            
+	void   SlowTimer() { mSlowTimer = 1; SetTimer(mMainHWND, 1, Period(), 0); } 
 
 	int32  Time() { return timeGetTime(); };     
 
 	Pixel  ScreenSize();                                    
 
 	void   Size(int32 w, int32 h);                         
-	Pixel  Size() { return iSize; }                         
+	Pixel  Size() { return mSize; }                         
 	void   Pos(int32 x, int32 y);                          
-	Pixel  Pos() { return iPos; }                           
-	Rect   GetRect() { return Rect(0, 0, iSize.W(), iSize.H()); }
-	int32  Width() { return iSize.X(); }                       
-	int32  Height() { return iSize.Y(); }                      
+	Pixel  Pos() { return mPos; }                           
+	Rect   GetRect() { return Rect(0, 0, mSize.W(), mSize.H()); }
+	int32  Width() { return mSize.X(); }                       
+	int32  Height() { return mSize.Y(); }                      
 
 	Pixel  MousePos();   
-	void   ColorBkground(IGColor c) { iColorBkground = c; }     
+	void   ColorBkground(IGColor c) { mColorBkground = c; }     
 															
 	int32  OnWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static Window* GetInstance();
 
-	HDC   GetHDC() { return GetDC(iMainHWND); }
+	HDC   GetHDC() { return GetDC(mMainHWND); }
 
 	HGLRC GetOpenGlContext() { return mHGLRC; }
 
 protected:
 	static Window* sInstance;
 
-	Pixel  iSize;                                            
-	Pixel  iPos;                                             
+	Pixel  mSize;                                            
+	Pixel  mPos;                                             
 
-	Int32  iPeriod;                                         
-	char   iCaption[1024];                                  
+	int32  mPeriod;                                         
+	char   mCaption[1024];                                  
 
-	IGColor iColorBkground;
-	int32  iSlowTimer;                                    
+	IGColor mColorBkground;
+	int32   mSlowTimer;                                    
 
-	HWND   iMainHWND;                                       
+	HWND   mMainHWND;                                       
 															
-	int32  iWndMode;
-	int32  iLastTime;                                    
-	HBRUSH iWindowBrush;     								
+	int32  mWndMode;
+	int32  mLastTime;                                    
+	HBRUSH mWindowBrush;     								
 	HICON  mIcon;			
 	HGLRC  mHGLRC;											
 };

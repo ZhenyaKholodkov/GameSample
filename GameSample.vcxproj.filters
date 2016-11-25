@@ -35,9 +35,6 @@
     <Filter Include="src\Engine\render">
       <UniqueIdentifier>{64244cd6-b9fe-4ba6-9765-aecfac6b404f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Engine\render\ext">
-      <UniqueIdentifier>{ef7ad102-84ed-4082-86a2-1421e5f91430}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Engine\texture\pngloader">
       <UniqueIdentifier>{62b13d96-5556-4d8e-af85-8fa47d363f71}</UniqueIdentifier>
     </Filter>
@@ -217,14 +214,8 @@
     <ClCompile Include="src\Engine\graphics\gTextureDictinary.cpp">
       <Filter>src\Engine\texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\render\GRender.cpp">
+    <ClCompile Include="src\Engine\render\gRenderManager.cpp">
       <Filter>src\Engine\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\render\IGRender.cpp">
-      <Filter>src\Engine\render</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\render\ext\olOpenGL.cpp">
-      <Filter>src\Engine\render\ext</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\resources\gResource.cpp">
       <Filter>src\Engine\resources</Filter>
@@ -396,23 +387,11 @@
     <ClInclude Include="src\Engine\io\gIOFile.h">
       <Filter>src\Engine\io</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\render\ext\glext.h">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h">
       <Filter>src\Engine\texture</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\render\IGRender.h">
+    <ClInclude Include="src\Engine\render\gRenderManager.h">
       <Filter>src\Engine\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\render\GRender.h">
-      <Filter>src\Engine\render</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\render\ext\wglext.h">
-      <Filter>src\Engine\render\ext</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\render\ext\olOpenGL.h">
-      <Filter>src\Engine\render\ext</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\GDefines.h">
       <Filter>src\Engine</Filter>
@@ -469,9 +448,6 @@
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\components\gMouseUpEventComponent.h">
-      <Filter>src\Engine\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\components\gActionComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\events\gEventManager.h">

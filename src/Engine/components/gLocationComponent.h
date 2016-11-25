@@ -3,7 +3,7 @@
 
 #include "gComponent.h"
 
-class GLocationComponent : public GComponent<GLocationComponent>
+class GLocationComponent : public GComponent<GLocationComponent>, public sigslot::has_slots<>
 {
 public:
 	GLocationComponent() :  mX(0.0f), mY(0.0f), mDefaultX(0.0f), mDefaultY(0.0f) {};
@@ -19,6 +19,12 @@ public:
 
 	float getDefaultX() { return mDefaultX; }
 	float getDefaultY() { return mDefaultY; }
+
+public:/*slots*/
+	void slot_LocationChanged(float x, float y)
+	{
+		setXY(x, y);
+	}
 
 private: 
 	float mX;
