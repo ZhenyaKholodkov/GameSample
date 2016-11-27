@@ -16,9 +16,9 @@ public:
 
 	bool IsPiontInsideWH(GCursor localPoint)
 	{
-		if ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY()) ||
+		if (!mSprite || ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY()) ||
 			(localPoint.x >= mSprite->GetWidth()) || 
-			(localPoint.y >= mSprite->GetHeight()))
+			(localPoint.y >= mSprite->GetHeight())))
 		{
 			return false;
 		}

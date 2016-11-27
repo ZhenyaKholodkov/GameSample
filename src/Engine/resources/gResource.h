@@ -16,7 +16,7 @@ class GResource
 	friend class GResourceDictionary;
 public :
 	GResource(const char* path, ResourceType type);
-	~GResource();
+	virtual ~GResource();
 
 private:
 	GResource*   mNext;

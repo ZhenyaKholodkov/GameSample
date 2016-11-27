@@ -20,8 +20,8 @@ GSystemManager::~GSystemManager()
 
 GSystemManager* GSystemManager::Instatnce()
 {
-	static GSystemManager*  instance= new GSystemManager();
-	return instance;
+	static GSystemManager  instance;
+	return &instance;
 }
 
 uint32 GSystemManager::GetSystemCount()

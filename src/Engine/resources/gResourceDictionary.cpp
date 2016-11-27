@@ -4,8 +4,8 @@
 
 GResourceDictionary* GResourceDictionary::Instance()
 {
-	static GResourceDictionary* instance = new GResourceDictionary();
-	return instance;
+	static GResourceDictionary instance;
+	return &instance;
 }
 
 GResourceDictionary::GResourceDictionary()
@@ -20,10 +20,9 @@ GResourceDictionary::GResourceDictionary()
 
 GResourceDictionary::~GResourceDictionary()
 {
-	while (mChain)
+	for (uint32 i = 0; i < mTableSize; i++)
 	{
-		remove(mChain);
-		SAFE_DELETE(mChain);
+		SAFE_DELETE(mTable[i]);
 	}
 	delete[] mTable;
 }

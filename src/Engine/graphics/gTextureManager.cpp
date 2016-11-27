@@ -28,7 +28,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 		return texture;
 
 	char path[256];
-	strcpy(path, "data/resources/scene1/");
+	strcpy(path, "data/resources/textures/");
 	strcat(path, name);
 
 	unsigned char* data;

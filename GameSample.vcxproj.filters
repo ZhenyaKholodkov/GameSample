@@ -53,20 +53,17 @@
     <Filter Include="src\Engine\systems">
       <UniqueIdentifier>{7bb25c02-25af-4075-91ac-2b0417d3667f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Engine\utils">
-      <UniqueIdentifier>{06459ab9-bc00-4ec6-9177-3bca00c17146}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Engine\entity">
       <UniqueIdentifier>{d4913bcd-095a-43c4-b0eb-7f73f8c9dffb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Engine\events">
-      <UniqueIdentifier>{a6e8e142-5425-47fd-948b-25b4da596dc4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\thirdparty\sigslot">
       <UniqueIdentifier>{ddb80474-614a-444a-ab13-f1c891460785}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Engine\control">
       <UniqueIdentifier>{a20a20c0-fc4b-4132-b1d6-d45ccdbbe1ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\entity\help">
+      <UniqueIdentifier>{06459ab9-bc00-4ec6-9177-3bca00c17146}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -232,9 +229,6 @@
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\utils\gPool.cpp">
-      <Filter>src\Engine\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
@@ -252,9 +246,6 @@
     </ClCompile>
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp">
       <Filter>src\Engine\systems</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\events\gEventManager.cpp">
-      <Filter>src\Engine\events</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\control\gControlManager.cpp">
       <Filter>src\Engine\control</Filter>
@@ -411,9 +402,6 @@
     <ClInclude Include="src\Engine\systems\gRenderSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\utils\gPool.h">
-      <Filter>src\Engine\utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\systems\gBaseSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
@@ -450,12 +438,6 @@
     <ClInclude Include="src\Engine\components\gMouseUpEventComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\events\gEventManager.h">
-      <Filter>src\Engine\events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\events\IEventListener.h">
-      <Filter>src\Engine\events</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\components\gSizeComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
@@ -479,6 +461,9 @@
     </ClInclude>
     <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h">
       <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\entity\help\gPool.h">
+      <Filter>src\Engine\entity\help</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

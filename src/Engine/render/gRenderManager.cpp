@@ -9,8 +9,8 @@
 
 GRenderManager* GRenderManager::Instance()
 {
-	static GRenderManager* instance = new GRenderManager();
-	return instance;
+	static GRenderManager instance;
+	return &instance;
 }
 
 GRenderManager::GRenderManager():

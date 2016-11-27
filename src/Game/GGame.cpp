@@ -108,9 +108,7 @@ void GGame::Create()
 
 	GMouseDownEventComponent* buttonDownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(buttonEntity, spriteButtonDown);
 	GMouseUpEventComponent* buttonUpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(buttonEntity, spriteButtonUp);
-
-	buttonDownEvent->SetParamsToNotify(animation2Entity, ACTIONS::ACTION_BEGIN);
-
+	
 	buttonDownEvent->signal_MouseDownNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
 	buttonUpEvent->signal_MouseUpNewSprite.connect(renderable, &GRenderableComponent::slot_ChangeSprite);
 	buttonUpEvent->signal_MouseUp.connect(moveable, &GMoveableComponent::slot_Move);
@@ -136,21 +134,21 @@ void GGame::Create()
 
 	////////////////test/////////////////
 
-	for (int i = 0; i < 100; i++)
-	{
-		srand(time(0));
-		float randX = (float)(rand() % 1000 + 100);
-		float randY = (float)(rand() % 800 + 80);
-		GSprite* spriteMove = GResManager::Instance()->GetSprite("frame1.png");
-		Entity animationEntity = em->CreateEntity();
-		em->AddComponentsToEntity<GLocationComponent>(animationEntity, randX, randY);
-		em->AddComponentsToEntity<GRenderableComponent>(animationEntity, spriteMove);
-		GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(animationEntity, 500.f, 200.0f, 1000);
-
-		GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, spriteMove);
-		GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, spriteMove);
-
-	}
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	srand(time(0));
+	//	float randX = (float)(rand() % 1000 + 100);
+	//	float randY = (float)(rand() % 800 + 80);
+	//	GSprite* spriteMove = GResManager::Instance()->GetSprite("frame1.png");
+	//	Entity animationEntity = em->CreateEntity();
+	//	em->AddComponentsToEntity<GLocationComponent>(animationEntity, randX, randY);
+	//	em->AddComponentsToEntity<GRenderableComponent>(animationEntity, spriteMove);
+	//	GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(animationEntity, 500.f, 200.0f, 1000);
+	//
+	//	GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, spriteMove);
+	//	GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, spriteMove);
+	//
+	//}
 	////////////////test end///////////////////////////////
 }
 
@@ -161,24 +159,8 @@ void GGame::Update(int dt)
 
 void GGame::LoadResources()
 {
-	char* buf1 = "qwerty";
-	uint32 hash1 = (uint32)(((size_t)buf1) >> 2);
-	int i = 9;
-	char* buf2 = "qwerty";
-	uint32 hash2 = (uint32)(((size_t)buf2) >> 2);
-
 	GResManager* resManager = GResManager::Instance();
-	resManager->LoadResources("data/resources/scene1/res_config.xml");
-	GSprite* sprite = GResManager::Instance()->GetSprite("button1.png");
-	sprite->load();
-	/*
-	Texture* redButtonResFile = new Texture();
-	redButtonResFile->mName = "Button.png";
-	redButtonResFile->mPath = "data/resources";
-	redButtonResFile->mType = ResType::RES_FILE_TEXTURE;
-	resManager->Add(redButtonResFile);
-	resManager->LoadResource(redButtonResFile->mFileId);
-	*/
+	resManager->LoadResources("data/resources/textures/res_config.xml");
 }
 
 void GGame::OnMouseDown(GCursor point)

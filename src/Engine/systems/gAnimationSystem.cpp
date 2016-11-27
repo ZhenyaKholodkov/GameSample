@@ -1,7 +1,6 @@
 #include "gAnimationSystem.h"
 
 #include "gAnimationComponent.h"
-#include "gActionComponent.h"
 
 GAnimationSystem::GAnimationSystem()
 {
@@ -49,27 +48,5 @@ void GAnimationSystem::update(int dt)
 			renderable->SetSprite(animation->mFrames[animation->mCurrentFrame]);
 			animation->mCurrentFrameTime = 0;
 		}
-	}
-}
-
-void GAnimationSystem::ProcessActions(Entity entity)
-{
-	GActionComponent* action = mEntityManager->GetComponent<GActionComponent>(entity);
-	if (!action || !action->DoesContainAnyAction())
-		return;
-
-	GAnimationComponent* animation = mEntityManager->GetComponent<GAnimationComponent>(entity);
-	if (!animation)
-		return;
-
-	if (action->DoesContainAction(ACTIONS::ACTION_BEGIN))
-	{
-		animation->SetState(GAnimationComponent::STATE_RUN);
-		//animation->Reset();
-	}
-	else if (action->DoesContainAction(ACTIONS::ACTION_STOP))
-	{
-		animation->SetState(GAnimationComponent::STATE_WAIT);
-		animation->Reset();
 	}
 }

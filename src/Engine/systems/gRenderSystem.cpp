@@ -26,6 +26,8 @@ void GRenderSystem::update(int dt)
 
 		GLocationComponent* location = mEntityManager->GetComponent<GLocationComponent>(entity);
 		GSprite* sprite = renderable->GetSprite();
+		if (!sprite)
+			continue;
 
 		mRenderer->save();
 		mRenderer->translate(location->getX(), location->getY());

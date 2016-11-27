@@ -3,8 +3,8 @@
 
 GEntityManager* GEntityManager::Instance()
 {
-	static GEntityManager* instance = new GEntityManager();
-	return instance;
+	static GEntityManager instance;
+	return &instance;
 }
 
 GEntityManager::GEntityManager()
@@ -34,6 +34,11 @@ GEntityManager::~GEntityManager()
 		{
 			SAFE_DELETE(component);
 		}
+	}
+
+	for (auto pool : mComponentPools)
+	{
+		delete pool;
 	}
 }
 

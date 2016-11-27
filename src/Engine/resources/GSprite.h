@@ -9,7 +9,7 @@ class GSprite : GResource
 
 public :
 	GSprite(const char* path);
-	~GSprite();
+	virtual ~GSprite();
 
 	int   GetXPos()   { return mXPos;	}
 	int   GetYPos()   { return mYPos;   }

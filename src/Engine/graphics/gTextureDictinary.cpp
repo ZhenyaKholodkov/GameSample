@@ -6,8 +6,8 @@
 
 GTextureDictinary* GTextureDictinary::Instance()
 {
-	static GTextureDictinary* instance = new GTextureDictinary();
-	return instance;
+	static GTextureDictinary instance;
+	return &instance;
 }
 
 GTextureDictinary::GTextureDictinary()

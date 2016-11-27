@@ -13,9 +13,6 @@ public:
 
 	virtual void update(int dt);
 private:
-	void ProcessActions(Entity entity);
-
-private:
 	GEntityManager* mEntityManager;
 };
 

@@ -6,60 +6,13 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-//////////////!!!ResDictionary - realiztion!!!///////////
-ResDictionary::ResDictionary():
-	mEntryCount(0),
-    mTableSize(DefaultTableSize)
-{
-	mTable = new GResFile *[mTableSize];
-	int32 i;
-	for (i = 0; i < mTableSize; i++)
-		mTable[i] = NULL;
-}
-
-ResDictionary::~ResDictionary()
-{
-	delete[] mTable;
-}
-
-void ResDictionary::insert(GResFile* resFile)
-{
-
-}
-int32 ResDictionary::hash(const char* path, const char* file)
-{
-	return ((uint32)((((size_t)path) >> 2) + (((size_t)file) >> 2))) % mTableSize;
-}
-
-GResFile* ResDictionary::find(const char* name, const char* path)
-{
-	return NULL;
-}
-//////////////!!!ResDictionary - end!!!///////////
-
-///////////// !!!Texture !!//////////////////
-Texture::Texture(): mTextureId(-1), mWeight(0), mHeight(0),
-mData(NULL), mDataSize(0)
-{
-}
-
-Texture::~Texture()
-{
-	if (mData)
-	{
-		delete mData;
-	}
-}
-
 //////////////!!!GResManager - realiztion!!!///////////
 GResManager::GResManager() : mMaxFileId(0)
 {
-	mResources.resize(DefaultResourceSize);
 }
 
 GResManager::~GResManager()
 {
-	mResources.clear();
 }
 
 GResManager* GResManager::Instance()
@@ -68,48 +21,9 @@ GResManager* GResManager::Instance()
 	return &instance;
 }
 
-void GResManager::Add(GResFile* resFile)
-{
-	bool foundEmptySlot = false;
-	for (int i = mMaxFileId; i < mResources.size(); i++)
-	{
-		if (!mResources[i])
-		{
-			foundEmptySlot = true;
-			mResources[i] = resFile;
-			resFile->mFileId = i;
-			break;
-		}
-	}
-
-	if (!foundEmptySlot)
-	{
-		mResources.push_back(resFile);
-		resFile->mFileId = (mResources.size() - 1);
-	}
-}
-
 void GResManager::setResDirectory(const char* dir)
 {
 	mResDir = dir; 
-}
-
-GResFile* GResManager::CreateRes(const char* name)
-{
-	return NULL;
-}
-
-bool GResManager::LoadResource(int id)
-{
-	GResFile* resource = mResources[id];
-	std::string path = resource->mPath + "/" + resource->mName;
-	if (resource->mType == RES_FILE_TEXTURE)
-	{
-		Texture* texture = reinterpret_cast<Texture*>(resource);
-		//LoadPngImage(path.c_str(), &texture->mData, &texture->mWeight, &texture->mHeight);
-		//LoadTextureToVRAM(id);
-	}
-	return true;
 }
 
 bool GResManager::LoadImage(const char* path, unsigned char** data, uint32* dataSize)
@@ -129,12 +43,15 @@ GSprite* GResManager::GetSprite(const char* key)
 {
 	GSprite* sprite = static_cast<GSprite*>(GResourceDictionary::Instance()->find(key));
 
+	if (!sprite)
+		return nullptr;
+
 	if (!sprite->IsLoaded())
 		sprite->load();
 
 	return sprite;
 }
-static GSprite* sprite1 = NULL;
+
 bool GResManager::LoadResources(const char* pathToConfig)
 {
 	TiXmlDocument confDocument;
@@ -176,7 +93,6 @@ bool GResManager::LoadResources(const char* pathToConfig)
 			GResourceDictionary::Instance()->insert((GResource*)(sprite));
 
 			spriteData = spriteData->NextSiblingElement();
-			sprite1 = sprite;
 		}
 		atlasTextureData = atlasTextureData->NextSiblingElement();
 	}

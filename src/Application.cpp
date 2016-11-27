@@ -25,9 +25,6 @@ int32 Application::OnCreate()
 	int mWidth = (aScreenWidth > aScreenHeight) ? aScreenWidth : aScreenHeight;
 	int mHeight = (aScreenWidth > aScreenHeight) ? aScreenHeight : aScreenWidth;
 
-	ResDictionary dict;
-	int32 hash1 = dict.hash("/temp/", "image.png");
-	int32 hash2 = dict.hash("/temp/", "image.png");
 	GRenderManager::Instance()->init(mWidth, mHeight);
 
 	mGame = IGame::Instane();
