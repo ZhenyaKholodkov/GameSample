@@ -30,7 +30,8 @@ void GRenderSystem::update(int dt)
 			continue;
 
 		mRenderer->save();
-		mRenderer->translate(location->getX(), location->getY());
+		mRenderer->translate(location->getX(), location->getY(), location->getZ());
+		mRenderer->scale(renderable->getXScale(), renderable->getYScale());
 
 		mRenderer->drawImage(sprite->mTextureHandle.getTextureGLId(), sprite->mTextureHandle.getTextureWidth(), 
 			sprite->mTextureHandle.getTextureHeight(), sprite->GetXPos(), sprite->GetYPos(), sprite->GetWidth(),

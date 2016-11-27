@@ -19,6 +19,8 @@ public:
 		delete[] mData;
 	}
 
+	virtual void destroy(Entity entity) = 0;
+
 	size_t Size() { return mSize; }
 	size_t Capacity() { return mCapacity; }
 
@@ -231,7 +233,7 @@ public:
 		return &(ptrToBlock->mComponent);
 	}
 	
-	void destroy(Entity entity)
+	virtual void destroy(Entity entity)
 	{
 		uint32 index = mIndexes[entity];
 

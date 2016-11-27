@@ -16,6 +16,8 @@
 #include "gMouseMoveEventComponent.h"
 #include "gRenderableComponent.h"
 #include "gMoveableComponent.h"
+#include "gChildComponent.h"
+#include "gParentComponent.h"
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
@@ -27,14 +29,12 @@ public:
 
 	Entity CreateEntity();
 	void   DestroyEntity(Entity entity);
-
-	GBaseComponent* GetComponent(Entity entity, uint32 index);
-
-	vector<Entity>::const_iterator GetActiveEntitiesBegin() { return mActiveEntities.begin(); }
-	vector<Entity>::const_iterator GetActiveEntitiesEnd() { return mActiveEntities.end(); }
-
+	
 	bool IsInsideEntity(Entity entity, GCursor point);
 	void LocalPoint(Entity entity, GCursor& point, GCursor& localPoint);
+
+	void setChildParentRelations(Entity parent, Entity child);
+	void removeParent(Entity child);
 
 public:
 	template<typename C, typename... Args>
@@ -63,7 +63,6 @@ private:
 	uint32 GetComponentCount();
 private:
 	queue<Entity>                   mAvailableEntities;
-	vector<Entity>                  mActiveEntities;
 
 	std::vector<GBasePool*>        mComponentPools;
 };

@@ -11,14 +11,14 @@ using namespace std;
 #define WindowMutex "GameMutex"
 #define WindowCaption "Game"
 
-#define MAX_ENTITY_COUNT 3000
+#define MAX_ENTITY_COUNT 300
 
 #define BIT(x) (1 << (x))   
 #define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
 
 
 typedef int           int32;
-typedef __int64       int64;
+typedef __int64       int64; 
 
 typedef unsigned char    uint8;
 typedef unsigned short   uint16;
@@ -26,7 +26,7 @@ typedef unsigned int     uint32;
 typedef unsigned __int64 uint64;
 typedef unsigned long    ulong32;
 
-typedef uint32 Entity;
+typedef int Entity;
 
 template <class T> inline T    Min(const T &x, const T &y) { return x<y ? x : y; }
 template <class T> inline T    Max(const T &x, const T &y) { return x>y ? x : y; }

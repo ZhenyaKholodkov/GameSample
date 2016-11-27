@@ -88,8 +88,14 @@ bool GResManager::LoadResources(const char* pathToConfig)
 			spriteData->QueryIntAttribute("y", &sprite->mYPos);
 			spriteData->QueryIntAttribute("w", &sprite->mWidth);
 			spriteData->QueryIntAttribute("h", &sprite->mHeight);
-			spriteData->QueryFloatAttribute("pX", &sprite->mPivotX);
-			spriteData->QueryFloatAttribute("pY", &sprite->mPivotY);
+
+			float pivotX = 0.0f;
+			float pivotY = 0.0f; 
+			spriteData->QueryFloatAttribute("pX", &pivotX);
+			spriteData->QueryFloatAttribute("pY", &pivotY);
+			sprite->mPivotX = pivotX * sprite->mWidth;
+			sprite->mPivotY = pivotY * sprite->mHeight;
+
 			GResourceDictionary::Instance()->insert((GResource*)(sprite));
 
 			spriteData = spriteData->NextSiblingElement();

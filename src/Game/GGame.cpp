@@ -46,6 +46,7 @@ void GGame::Create()
 	mSystemManager->RegisterSystem<GAnimationSystem>();
 	mSystemManager->RegisterSystem<GUserInputSystem>();
 	mSystemManager->RegisterSystem<GMoveableSystem>();
+	mSystemManager->RegisterSystem<GScalableSystem>();
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//GSprite* sprite1 = GResManager::Instance()->GetSprite("frame1.png");
@@ -75,7 +76,8 @@ void GGame::Create()
 	GSprite* sprite08 = GResManager::Instance()->GetSprite("08.png");
 	GSprite* sprite09 = GResManager::Instance()->GetSprite("09.png");
 	Entity animation2Entity = em->CreateEntity();
-	em->AddComponentsToEntity<GLocationComponent>(animation2Entity, 200.0f, 300.0f);
+	GLocationComponent* anim2Location = em->AddComponentsToEntity<GLocationComponent>(animation2Entity, 100.0f, 0.0f);
+	anim2Location->setZ(-1.0f);
 	em->AddComponentsToEntity<GRenderableComponent>(animation2Entity, sprite01);
 
 	GAnimationComponent* animation2 = em->AddComponentsToEntity<GAnimationComponent>(animation2Entity, 1000 / 60, false);
@@ -105,6 +107,8 @@ void GGame::Create()
 	Entity buttonEntity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(buttonEntity, 600.0f, 300.0f);
 	GRenderableComponent* renderable = em->AddComponentsToEntity<GRenderableComponent>(buttonEntity, spriteButtonUp);
+	GScalableComponent* scalble = em->AddComponentsToEntity<GScalableComponent>(buttonEntity, 1.0f, 1.0f, 0.0f, 0.0f, 1000);
+	scalble->signal_ScaleChanged.connect(renderable, &GRenderableComponent::slot_ChangeScale);
 
 	GMouseDownEventComponent* buttonDownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(buttonEntity, spriteButtonDown);
 	GMouseUpEventComponent* buttonUpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(buttonEntity, spriteButtonUp);
@@ -132,6 +136,10 @@ void GGame::Create()
 	button2MoveEvent->signal_MouseMovedInEntity.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 	button2MoveEvent->signal_MouseMovedOutEntity.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 
+	button2UpEvent->signal_MouseUp.connect(scalble, &GScalableComponent::slot_Scale);
+	///////////////////////child - parent Test////////////////
+	em->setChildParentRelations(button2Entity, animation2Entity);
+	//em->removeParent(animation2Entity);
 	////////////////test/////////////////
 
 	//for (int i = 0; i < 100; i++)

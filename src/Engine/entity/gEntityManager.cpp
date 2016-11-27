@@ -33,7 +33,6 @@ Entity GEntityManager::CreateEntity()
 {
 	Entity newEntity = mAvailableEntities.front();
 	mAvailableEntities.pop();
-	mActiveEntities.push_back(newEntity);
 
 	return newEntity;
 }
@@ -41,10 +40,9 @@ Entity GEntityManager::CreateEntity()
 void GEntityManager::DestroyEntity(Entity entity)
 {
 	mAvailableEntities.push(entity);
-	for (std::vector<Entity>::const_iterator iter = mActiveEntities.begin(); iter != mActiveEntities.end(); iter++)
+	for (uint32 index = 0; index < GetComponentCount(); ++index)
 	{
-		if ((*iter) == entity)
-			mActiveEntities.erase(iter);
+		mComponentPools[index]->destroy(entity);
 	}
 }
 
@@ -75,4 +73,52 @@ void GEntityManager::LocalPoint(Entity entity, GCursor& point, GCursor& localPoi
 	float c = cosf(ang), s = sinf(ang);
 	localPoint.x = ( c*(point.x - location->getX()) + s*(point.y - location->getY()));
 	localPoint.y = (-s*(point.x - location->getX()) + c*(point.y - location->getY()));
+}
+
+void GEntityManager::removeParent(Entity child)
+{
+	GParentComponent* parentComponent = GetComponent<GParentComponent>(child);
+	if (parentComponent)
+	{
+		Entity parent = parentComponent->getParent();
+		GChildComponent*  childComponent = GetComponent<GChildComponent>(parent);
+
+		parentComponent->setParent(-1);
+		if (childComponent)
+		{
+			childComponent->setChild(-1);
+			GLocationComponent* parentLocation = GetComponent<GLocationComponent>(parent);
+			GLocationComponent* childLocation = GetComponent<GLocationComponent>(child);
+			float newX = childLocation->getX() - parentLocation->getX();
+			float newY = childLocation->getY() - parentLocation->getY();
+			childLocation->setXY(newX, newY);
+			parentLocation->signal_LocationChangedWithDxDy.disconnect(childLocation);
+		}
+	}
+}
+
+void GEntityManager::setChildParentRelations(Entity parent, Entity child)
+{
+	removeParent(child);
+	GLocationComponent* parentLocation = GetComponent<GLocationComponent>(parent);
+	GLocationComponent* childLocation = GetComponent<GLocationComponent>(child);
+
+	GParentComponent* parentComponent = GetComponent<GParentComponent>(child);
+	if (!parentComponent)
+	{
+		parentComponent = AddComponentsToEntity<GParentComponent>(child);
+	}
+	parentComponent->setParent(parent);
+
+	GChildComponent* childComponent = GetComponent<GChildComponent>(parent);
+	if (!childComponent)
+	{
+		childComponent = AddComponentsToEntity<GChildComponent>(parent);
+	}
+	childComponent->setChild(child);
+
+	float newX = childLocation->getX() + parentLocation->getX();
+	float newY = childLocation->getY() + parentLocation->getY();
+	childLocation->setXY(newX, newY);
+	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
 }

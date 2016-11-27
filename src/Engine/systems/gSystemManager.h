@@ -5,6 +5,7 @@
 #include "gRenderSystem.h"
 #include "gMoveableSystem.h"
 #include "gUserInputSystem.h"
+#include "gScalableSystem.h"
 
 //template<class Component>
 class GSystemManager

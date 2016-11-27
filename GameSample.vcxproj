@@ -145,6 +145,7 @@
     <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gMoveableSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gScalableSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
+    <ClInclude Include="src\Engine\components\gChildComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyDownEventComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h" />
@@ -200,7 +202,9 @@
     <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseUpEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMoveableComponent.h" />
+    <ClInclude Include="src\Engine\components\gParentComponent.h" />
     <ClInclude Include="src\Engine\components\gRenderableComponent.h" />
+    <ClInclude Include="src\Engine\components\gScalableComponent.h" />
     <ClInclude Include="src\Engine\components\gSizeComponent.h" />
     <ClInclude Include="src\Engine\control\gControlManager.h" />
     <ClInclude Include="src\Engine\entity\gEntityManager.h" />
@@ -221,6 +225,7 @@
     <ClInclude Include="src\Engine\systems\gAnimationSystem.h" />
     <ClInclude Include="src\Engine\systems\gBaseSystem.h" />
     <ClInclude Include="src\Engine\systems\gMoveableSystem.h" />
+    <ClInclude Include="src\Engine\systems\gScalableSystem.h" />
     <ClInclude Include="src\Engine\systems\gUserInputSystem.h" />
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystem.h" />

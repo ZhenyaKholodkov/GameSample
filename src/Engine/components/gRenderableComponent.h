@@ -7,12 +7,17 @@
 class GRenderableComponent : public GComponent<GRenderableComponent>, public sigslot::has_slots<>
 {
 public:
-	GRenderableComponent() : mSprite(nullptr) {};
-	GRenderableComponent(GSprite* sprite) : mSprite(sprite) {};
+	GRenderableComponent() : mSprite(nullptr), mCurrentXScale(0.0f), mCurrentYScale(0.0f) {};
+	GRenderableComponent(GSprite* sprite, float currentScalem = 1.0f, float currentScale = 1.0f) : mSprite(sprite), mCurrentXScale(currentScalem), mCurrentYScale(currentScale) {};
 	virtual ~GRenderableComponent() {};
 
 	GSprite* GetSprite() { return mSprite;	}
 	void SetSprite(GSprite* sprite) { mSprite = sprite; }
+
+	float getXScale() { return mCurrentXScale; }
+	void  setXScale(float xScale) { mCurrentXScale = xScale; }
+	float getYScale() { return mCurrentYScale; }
+	void  setYScale(float yScale) { mCurrentYScale = yScale; }
 
 	bool IsPiontInsideWH(GCursor localPoint)
 	{
@@ -27,9 +32,16 @@ public:
 
 public:/*slots*/
 	void slot_ChangeSprite(Entity entity, GSprite* newSprite) { mSprite = newSprite; };
+	void slot_ChangeScale(float xScale, float yScale) 
+	{
+		mCurrentXScale = xScale; mCurrentYScale = yScale;
+	};
 
 private:
 	GSprite* mSprite;
+
+	float mCurrentXScale;
+	float mCurrentYScale;
 };
 
 #endif //GRENDERABLE_COMPONENT_H
