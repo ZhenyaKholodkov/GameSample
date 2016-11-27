@@ -87,14 +87,14 @@ private:
 };
 
 
-struct GPoint
+struct GCursor
 {
 	float x, y;  
 	
 	bool mWasPressed;
 
-	GPoint() : x(0.0f), y(0.0f), mWasPressed(false) {}
-	GPoint(float aX, float aY) : x(aX), y(aY), mWasPressed(false) {}
+	GCursor() : x(0.0f), y(0.0f), mWasPressed(false) {}
+	GCursor(float aX, float aY) : x(aX), y(aY), mWasPressed(false) {}
 };
 
 struct  Pixel

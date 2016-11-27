@@ -13,8 +13,9 @@ public:
 	virtual void Create() = 0;
 	virtual void Update(int dt) = 0;
 
-	virtual void OnMouseDown(GPoint point) = 0;
-	virtual void OnMouseUp(GPoint point) = 0;
+	virtual void OnMouseDown(GCursor point) = 0;
+	virtual void OnMouseUp(GCursor point) = 0;
+	virtual void OnMouseMove(GCursor point) = 0;
 };
 
 #endif

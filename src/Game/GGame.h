@@ -16,8 +16,9 @@ public:
 	virtual void Create();
 	virtual void Update(int dt);
 
-	virtual void OnMouseDown(GPoint point);
-	virtual void OnMouseUp(GPoint point);
+	virtual void OnMouseDown(GCursor point);
+	virtual void OnMouseUp(GCursor point);
+	virtual void OnMouseMove(GCursor point);
 
 	void LoadResources();
 private:

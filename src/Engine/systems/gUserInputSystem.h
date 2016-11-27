@@ -13,9 +13,9 @@ public:
 
 	virtual void update(int dt) {};
 
-	void OnMouseDown(GPoint point);
-	void OnMouseUp(GPoint point);
-	void OnMouseMove(GPoint point);
+	void OnMouseDown(GCursor point);
+	void OnMouseUp(GCursor point);
+	void OnMouseMove(GCursor point);
 	void OnKeyUp(uint32 msKey);
 	void OnKeyDown(uint32 msKey);
 

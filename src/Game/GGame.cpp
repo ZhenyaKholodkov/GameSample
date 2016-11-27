@@ -118,6 +118,7 @@ void GGame::Create()
 
 	GSprite* sprite2ButtonDown = GResManager::Instance()->GetSprite("btn_2.png");
 	GSprite* sprite2ButtonUp = GResManager::Instance()->GetSprite("btn_3.png");
+	GSprite* sprite2ButtonMove = GResManager::Instance()->GetSprite("btn_4.png");
 
 	Entity button2Entity = em->CreateEntity();
 	em->AddComponentsToEntity<GLocationComponent>(button2Entity, 400.0f, 600.0f);
@@ -125,10 +126,13 @@ void GGame::Create()
 
 	GMouseDownEventComponent* button2DownEvent = em->AddComponentsToEntity<GMouseDownEventComponent>(button2Entity, sprite2ButtonDown);
 	GMouseUpEventComponent* button2UpEvent = em->AddComponentsToEntity<GMouseUpEventComponent>(button2Entity, sprite2ButtonUp);
+	GMouseMoveEventComponent* button2MoveEvent = em->AddComponentsToEntity<GMouseMoveEventComponent>(button2Entity, sprite2ButtonMove, sprite2ButtonUp);
 
 	button2DownEvent->signal_MouseDown.connect(animation2, &GAnimationComponent::slot_RunAnimation);
 	button2DownEvent->signal_MouseDownNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 	button2UpEvent->signal_MouseUpNewSprite.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
+	button2MoveEvent->signal_MouseMovedInEntity.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
+	button2MoveEvent->signal_MouseMovedOutEntity.connect(renderable2, &GRenderableComponent::slot_ChangeSprite);
 
 	////////////////test/////////////////
 
@@ -177,14 +181,20 @@ void GGame::LoadResources()
 	*/
 }
 
-void GGame::OnMouseDown(GPoint point)
+void GGame::OnMouseDown(GCursor point)
 {
 	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
 	inputSystem->OnMouseDown(point);
 }
 
-void GGame::OnMouseUp(GPoint point)
+void GGame::OnMouseUp(GCursor point)
 {
 	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
 	inputSystem->OnMouseUp(point);
+}
+
+void GGame::OnMouseMove(GCursor point)
+{
+	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	inputSystem->OnMouseMove(point);
 }

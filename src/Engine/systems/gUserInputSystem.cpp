@@ -14,7 +14,7 @@ GUserInputSystem::~GUserInputSystem()
 {
 }
 
-void GUserInputSystem::OnMouseDown(GPoint point)
+void GUserInputSystem::OnMouseDown(GCursor point)
 {
 	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseDownEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseDownEventComponent>(); iter++)
 	{
@@ -33,7 +33,7 @@ void GUserInputSystem::OnMouseDown(GPoint point)
 	}
 }
 
-void GUserInputSystem::OnMouseUp(GPoint point)
+void GUserInputSystem::OnMouseUp(GCursor point)
 {
 	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseUpEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseUpEventComponent>(); iter++)
 	{
@@ -52,20 +52,35 @@ void GUserInputSystem::OnMouseUp(GPoint point)
 	}
 }
 
-void GUserInputSystem::OnMouseMove(GPoint point)
+void GUserInputSystem::OnMouseMove(GCursor point)
 {
 	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseMoveEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseMoveEventComponent>(); iter++)
 	{
 		Entity entity = (*iter)->first;
-		GMouseMoveEventComponent* moveDown = (*iter)->second;
+		GMouseMoveEventComponent* moveMove = (*iter)->second;
 
-		if (!moveDown)
+		if (!moveMove)
 			continue;
 
 		if (mEntityManager->IsInsideEntity(entity, point))
 		{
-			moveDown->signal_MouseMove.emit();
-			moveDown->signal_MouseMoveOnEntity.emit(entity, moveDown->mSpriteMove);
+			if (point.mWasPressed) 
+			{
+				moveMove->signal_PressedMouseMovedIn.emit(point.x, point.y);
+			}
+			moveMove->signal_MouseMovedInEntity.emit(entity, moveMove->mSpriteMoveIn);
+			moveMove->mMovedIn = true;
+		}
+		else
+		{
+			if (moveMove->mMovedIn)
+			{
+				if (point.mWasPressed)
+				{
+					moveMove->signal_PressedMouseMovedOut.emit(point.x, point.y);
+				}
+				moveMove->signal_MouseMovedOutEntity.emit(entity, moveMove->mSpriteMoveOut);
+			}
 		}
 	}
 }

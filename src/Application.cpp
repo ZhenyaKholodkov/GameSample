@@ -6,7 +6,8 @@ Application::Application() :
 	Window(),
 	mGame(NULL),
 	mScreenWidth(1024),
-	mScreenHeight(768)
+	mScreenHeight(768), 
+	mCurrentMousePressed(false)
 {
 	sInstance = this;
 }
@@ -55,42 +56,46 @@ void Application::OnKeyUp(uint32 msKey)
 
 void Application::OnLMouseDown(Pixel  mouse_pos)
 {
-	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	mCurrentMousePressed = true;
+
+	GCursor point;
+	point.x = (float)mouse_pos.X();
+	point.y = (float)mouse_pos.Y();
+	point.mWasPressed = mCurrentMousePressed;
+
 	mGame->OnMouseDown(point);
 }
 
 void Application::OnLMouseUp(Pixel  mouse_pos)
 {
-	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	mCurrentMousePressed = false;
+
+	GCursor point; 
+	point.x = (float)mouse_pos.X();
+	point.y = (float)mouse_pos.Y();
+	point.mWasPressed = mCurrentMousePressed;
+
 	mGame->OnMouseUp(point);
 }
 
 void Application::OnMouseMove(Pixel mouse_pos)
 {
-	static int border = 10;
-	//if (_currMouse.press)
-	//{
-	//	if (														
-	//		(_currMouse.x<border) ||
-	//		(_currMouse.y<border) ||
-	//		(_currMouse.x>(_ctx->width() - border)) ||
-	//		(_currMouse.y>(_ctx->height() - border))
-	//		)
-	//	{
-	//		_currMouse.press = false;
-	//	}
-	//	else
-	//}
+	GCursor point;
+	point.x = (float)mouse_pos.X();
+	point.y = (float)mouse_pos.Y();
+	point.mWasPressed = mCurrentMousePressed;
+
+	mGame->OnMouseMove(point);
 }
 
 void Application::OnMouseWheelDown(Pixel mouse_pos)
 {
-	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	GCursor point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
 }
 
 void Application::OnMouseWheelUp(Pixel mouse_pos)
 {
-	GPoint point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
+	GCursor point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
 }
 
 void Application::onActivate()

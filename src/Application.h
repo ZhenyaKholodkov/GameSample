@@ -30,7 +30,7 @@ public:
 	
 private:
 	int32  OnCreate();                                      
-	void OnClose();                                         
+	void   OnClose();                                         
 
 	void OnTimer(int32 dTime);                              
 	void OnMouseMove(Pixel mouse_pos);                      

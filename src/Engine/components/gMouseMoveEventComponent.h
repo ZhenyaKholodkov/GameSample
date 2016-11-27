@@ -8,18 +8,24 @@ class GMouseMoveEventComponent : public GComponent<GMouseMoveEventComponent>
 {
 	friend class GUserInputSystem;
 public:
-	GMouseMoveEventComponent(GSprite* spriteUp) : mSpriteMove(spriteUp) {};
+	GMouseMoveEventComponent(GSprite* spriteIn, GSprite* spriteOut) : mSpriteMoveIn(spriteIn), mSpriteMoveOut(spriteOut), mMovedIn(false) {};
 	virtual ~GMouseMoveEventComponent() {};
 
-	void SetSpriteUp(GSprite* sprite) { mSpriteMove = sprite; }
+	void SetSpriteMoveIn(GSprite* sprite) { mSpriteMoveIn = sprite; }
+	void SetSpriteMoveOut(GSprite* sprite) { mSpriteMoveOut = sprite; }
 
 public: /*signals*/
-	sigslot::signal2<float, float>     signal_MouseMove;
-	sigslot::signal2<float, float>     signal_PressedMouseMove;
-	sigslot::signal2<Entity, GSprite*> signal_MouseMoveOnEntity;
+	//sigslot::signal2<float, float>     signal_MouseMove;
+	sigslot::signal2<float, float>     signal_PressedMouseMovedIn;
+	sigslot::signal2<float, float>     signal_PressedMouseMovedOut;
+	sigslot::signal2<Entity, GSprite*> signal_MouseMovedInEntity;
+	sigslot::signal2<Entity, GSprite*> signal_MouseMovedOutEntity;
 
 private:
-	GSprite* mSpriteMove;
+	GSprite* mSpriteMoveIn;
+	GSprite* mSpriteMoveOut;
+
+	bool     mMovedIn;
 };
 #endif //GMOUSEMOVECOMPONENT_H
 

@@ -14,6 +14,7 @@
 #include "gActionComponent.h"
 #include "gMouseDownEventComponent.h"
 #include "gMouseUpEventComponent.h"
+#include "gMouseMoveEventComponent.h"
 #include "gRenderableComponent.h"
 #include "gMoveableComponent.h"
 
@@ -33,8 +34,8 @@ public:
 	vector<Entity>::const_iterator GetActiveEntitiesBegin() { return mActiveEntities.begin(); }
 	vector<Entity>::const_iterator GetActiveEntitiesEnd() { return mActiveEntities.end(); }
 
-	bool IsInsideEntity(Entity entity, GPoint point);
-	void LocalPoint(Entity entity, GPoint& point, GPoint& localPoint);
+	bool IsInsideEntity(Entity entity, GCursor point);
+	void LocalPoint(Entity entity, GCursor& point, GCursor& localPoint);
 
 public:
 	template<typename C, typename... Args>

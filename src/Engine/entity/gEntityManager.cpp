@@ -70,21 +70,21 @@ uint32 GEntityManager::GetComponentCount()
 	return GBaseComponent::s_component_counter;
 }
 
-bool GEntityManager::IsInsideEntity(Entity entity, GPoint point)
+bool GEntityManager::IsInsideEntity(Entity entity, GCursor point)
 {
 	if (!DoesHaveComponent<GLocationComponent>(entity) ||
 		!DoesHaveComponent<GRenderableComponent>(entity))
 	{
 		return false;
 	}
-	GPoint localPoint;       //localized relativly the entity
+	GCursor localPoint;       //localized relativly the entity
 	LocalPoint(entity, point, localPoint);
 
 	GRenderableComponent* renderable = GetComponent<GRenderableComponent>(entity);
 	return renderable->IsPiontInsideWH(localPoint);
 }
 
-void GEntityManager::LocalPoint(Entity entity, GPoint& point, GPoint& localPoint)
+void GEntityManager::LocalPoint(Entity entity, GCursor& point, GCursor& localPoint)
 {
 	GLocationComponent* location = GetComponent<GLocationComponent>(entity);
 
