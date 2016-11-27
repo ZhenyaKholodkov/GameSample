@@ -63,18 +63,16 @@ private:
 	uint32 GetComponentCount();
 private:
 	queue<Entity>                   mAvailableEntities;
-
-	vector<vector<GBaseComponent*>> mComponents; // заменить на другой контейнер
 	vector<Entity>                  mActiveEntities;
 
-	std::vector<GBasePool*> mComponentPools;
+	std::vector<GBasePool*>        mComponentPools;
 };
 
 template<typename C, typename... Args>
 C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 {
 	uint32 index = GComponent<C>::GetComponentId();
-	/////////////////////////////////////////////////////////////////////////
+
 	GComponentPool<C>* componentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
 	if (componentPool == nullptr)
 	{
@@ -82,12 +80,6 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 		mComponentPools[index] = static_cast<GBasePool*>(componentPool);
 	}
 	C* new_component = componentPool->create(entity, std::forward<Args>(args) ...);
-	//////////////////////////////////////////////////////////////////////////
-	/*C* new_component = new C(std::forward<Args>(args) ...);
-	if (!mComponents[index][entity])
-	{
-		mComponents[index][entity] = static_cast<GBaseComponent*>(new_component);
-	}*/
 	return new_component;
 }
 
