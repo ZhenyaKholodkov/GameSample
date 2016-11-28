@@ -23,6 +23,8 @@ void GRenderSystem::update(int dt)
 	{
 		Entity entity = (*iter)->first;
 		GRenderableComponent* renderable = (*iter)->second;
+		if (!renderable->isVisible())
+			continue;
 
 		GLocationComponent* location = mEntityManager->GetComponent<GLocationComponent>(entity);
 		GSprite* sprite = renderable->GetSprite();

@@ -7,8 +7,10 @@
 class GRenderableComponent : public GComponent<GRenderableComponent>, public sigslot::has_slots<>
 {
 public:
-	GRenderableComponent() : mSprite(nullptr), mCurrentXScale(0.0f), mCurrentYScale(0.0f) {};
-	GRenderableComponent(GSprite* sprite, float currentScalem = 1.0f, float currentScale = 1.0f) : mSprite(sprite), mCurrentXScale(currentScalem), mCurrentYScale(currentScale) {};
+	GRenderableComponent() : mSprite(nullptr), mCurrentXScale(0.0f), mCurrentYScale(0.0f), mIsVisible(true){};
+	GRenderableComponent(GSprite* sprite, float currentScalem = 1.0f, float currentScale = 1.0f) :
+		mSprite(sprite), mCurrentXScale(currentScalem), mCurrentYScale(currentScale), mIsVisible(true) {};
+
 	virtual ~GRenderableComponent() {};
 
 	GSprite* GetSprite() { return mSprite;	}
@@ -18,6 +20,9 @@ public:
 	void  setXScale(float xScale) { mCurrentXScale = xScale; }
 	float getYScale() { return mCurrentYScale; }
 	void  setYScale(float yScale) { mCurrentYScale = yScale; }
+
+	bool isVisible() { return mIsVisible; }
+	void setVisible(bool isVisible) { mIsVisible = isVisible; }
 
 	bool IsPiontInsideWH(GCursor localPoint)
 	{
@@ -42,6 +47,8 @@ private:
 
 	float mCurrentXScale;
 	float mCurrentYScale;
+
+	bool mIsVisible;
 };
 
 #endif //GRENDERABLE_COMPONENT_H

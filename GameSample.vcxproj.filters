@@ -65,6 +65,12 @@
     <Filter Include="src\Engine\entity\help">
       <UniqueIdentifier>{06459ab9-bc00-4ec6-9177-3bca00c17146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Engine\components\mechanics">
+      <UniqueIdentifier>{ecbc3902-5e71-49f9-8ef3-bf38f00538ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\systems\mechanics">
+      <UniqueIdentifier>{94d9b81e-5c4f-481b-992f-7bb37a00006d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -255,6 +261,9 @@
     </ClCompile>
     <ClCompile Include="src\Engine\systems\gScalableSystem.cpp">
       <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\mechanics\g2048MechanicSystem.cpp">
+      <Filter>src\Engine\systems\mechanics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -479,6 +488,12 @@
     </ClInclude>
     <ClInclude Include="src\Engine\systems\gScalableSystem.h">
       <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\mechanics\g2048MechanicComponent.h">
+      <Filter>src\Engine\components\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\mechanics\g2048MechanicSystem.h">
+      <Filter>src\Engine\systems\mechanics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
