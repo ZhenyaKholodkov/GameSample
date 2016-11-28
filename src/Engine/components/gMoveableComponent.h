@@ -17,7 +17,7 @@ public:
 	void  SetYDestination(float yDest) { mYDestination = yDest; }
 
 	int   GetMvingTimne() { return mMovingTime; }
-	void  SetMvingTimne(int time) { mMovingTime = time; }
+	void  SetMovingTime(int time) { mMovingTime = time; }
 
 	void Reset() { mCurrentTime = 0; }
 

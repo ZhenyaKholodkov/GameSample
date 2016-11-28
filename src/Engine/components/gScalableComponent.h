@@ -7,6 +7,12 @@ class GScalableComponent : public GComponent<GScalableComponent>, public sigslot
 {
 	friend class GScalableSystem;
 public:
+	enum
+	{
+		STATE_WAIT = BIT(1),
+		STATE_SCALE = BIT(2)
+	};
+
 	GScalableComponent(float beginXScale, float beginYScale, float endXScale, float endYScale, float time)
 		: mBeginXScale(beginXScale), mBeginYScale(beginYScale), mEndXScale(endXScale), mEndYScale(endYScale),
 		  mTime(time), mCurrentTime(0), mState(STATE_WAIT)
@@ -25,7 +31,13 @@ public:
 		return mBeginYScale + mDSaleY * mCurrentTime / mTime;
 	}
 
+	void setBeginXScale(float scale) { mBeginXScale = scale; }
+	void setBeginYScale(float scale) { mBeginYScale = scale; }
+	void setEndXScale(float scale){ mEndXScale = scale; }
+	void setEndYScale(float scale){ mEndYScale = scale; }
+
 	void Reset() { mCurrentTime = 0; }
+	void SetState(uint32 state) { mState = state; }
 
 public:/*slots*/
 	void slot_Scale()
@@ -34,16 +46,8 @@ public:/*slots*/
 	}
 public: /*signals*/
 	sigslot::signal2<float, float>                 signal_ScaleChanged;
+	sigslot::signal0<>                 signal_ScaleChangingFinished;
 
-private:
-	void SetState(uint32 state) { mState = state; }
-
-private:
-	enum
-	{
-		STATE_WAIT  = BIT(1),
-		STATE_SCALE = BIT(2)
-	};
 private: 
 	float mBeginXScale;
 	float mBeginYScale;

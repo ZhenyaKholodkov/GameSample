@@ -11,3 +11,10 @@ ulong32 get_hash_jbd2(const char* str)
 	}
 	return hash;
 }
+
+int randInt(int minVal, int maxVal)
+{
+	int diff = (maxVal - minVal + 1);
+	if (!diff) return 0;
+	return (minVal + (rand() % diff));
+}

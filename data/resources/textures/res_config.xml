@@ -44,4 +44,23 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="btn_3.png" x="131" y="0" w="131" h="129" pX="0.5" pY="0.5"/>
     <sprite n="btn_4.png" x="262" y="0" w="131" h="129" pX="0.5" pY="0.5"/>
 </TextureAtlas>
+<TextureAtlas imagePath="texture_main.png" width="678" height="780">
+    <sprite n="field.png" x="0" y="0" w="660" h="620" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_down.png" x="0" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_move.png" x="300" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_up.png" x="0" y="680" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="title.png" x="300" y="680" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="title_2.png" x="400" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_4.png" x="408" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_8.png" x="416" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_16.png" x="424" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_32.png" x="442" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_64.png" x="460" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_128.png" x="478" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_256.png" x="518" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_512.png" x="558" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_1024.png" x="598" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
+    <sprite n="title_2048.png" x="638" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
+</TextureAtlas>
+
 </TextureAtlases>

@@ -6,6 +6,7 @@
 #include "gMoveableSystem.h"
 #include "gUserInputSystem.h"
 #include "gScalableSystem.h"
+#include "g2048MechanicSystem.h"
 
 //template<class Component>
 class GSystemManager

@@ -9,16 +9,22 @@ class G2048MechanicComponent : public GComponent<G2048MechanicComponent>
 public:
 	G2048MechanicComponent(uint32 rows, uint32 cols) : mRows(rows), mCols(cols)
 	{
+		mTitleSprites.resize(10); //2048
 		mTitles = new Entity*[mRows];
 		for (uint32 i = 0; i < mRows; ++i)
 		{
 			mTitles[i] = new Entity[mCols];
 		}
-		mTitleSprites.resize(10); //2048
 	};
 	virtual ~G2048MechanicComponent() 
 	{
-		GEntityManager::Instance()->DestroyEntity();
+		//sfor (uint32 i = 0; i < mRows; ++i)
+		//s{
+		//s	for (uint32 j = 0; j < mCols; ++j)
+		//s	{
+		//s		GEntityManager::Instance()->DestroyEntity(mTitles[i][j]);
+		//s	}
+		//s}
 	};
 
 	void setTitleNumberSprite(uint32 exponent, GSprite* sprite)
@@ -31,8 +37,8 @@ public:
 		mTitleBackground = sprite;
 		mFieldWidth = mRows * sprite->GetWidth();
 		mFieldHieght = mCols * sprite->GetHeight();
-		mTitleWidth = sprite->GetWidth() / 2;
-		mTitleHieght = sprite->GetHeight() / 2;
+		mTitleWidth = sprite->GetWidth();
+		mTitleHieght = sprite->GetHeight();
 	}
 
 private: 
@@ -47,6 +53,8 @@ private:
 
 	GSprite* mTitleBackground;
 	std::vector<GSprite*> mTitleSprites; //!< 
+
+	std::vector<Entity> mAvailableEntities;
 
 	Entity** mTitles;
 };

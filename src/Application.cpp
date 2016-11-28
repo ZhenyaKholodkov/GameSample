@@ -27,6 +27,8 @@ int32 Application::OnCreate()
 
 	GRenderManager::Instance()->init(mWidth, mHeight);
 
+	srand(time(0));
+
 	mGame = IGame::Instane();
 	mGame->Create();
 	return 1;

@@ -32,6 +32,7 @@ void GScalableSystem::update(int dt)
 		else
 		{
 			scalable->signal_ScaleChanged(scalable->mEndXScale, scalable->mEndYScale);
+			scalable->signal_ScaleChangingFinished();
 			scalable->SetState(GScalableComponent::STATE_WAIT);
 		}
 	}

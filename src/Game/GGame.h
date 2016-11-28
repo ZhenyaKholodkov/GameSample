@@ -22,6 +22,8 @@ public:
 
 	void LoadResources();
 private:
+	void Create2048Game();
+private:
 	GSystemManager* mSystemManager;
 };
 

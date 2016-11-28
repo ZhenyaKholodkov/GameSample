@@ -6,20 +6,29 @@
 #include "g2048MechanicComponent.h"
 #include "gScalableComponent.h"
 
-class G2048MechanicSystem : public GSystem<G2048MechanicSystem>
+class G2048MechanicSystem : public GSystem<G2048MechanicSystem>, public sigslot::has_slots<>
 {
 public:
 	G2048MechanicSystem();
 	~G2048MechanicSystem();
 
 	void createField();
+	void runGame();
+
+	void showRandomTitle(G2048MechanicComponent* component);
 
 	virtual void update(int dt);
 
+public:/*signals*/
+	sigslot::signal0<> signal_GameLost;
+	sigslot::signal0<> signal_GameWon;
+
+public:/*slots*/
+	void slot_MoveLeft();
+
 private:
-	Entity createTitle(uint32 row, uint32 col, Entity self);
+	Entity createTitle(uint32 row, uint32 col, Entity self, G2048MechanicComponent* m2048Component);
 private:
-	G2048MechanicComponent* m2048Component;
 	GEntityManager* mEntityManager;
 };
 

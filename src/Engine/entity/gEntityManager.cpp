@@ -39,6 +39,9 @@ Entity GEntityManager::CreateEntity()
 
 void GEntityManager::DestroyEntity(Entity entity)
 {
+	if (entity < 0)
+		return;
+
 	mAvailableEntities.push(entity);
 	for (uint32 index = 0; index < GetComponentCount(); ++index)
 	{
@@ -121,4 +124,12 @@ void GEntityManager::setChildParentRelations(Entity parent, Entity child)
 	float newY = childLocation->getY() + parentLocation->getY();
 	childLocation->setXY(newX, newY);
 	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
+
+	GRenderableComponent* parentRenderable = GetComponent<GRenderableComponent>(parent);
+	GRenderableComponent* childRenderable = GetComponent<GRenderableComponent>(child);
+	if (parentRenderable && childRenderable)
+	{
+		parentRenderable->signal_ScaleChanged.connect(childRenderable, &GRenderableComponent::slot_ChangeScale);
+		parentRenderable->signal_VisibilityChanged.connect(childRenderable, &GRenderableComponent::slot_VisibilityChanged);
+	}
 }

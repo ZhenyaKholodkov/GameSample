@@ -2,7 +2,7 @@
 
 
 GRenderSystem::GRenderSystem() :
-	mBackgroundColor(0xff0000ff)
+	mBackgroundColor(0x000000)
 {
 	mRenderer = GRenderManager::Instance();
 	mEntityManager = GEntityManager::Instance();

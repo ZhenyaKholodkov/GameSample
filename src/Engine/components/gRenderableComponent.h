@@ -22,7 +22,7 @@ public:
 	void  setYScale(float yScale) { mCurrentYScale = yScale; }
 
 	bool isVisible() { return mIsVisible; }
-	void setVisible(bool isVisible) { mIsVisible = isVisible; }
+	void setVisible(bool isVisible) { signal_VisibilityChanged(isVisible); mIsVisible = isVisible; }
 
 	bool IsPiontInsideWH(GCursor localPoint)
 	{
@@ -39,8 +39,22 @@ public:/*slots*/
 	void slot_ChangeSprite(Entity entity, GSprite* newSprite) { mSprite = newSprite; };
 	void slot_ChangeScale(float xScale, float yScale) 
 	{
+		signal_ScaleChanged(xScale, yScale);
 		mCurrentXScale = xScale; mCurrentYScale = yScale;
-	};
+	}
+	void slot_VisibilityChanged(bool isVisible)
+	{
+		setVisible(isVisible);
+	}
+
+	void slot_SetInvisible()
+	{
+		setVisible(false);
+	}
+
+public:/*signals*/
+	sigslot::signal2<float, float> signal_ScaleChanged;
+	sigslot::signal1<bool>         signal_VisibilityChanged;
 
 private:
 	GSprite* mSprite;
