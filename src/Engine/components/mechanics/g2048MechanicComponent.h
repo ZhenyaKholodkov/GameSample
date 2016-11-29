@@ -8,7 +8,7 @@ class G2048MechanicComponent : public GComponent<G2048MechanicComponent>, public
 	friend class G2048MechanicSystem;
 public:
 	G2048MechanicComponent(uint32 rows, uint32 cols) : mRows(rows), mCols(cols), mFieldWidth(0),
-		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), mTitlesInMoving(0)
+		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), titlesInMoving(0)
 	{
 		mTitleSprites.resize(10); //2048
 		mTitles = new Entity*[mRows];
@@ -34,26 +34,14 @@ public:
 		mTitleWidth = sprite->GetWidth();
 		mTitleHieght = sprite->GetHeight();
 	}
-private:
-	void setState(uint32 state)
-	{
-		mState = state;
-	}
 public:/*slots*/
 	void slot_ReportMovingFinished()
 	{
-		mTitlesInMoving--;
-		if (mTitlesInMoving == 0)
-			setState(STATE_RECALC_MATRIX);
+		if (titlesInMoving != 0)
+			titlesInMoving--;
 	}
 
 private: 
-	enum
-	{
-		STATE_WAIT,
-		STATE_ANIMATING,
-		STATE_RECALC_MATRIX
-	};
 	uint32 mRows;
 	uint32 mCols;
 
@@ -71,8 +59,7 @@ private:
 	Entity** mTitles;
 	int**    mLogicalNet;
 
-	uint32 mTitlesInMoving;
-	uint32 mState;
+	uint32 titlesInMoving;
 };
 
 #endif //G2048MECHANICCOMPONENT_H
