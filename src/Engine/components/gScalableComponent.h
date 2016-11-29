@@ -44,8 +44,9 @@ public:/*slots*/
 		SetState(GScalableComponent::STATE_SCALE);
 	}
 public: /*signals*/
-	sigslot::signal2<float, float>                 signal_ScaleChanged;
-	sigslot::signal0<>                 signal_ScaleChangingFinished;
+	sigslot::signal2<float, float>  signal_ScaleChanged;
+	sigslot::signal1<Entity>        signal_ScaleChangingBegin;
+	sigslot::signal1<Entity>        signal_ScaleChangingFinished;
 
 private:
 	void recalcDxDy()

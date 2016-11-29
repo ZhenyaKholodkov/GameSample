@@ -79,7 +79,7 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 				{
 					moveMove->signal_PressedMouseMovedOut.emit(point.x, point.y);
 				}
-				moveMove->signal_MouseMovedOutEntity.emit(entity, moveMove->mSpriteMoveOut);
+				//moveMove->signal_MouseMovedOutEntity.emit(entity, moveMove->mSpriteMoveOut);
 			}
 		}
 	}

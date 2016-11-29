@@ -123,6 +123,7 @@ void GEntityManager::setChildParentRelations(Entity parent, Entity child)
 	float newX = childLocation->getX() + parentLocation->getX();
 	float newY = childLocation->getY() + parentLocation->getY();
 	childLocation->setXY(newX, newY);
+	childLocation->setDefaultXY(newX, newY);
 	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
 
 	GRenderableComponent* parentRenderable = GetComponent<GRenderableComponent>(parent);

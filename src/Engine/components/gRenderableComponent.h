@@ -47,10 +47,21 @@ public:/*slots*/
 		setVisible(isVisible);
 	}
 
-	void slot_SetInvisible()
+	void slot_SetInvisible(Entity who)
 	{
 		setVisible(false);
 	}
+
+	void slot_SetVisible(Entity who)
+	{
+		setVisible(true);
+	}
+
+	void slot_ChangeSprite(Entity entity, void* data) 
+	{
+		GSprite* newSprite = static_cast<GSprite*>(data);
+		mSprite = newSprite; 
+	};
 
 public:/*signals*/
 	sigslot::signal2<float, float> signal_ScaleChanged;

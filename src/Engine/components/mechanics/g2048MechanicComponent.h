@@ -40,11 +40,16 @@ private:
 		mState = state;
 	}
 public:/*slots*/
-	void slot_ReportMovingFinished()
+	void slot_ReportMovingFinished(Entity entity)
 	{
-		mTitlesInMoving--;
-		if (mTitlesInMoving == 0)
-			setState(STATE_RECALC_MATRIX);
+		if (mTitlesInMoving != 0)
+		{
+			mTitlesInMoving--;
+			if (mTitlesInMoving)
+			{
+				setState(STATE_RECALC_MATRIX);
+			}
+		}
 	}
 
 private: 
@@ -65,7 +70,6 @@ private:
 
 	GSprite* mTitleBackground;
 	std::vector<GSprite*> mTitleSprites; //!< 
-
 	std::vector<Entity> mAvailableEntities;
 
 	Entity** mTitles;

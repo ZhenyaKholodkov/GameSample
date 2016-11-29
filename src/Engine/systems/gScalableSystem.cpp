@@ -21,6 +21,11 @@ void GScalableSystem::update(int dt)
 		if (scalable->mState == GScalableComponent::STATE_WAIT)
 			continue;
 
+		if (scalable->mCurrentTime == 0)
+		{
+			scalable->signal_ScaleChangingBegin(entity);
+		}
+
 		scalable->mCurrentTime += dt;
 		if (scalable->mTime > scalable->mCurrentTime)
 		{
@@ -29,7 +34,7 @@ void GScalableSystem::update(int dt)
 		else
 		{
 			scalable->signal_ScaleChanged(scalable->mEndXScale, scalable->mEndYScale);
-			scalable->signal_ScaleChangingFinished();
+			scalable->signal_ScaleChangingFinished(entity);
 			scalable->SetState(GScalableComponent::STATE_WAIT);
 		}
 	}

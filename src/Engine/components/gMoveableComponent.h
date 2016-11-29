@@ -7,10 +7,10 @@ class GMoveableComponent : public GComponent<GMoveableComponent>, public sigslot
 {
 	friend class GMoveableSystem;
 public:
-	GMoveableComponent() : mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
+	GMoveableComponent() : signal_Data(nullptr), mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
 	GMoveableComponent(float begX, float begY, float xDest, float yDest, int time) :
-		mBeginX(begX), mBeginY(begY), mXDestination(xDest), mYDestination(yDest),
-		mMovingTime(time), mCurrentTime(0), mState(STATE_WAIT)
+		signal_Data(nullptr), mBeginX(begX), mBeginY(begY), mXDestination(xDest),
+		mYDestination(yDest), mMovingTime(time), mCurrentTime(0), mState(STATE_WAIT)
 	{
 		recalcDxDy();
 	};
@@ -51,6 +51,9 @@ public:/*slots*/
 public: /*signals*/
 	sigslot::signal2<float, float>     signal_LocationChanged;
 	sigslot::signal1<Entity>           signal_MovingFinished;
+	sigslot::signal2<Entity, void*>    signal_MovingFinishedWithData;
+
+	void* signal_Data;
 
 private:
 	void SetState(uint32 state) { mState = state; }

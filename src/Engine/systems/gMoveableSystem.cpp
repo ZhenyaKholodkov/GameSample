@@ -33,6 +33,7 @@ void GMoveableSystem::update(int dt)
 		{
 			moveable->signal_LocationChanged(moveable->GetXDestination(), moveable->GetYDestination());
 			moveable->signal_MovingFinished(entity);
+			moveable->signal_MovingFinishedWithData(entity, moveable->signal_Data);
 			moveable->SetState(GMoveableComponent::STATE_WAIT);
 		}
 	}

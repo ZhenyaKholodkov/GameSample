@@ -21,6 +21,13 @@ public:
 
 	float getDefaultX() { return mDefaultX; }
 	float getDefaultY() { return mDefaultY; }
+	void setDefaultXY(float x, float y) { mDefaultX = x; mDefaultY = y; }
+
+	void restoreLocation()
+	{
+		signal_LocationChangedWithDxDy(mDefaultX - mX, mDefaultY - mY);
+		setXY(mDefaultX, mDefaultY);
+	}
 
 public:/*slots*/
 	void slot_LocationChanged(float x, float y)

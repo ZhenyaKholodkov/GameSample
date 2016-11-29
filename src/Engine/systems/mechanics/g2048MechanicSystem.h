@@ -15,8 +15,9 @@ public:
 	void createField();
 	void runGame();
 
-	void showRandomTitle(G2048MechanicComponent* component, int i , int j);
-	void moveTitleToTile(Entity movedTitle, Entity toTitle);
+	void showRandomTitle(int i , int j);
+	void moveTitleToTitle(Entity movedTitle, Entity toTitle, int newValue);
+	void recalFieldAfterAnimation();
 
 	virtual void update(int dt);
 
@@ -28,9 +29,10 @@ public:/*slots*/
 	void slot_MoveLeft();
 
 private:
-	Entity createTitle(uint32 row, uint32 col, Entity self, G2048MechanicComponent* m2048Component);
+	Entity createTitle(uint32 row, uint32 col, Entity self);
 private:
 	GEntityManager* mEntityManager;
+	G2048MechanicComponent* mCurrentMechanic;
 };
 
 #endif //GRENDER_SYSTEM_H
