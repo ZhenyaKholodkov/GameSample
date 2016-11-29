@@ -50,7 +50,7 @@ public:/*slots*/
 
 public: /*signals*/
 	sigslot::signal2<float, float>     signal_LocationChanged;
-	sigslot::signal0<>                 signal_MovingFinished;
+	sigslot::signal1<Entity>           signal_MovingFinished;
 
 private:
 	void SetState(uint32 state) { mState = state; }
