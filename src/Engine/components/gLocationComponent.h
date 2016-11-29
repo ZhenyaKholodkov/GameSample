@@ -25,7 +25,7 @@ public:
 public:/*slots*/
 	void slot_LocationChanged(float x, float y)
 	{
-		signal_LocationChangedWithDxDy(mX - x, mY - y);
+		signal_LocationChangedWithDxDy(x - mX, y - mY);
 		setXY(x, y);
 	}
 	void slot_LocationChangedWithDxDy(float dx, float dy)

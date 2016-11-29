@@ -17,8 +17,7 @@ public:
 		: mBeginXScale(beginXScale), mBeginYScale(beginYScale), mEndXScale(endXScale), mEndYScale(endYScale),
 		  mTime(time), mCurrentTime(0), mState(STATE_WAIT)
 	{
-		mDSaleX = mEndXScale - mBeginXScale;
-		mDSaleY = mEndYScale - mBeginYScale;
+		recalcDxDy();
 	};
 	virtual ~GScalableComponent() {};
 
@@ -31,10 +30,10 @@ public:
 		return mBeginYScale + mDSaleY * mCurrentTime / mTime;
 	}
 
-	void setBeginXScale(float scale) { mBeginXScale = scale; }
-	void setBeginYScale(float scale) { mBeginYScale = scale; }
-	void setEndXScale(float scale){ mEndXScale = scale; }
-	void setEndYScale(float scale){ mEndYScale = scale; }
+	void setBeginXScale(float scale) { mBeginXScale = scale; recalcDxDy(); }
+	void setBeginYScale(float scale) { mBeginYScale = scale; recalcDxDy(); }
+	void setEndXScale(float scale){ mEndXScale = scale; recalcDxDy(); }
+	void setEndYScale(float scale){ mEndYScale = scale; recalcDxDy(); }
 
 	void Reset() { mCurrentTime = 0; }
 	void SetState(uint32 state) { mState = state; }
@@ -48,6 +47,12 @@ public: /*signals*/
 	sigslot::signal2<float, float>                 signal_ScaleChanged;
 	sigslot::signal0<>                 signal_ScaleChangingFinished;
 
+private:
+	void recalcDxDy()
+	{
+		mDSaleX = mEndXScale - mBeginXScale;
+		mDSaleY = mEndYScale - mBeginYScale;
+	}
 private: 
 	float mBeginXScale;
 	float mBeginYScale;

@@ -15,7 +15,8 @@ public:
 	void createField();
 	void runGame();
 
-	void showRandomTitle(G2048MechanicComponent* component);
+	void showRandomTitle(G2048MechanicComponent* component, int i , int j);
+	void moveTitleToTile(Entity movedTitle, Entity toTitle);
 
 	virtual void update(int dt);
 

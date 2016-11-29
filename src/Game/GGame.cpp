@@ -94,13 +94,13 @@ void GGame::Create()
 	//animation2->AddFrame(sprite08);
 	//animation2->AddFrame(sprite09);
 	//
-	/////////////////////////////////////Moveable////////////////////////////////////////////
+	///////////////////////////////////Moveable////////////////////////////////////////////
 	//GSprite* spriteMove = GResManager::Instance()->GetSprite("frame1.png");
-	//Entity animationEntity = em->CreateEntity();
-	//em->AddComponentsToEntity<GLocationComponent>(animationEntity, 100.0f, 100.0f);
-	//em->AddComponentsToEntity<GRenderableComponent>(animationEntity, spriteMove);
-	//GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(animationEntity, 500.f, 200.0f, 1000);
-	//
+	//Entity moveEntity = em->CreateEntity();
+	//GLocationComponent* moveLocation = em->AddComponentsToEntity<GLocationComponent>(moveEntity, 100.0f, 100.0f);
+	//em->AddComponentsToEntity<GRenderableComponent>(moveEntity, spriteMove);
+	//GMoveableComponent* moveable = em->AddComponentsToEntity<GMoveableComponent>(moveEntity, 100.0f, 100.0f, 500.f, 200.0f, 1000);
+	//moveable->signal_LocationChanged.connect(moveLocation, &GLocationComponent::slot_LocationChanged);
 	/////////////////////////////////////Button//////////////////////////////////////////////
 	//
 	//GSprite* spriteButtonDown = GResManager::Instance()->GetSprite("button1.png");

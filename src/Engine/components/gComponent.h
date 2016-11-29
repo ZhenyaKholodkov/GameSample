@@ -23,7 +23,6 @@ uint32 GComponent<C>::s_component_id = GBaseComponent::s_component_counter++;
 template<typename C>
 uint32 GComponent<C>::GetComponentId()
 {
-//	static uint32 index = s_component_counter++;
 	return s_component_id;
 }
 #endif //GCOMPONENT_H

@@ -3,29 +3,23 @@
 
 #include "gComponent.h"
 
-class G2048MechanicComponent : public GComponent<G2048MechanicComponent>
+class G2048MechanicComponent : public GComponent<G2048MechanicComponent>, public sigslot::has_slots<>
 {
 	friend class G2048MechanicSystem;
 public:
-	G2048MechanicComponent(uint32 rows, uint32 cols) : mRows(rows), mCols(cols)
+	G2048MechanicComponent(uint32 rows, uint32 cols) : mRows(rows), mCols(cols), mFieldWidth(0),
+		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), titlesInMoving(0)
 	{
 		mTitleSprites.resize(10); //2048
 		mTitles = new Entity*[mRows];
+		mLogicalNet = new int*[mRows];
 		for (uint32 i = 0; i < mRows; ++i)
 		{
 			mTitles[i] = new Entity[mCols];
+			mLogicalNet[i] = new int[mCols];
 		}
 	};
-	virtual ~G2048MechanicComponent() 
-	{
-		//sfor (uint32 i = 0; i < mRows; ++i)
-		//s{
-		//s	for (uint32 j = 0; j < mCols; ++j)
-		//s	{
-		//s		GEntityManager::Instance()->DestroyEntity(mTitles[i][j]);
-		//s	}
-		//s}
-	};
+	virtual ~G2048MechanicComponent() {	};
 
 	void setTitleNumberSprite(uint32 exponent, GSprite* sprite)
 	{
@@ -39,6 +33,12 @@ public:
 		mFieldHieght = mCols * sprite->GetHeight();
 		mTitleWidth = sprite->GetWidth();
 		mTitleHieght = sprite->GetHeight();
+	}
+public:/*slots*/
+	void slot_ReportMovingFinished()
+	{
+		if (titlesInMoving != 0)
+			titlesInMoving--;
 	}
 
 private: 
@@ -57,6 +57,9 @@ private:
 	std::vector<Entity> mAvailableEntities;
 
 	Entity** mTitles;
+	int**    mLogicalNet;
+
+	uint32 titlesInMoving;
 };
 
 #endif //G2048MECHANICCOMPONENT_H

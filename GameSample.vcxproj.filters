@@ -495,6 +495,9 @@
     <ClInclude Include="src\Engine\systems\mechanics\g2048MechanicSystem.h">
       <Filter>src\Engine\systems\mechanics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\components\gCounterComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

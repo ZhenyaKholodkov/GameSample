@@ -18,6 +18,7 @@
 #include "gMoveableComponent.h"
 #include "gChildComponent.h"
 #include "gParentComponent.h"
+#include "gCounterComponent.h"
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"
@@ -85,6 +86,9 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 template<typename C>
 C* GEntityManager::GetComponent (Entity entity)
 {
+	if (entity == -1)
+		return nullptr;
+
 	uint32 index = GComponent<C>::GetComponentId();
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
 	if (mComponentPool == nullptr)

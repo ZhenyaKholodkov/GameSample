@@ -17,10 +17,7 @@ void GScalableSystem::update(int dt)
 	{
 		Entity entity = (*iter)->first;
 		GScalableComponent* scalable = (*iter)->second;
-
-		//if (!mEntityManager->DoesHaveComponent<GRenderableComponent>(entity))
-		//	continue;
-		
+				
 		if (scalable->mState == GScalableComponent::STATE_WAIT)
 			continue;
 

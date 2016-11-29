@@ -23,20 +23,16 @@ void GMoveableSystem::update(int dt)
 		
 		if (moveable->mState == GMoveableComponent::STATE_WAIT)
 			continue;
-
-		GLocationComponent* location = mEntityManager->GetComponent<GLocationComponent>(entity);	
+	
 		moveable->mCurrentTime += dt;
 		if (moveable->mMovingTime > moveable->mCurrentTime)
 		{
-			float dx = moveable->GetXDestination() - location->getDefaultX();
-			float dy = moveable->GetYDestination() - location->getDefaultY();
-			location->setX(location->getDefaultX() + dx*moveable->mCurrentTime / moveable->mMovingTime);
-			location->setY(location->getDefaultY() + dy*moveable->mCurrentTime / moveable->mMovingTime);
+			moveable->signal_LocationChanged(moveable->getCurrentX(), moveable->getCurrentY());
 		}
 		else
 		{
-			location->setX(moveable->GetXDestination());
-			location->setY(moveable->GetYDestination());
+			moveable->signal_LocationChanged(moveable->GetXDestination(), moveable->GetYDestination());
+			moveable->signal_MovingFinished();
 			moveable->SetState(GMoveableComponent::STATE_WAIT);
 		}
 	}

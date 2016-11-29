@@ -195,6 +195,7 @@
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
     <ClInclude Include="src\Engine\components\gChildComponent.h" />
+    <ClInclude Include="src\Engine\components\gCounterComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyDownEventComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseDownEventComponent.h" />
