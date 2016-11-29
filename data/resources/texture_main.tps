@@ -188,6 +188,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">../../../../../Desktop/field.png</key>
             <key type="filename">../../../../../Desktop/play_btn_down.png</key>
             <key type="filename">../../../../../Desktop/play_btn_move.png</key>
             <key type="filename">../../../../../Desktop/play_btn_up.png</key>
@@ -225,6 +226,7 @@
             <filename>../../../../../Desktop/play_btn_up.png</filename>
             <filename>../../../../../Desktop/play_btn_move.png</filename>
             <filename>../../../../../Desktop/title.png</filename>
+            <filename>../../../../../Desktop/field.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
