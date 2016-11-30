@@ -110,45 +110,35 @@ void G2048MechanicSystem::slot_MoveLeft()
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
 				
-		for (int i = mCurrentMechanic->mRows - 1; i >= 0 ; i--)
+		int row = mCurrentMechanic->mRows - 1;
+		while(row != -1)
 		{
-
 			int moveToIndex = mCurrentMechanic->mCols - 1;
 			int movedIndex = mCurrentMechanic->mCols - 2;
 			while(movedIndex != -1)
 			{
-				if (mCurrentMechanic->mLogicalNet[i][movedIndex] == -1)
+				if (mCurrentMechanic->mLogicalNet[row][movedIndex] != -1)
 				{
-					movedIndex--;
-				}
-				else
-				{
-					if (mCurrentMechanic->mLogicalNet[i][movedIndex] == mCurrentMechanic->mLogicalNet[i][moveToIndex])
+					if (mCurrentMechanic->mLogicalNet[row][movedIndex] == mCurrentMechanic->mLogicalNet[row][moveToIndex])
 					{
-						mCurrentMechanic->mLogicalNet[i][movedIndex] = -1;
-						mCurrentMechanic->mLogicalNet[i][moveToIndex]++;
-						moveTitleToTitle(mCurrentMechanic->mTitles[i][movedIndex], mCurrentMechanic->mTitles[i][moveToIndex], mCurrentMechanic->mLogicalNet[i][moveToIndex]);
+						mCurrentMechanic->mLogicalNet[row][movedIndex] = -1;
+						mCurrentMechanic->mLogicalNet[row][moveToIndex]++;
+						moveTitleToTitle(mCurrentMechanic->mTitles[row][movedIndex], mCurrentMechanic->mTitles[row][moveToIndex], mCurrentMechanic->mLogicalNet[row][moveToIndex]);
 					}
-					else if (mCurrentMechanic->mLogicalNet[i][moveToIndex] == -1)
+					else
 					{
-						mCurrentMechanic->mLogicalNet[i][moveToIndex] = mCurrentMechanic->mLogicalNet[i][movedIndex];
-						mCurrentMechanic->mLogicalNet[i][movedIndex] = -1;
-						moveTitleToTitle(mCurrentMechanic->mTitles[i][movedIndex], mCurrentMechanic->mTitles[i][moveToIndex], mCurrentMechanic->mLogicalNet[i][moveToIndex]);
-					}
-					else 
-					{
-						moveToIndex--;
-						if (movedIndex != moveToIndex)
+						if (mCurrentMechanic->mLogicalNet[row][moveToIndex] != -1)
 						{
-							mCurrentMechanic->mLogicalNet[i][moveToIndex] = mCurrentMechanic->mLogicalNet[i][movedIndex];
-							mCurrentMechanic->mLogicalNet[i][movedIndex] = -1;
-							moveTitleToTitle(mCurrentMechanic->mTitles[i][movedIndex], mCurrentMechanic->mTitles[i][moveToIndex], mCurrentMechanic->mLogicalNet[i][moveToIndex]);
+							moveToIndex--;
 						}
+						mCurrentMechanic->mLogicalNet[row][moveToIndex] = mCurrentMechanic->mLogicalNet[row][movedIndex];
+						mCurrentMechanic->mLogicalNet[row][movedIndex] = -1;
+						moveTitleToTitle(mCurrentMechanic->mTitles[row][movedIndex], mCurrentMechanic->mTitles[row][moveToIndex], mCurrentMechanic->mLogicalNet[row][moveToIndex]);
 					}
-					movedIndex--;
 				}
-
+				movedIndex--;
 			}
+			row--;
 		}
 	}
 }
