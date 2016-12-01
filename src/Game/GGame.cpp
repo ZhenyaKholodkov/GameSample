@@ -166,6 +166,10 @@ void GGame::Create2048Game()
 {
 	GEntityManager* em = GEntityManager::Instance();
 
+	Entity controlsEntity = em->CreateEntity();
+	GKeyUpEventComponent* keyUpComponent = em->AddComponentsToEntity<GKeyUpEventComponent>(controlsEntity);
+
+
 	////////////////////////////////////PLAY BUTTON///////////////////////////////////////////////////////////////////
 	GSprite* spritePlayButtonDown = GResManager::Instance()->GetSprite("play_btn_down.png");
 	GSprite* spritePlayButtonUp = GResManager::Instance()->GetSprite("play_btn_up.png");
@@ -211,6 +215,11 @@ void GGame::Create2048Game()
 	G2048MechanicSystem* gameSystem = static_cast<G2048MechanicSystem*>(mSystemManager->GetSystem<G2048MechanicSystem>());
 	gameSystem->createField();
 	gameSystem->runGame();
+
+	keyUpComponent->signal_KeyDown.connect(gameSystem, &G2048MechanicSystem::slot_MoveBottom);
+	keyUpComponent->signal_KeyUp.connect(gameSystem, &G2048MechanicSystem::slot_MoveTop);
+	keyUpComponent->signal_KeyLeft.connect(gameSystem, &G2048MechanicSystem::slot_MoveLeft);
+	keyUpComponent->signal_KeyRight.connect(gameSystem, &G2048MechanicSystem::slot_MoveRight);
 }
 
 void GGame::Update(int dt)
@@ -243,4 +252,16 @@ void GGame::OnMouseMove(GCursor point)
 {
 	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
 	inputSystem->OnMouseMove(point);
+}
+
+void GGame::keyUp(GKey key)
+{
+	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	inputSystem->OnKeyUp(key);
+}
+
+void GGame::keyDown(GKey key)
+{
+	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	inputSystem->OnKeyDown(key);
 }

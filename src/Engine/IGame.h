@@ -16,6 +16,10 @@ public:
 	virtual void OnMouseDown(GCursor point) = 0;
 	virtual void OnMouseUp(GCursor point) = 0;
 	virtual void OnMouseMove(GCursor point) = 0;
+
+	virtual void keyUp(GKey key) = 0;
+	virtual void keyDown(GKey key) = 0;
+
 };
 
 #endif

@@ -43,8 +43,10 @@ private:
 	void onActivate();										
 	void onDeactivate();									
 	void onMinimize();										
-	void onMaximize();										
+	void onMaximize();	
 
+	GKey convertToGKey(uint32 key);
+private:
 	static Application*	sInstance;							
 	IGame*           mGame;
 	int 			mScreenWidth;								

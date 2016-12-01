@@ -16,8 +16,8 @@ public:
 	void OnMouseDown(GCursor point);
 	void OnMouseUp(GCursor point);
 	void OnMouseMove(GCursor point);
-	void OnKeyUp(uint32 msKey);
-	void OnKeyDown(uint32 msKey);
+	void OnKeyUp(GKey key);
+	void OnKeyDown(GKey key);
 
 private:
 	GEntityManager* mEntityManager;

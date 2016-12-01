@@ -11,13 +11,8 @@ public:
 		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), mTitlesInMoving(0)
 	{
 		mTitleSprites.resize(10); //2048
-		mTitles = new Entity*[mRows];
-		mLogicalNet = new int*[mRows];
-		for (uint32 i = 0; i < mRows; ++i)
-		{
-			mTitles[i] = new Entity[mCols];
-			mLogicalNet[i] = new int[mCols];
-		}
+		mTitles = new Entity[mRows * mCols];
+		mLogicalNet = new int[mRows * mCols];
 	};
 	virtual ~G2048MechanicComponent() {	};
 
@@ -72,8 +67,8 @@ private:
 	std::vector<GSprite*> mTitleSprites; //!< 
 	std::vector<Entity> mAvailableEntities;
 
-	Entity** mTitles;
-	int**    mLogicalNet;
+	Entity* mTitles;
+	int*    mLogicalNet;
 
 	uint32 mTitlesInMoving;
 	uint32 mState;

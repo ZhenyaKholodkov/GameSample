@@ -19,6 +19,8 @@ public:
 	virtual void OnMouseDown(GCursor point);
 	virtual void OnMouseUp(GCursor point);
 	virtual void OnMouseMove(GCursor point);
+	virtual void keyUp(GKey key);
+	virtual void keyDown(GKey key);
 
 	void LoadResources();
 private:

@@ -45,12 +45,14 @@ void Application::OnTimer(int32 dt)
 	UpdateContext();
 }
 
-void Application::OnKeyDown(uint32 msKey)
+void Application::OnKeyDown(uint32 key)
 {
+	mGame->keyDown(convertToGKey(key));
 }
 
-void Application::OnKeyUp(uint32 msKey)
+void Application::OnKeyUp(uint32 key)
 {
+	mGame->keyUp(convertToGKey(key));
 }
 
 void Application::OnLMouseDown(Pixel  mouse_pos)
@@ -111,6 +113,25 @@ void Application::onMinimize()
 
 void Application::onMaximize()
 {
+}
+
+GKey Application::convertToGKey(uint32 key)
+{
+	switch (key)
+	{
+	case VK_LEFT:
+		return KEY_LEFT;
+		break;
+	case VK_UP:
+		return KEY_UP;
+		break;
+	case VK_RIGHT:
+		return KEY_RIGHT;
+		break;
+	case VK_DOWN:
+		return KEY_DOWN;
+		break;
+	}
 }
 
 Application::~Application()

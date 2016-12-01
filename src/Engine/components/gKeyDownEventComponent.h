@@ -8,11 +8,16 @@ class GKeyDownEventComponent : public GComponent<GKeyDownEventComponent>
 {
 	friend class GUserInputSystem;
 public:
-	GKeyDownEventComponent(GSprite* spriteUp) {};
+	GKeyDownEventComponent() {};
 	virtual ~GKeyDownEventComponent() {};
 
 
 public: /*signals*/
+	sigslot::signal0<>  signal_KeyLeft;
+	sigslot::signal0<>  signal_KeyRight;
+	sigslot::signal0<>  signal_KeyUp;
+	sigslot::signal0<>  signal_KeyDown;
+
 
 private:
 };

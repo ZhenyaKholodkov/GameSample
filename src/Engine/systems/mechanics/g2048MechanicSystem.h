@@ -27,10 +27,22 @@ public:/*signals*/
 
 public:/*slots*/
 	void slot_MoveLeft();
+	void slot_MoveRight();
+	void slot_MoveTop();
+	void slot_MoveBottom();
 
 private:
 	Entity createTitle(uint32 row, uint32 col, Entity self);
+
+	void moveField(uint32 direction);
 private:
+	enum
+	{
+		DIRECTION_LEFT = BIT(1),
+		DIRECTION_RIGHT = BIT(2),
+		DIRECTION_TOP = BIT(3),
+		DIRECTION_BOTTOM = BIT(4),
+	};
 	GEntityManager* mEntityManager;
 	G2048MechanicComponent* mCurrentMechanic;
 };

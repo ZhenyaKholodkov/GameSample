@@ -16,6 +16,13 @@ using namespace std;
 #define BIT(x) (1 << (x))   
 #define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
 
+typedef enum  GKey
+{
+	KEY_UP = BIT(1),
+	KEY_DOWN = BIT(2),
+	KEY_LEFT = BIT(3),
+	KEY_RIGHT = BIT(4),
+}GKey;
 
 typedef int           int32;
 typedef __int64       int64; 

@@ -19,6 +19,8 @@
 #include "gChildComponent.h"
 #include "gParentComponent.h"
 #include "gCounterComponent.h"
+#include "gKeyUpEventComponent.h"
+#include "gKeyDownEventComponent.h"
 
 #include "gRenderSystem.h"
 #include "gAnimationSystem.h"

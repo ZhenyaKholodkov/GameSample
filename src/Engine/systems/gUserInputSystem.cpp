@@ -4,6 +4,8 @@
 #include "gMouseUpEventComponent.h"
 #include "gMouseMoveEventComponent.h"
 #include "gRenderableComponent.h"
+#include "gKeyUpEventComponent.h"
+#include "gKeyDownEventComponent.h"
 
 GUserInputSystem::GUserInputSystem()
 {
@@ -85,12 +87,50 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 	}
 }
 
-void GUserInputSystem::OnKeyUp(uint32 msKey)
+void GUserInputSystem::OnKeyUp(GKey key)
 {
-
+	for (auto iter = mEntityManager->GetBeginPairComponent<GKeyUpEventComponent>(); iter != mEntityManager->GetEndPairComponent<GKeyUpEventComponent>(); iter++)
+	{
+		Entity entity = (*iter)->first;
+		GKeyUpEventComponent* keyUp = (*iter)->second;
+		switch (key)
+		{
+		case KEY_LEFT:
+			keyUp->signal_KeyLeft();
+			break;
+		case KEY_UP:
+			keyUp->signal_KeyUp();
+			break;
+		case KEY_RIGHT:
+			keyUp->signal_KeyRight();
+			break;
+		case KEY_DOWN:
+			keyUp->signal_KeyDown();
+			break;
+		}
+	}
 }
 
-void GUserInputSystem::OnKeyDown(uint32 msKey)
+void GUserInputSystem::OnKeyDown(GKey key)
 {
-
+	for (auto iter = mEntityManager->GetBeginPairComponent<GKeyDownEventComponent>(); iter != mEntityManager->GetEndPairComponent<GKeyDownEventComponent>(); iter++)
+	{
+		Entity entity = (*iter)->first;
+		GKeyDownEventComponent* keyDown = (*iter)->second;
+		switch (key)
+		{
+		case KEY_LEFT:
+			keyDown->signal_KeyLeft();
+			break;
+		case KEY_UP:
+			keyDown->signal_KeyUp();
+			break;
+		case KEY_RIGHT:
+			keyDown->signal_KeyRight();
+			break;
+		case KEY_DOWN:
+			keyDown->signal_KeyDown();
+			break;
+		}
+	}
 }
