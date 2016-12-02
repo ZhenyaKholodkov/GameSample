@@ -149,7 +149,18 @@ void G2048MechanicSystem::moveField(uint32 direction)
 	int colBeg = 0;
 	int colEnd = mCurrentMechanic->mCols - 1;
 
-	if (direction == DIRECTION_LEFT || direction == DIRECTION_TOP)
+	int width = mCurrentMechanic->mCols;
+	int height = mCurrentMechanic->mRows;
+	if (direction == DIRECTION_TOP || direction == DIRECTION_BOTTOM)
+	{
+		height = 1;
+	}
+	else
+	{
+		width = 1;
+	}
+
+	if (direction == DIRECTION_RIGHT || direction == DIRECTION_TOP)
 	{
 		rowBeg = mCurrentMechanic->mRows - 1;
 		rowEnd = -1;
@@ -166,10 +177,10 @@ void G2048MechanicSystem::moveField(uint32 direction)
 	while (row != rowEnd)
 	{
 		col = colBeg;
-		moveToIndex = row * mCurrentMechanic->mRows + col;
+		moveToIndex = row * height + col * width;
 		while (col != colEnd)
 		{
-			movedIndex = row * mCurrentMechanic->mRows + col;
+			movedIndex = row * height + col * width;
 
 			if (mCurrentMechanic->mLogicalNet[movedIndex] != -1)
 			{
