@@ -7,48 +7,55 @@ class GBasePool
 {
 public:
 	GBasePool(size_t capacity, size_t chunkSize, size_t dataSize):
-		mCapacity(capacity),
 		mChunkSize(chunkSize),
-		mBlockSize(dataSize)
+		mBlockSize(dataSize),
+		mCapacity(0),
+		mSize(0)
 	{
- 		mData = mCapacity > 0 ? operator new[](mCapacity * mBlockSize) : nullptr;
+		reserve(capacity);
 	}
 
 	virtual ~GBasePool() 
 	{
-		delete[] mData;
+		for (auto chunk : mData)
+		{
+			delete [] chunk;
+		}
 	}
 
 	virtual void destroy(Entity entity) = 0;
 
-	size_t Size() { return mSize; }
-	size_t Capacity() { return mCapacity; }
-
-protected:
-	bool reserve(size_t chunk)
+	size_t size() { return mSize; }
+	size_t capacity() { return mCapacity; }
+	 
+	void* get(uint32 index)
 	{
-		void* newData = operator new[]((mCapacity + chunk) * mBlockSize);
-		if (newData == nullptr)
-			return false;
-
-		if (mCapacity != 0)
-		{
-			memcpy(newData, mData, (mCapacity * mBlockSize));
-			operator delete[](mData);
-		}
-		mCapacity += chunk;
-		mData = newData;
-		return true;
+		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
+	}
+	const void* get(uint32 index) const
+	{
+		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
 	}
 
 protected:
-	size_t mCapacity;
-	size_t mSize;
-	size_t mChunkSize;
+	void reserve(size_t size)
+	{
+		size_t newSize = mCapacity + size;
+		while (mCapacity < newSize)
+		{
+			char* newChunk = new char[(mChunkSize * mBlockSize)];
+			mData.push_back(newChunk);
+			mCapacity += mChunkSize;
+		}
+	}
 
-	size_t mBlockSize;
+protected:
+	std::size_t mChunkSize;
+	std::size_t mBlockSize;
+	std::size_t mCapacity;
+	std::size_t mSize;
 
-	void*  mData;
+	std::vector<char*> mData;
 };
 
 template<typename C>
@@ -57,8 +64,10 @@ class GComponentPool : public GBasePool
 private:
 	struct Block
 	{
+		bool   mInUse;
+		uint32 mNextFree;
 		Entity mEntity;
-		C mComponent;
+		C      mComponent;
 	};
 
 	const int BLOCK_SIZE = sizeof(Block);
@@ -67,10 +76,12 @@ public:
 		GBasePool(capacity, chunkSize, sizeof(Block))
 	{
 		mIndexes.resize(MAX_ENTITY_COUNT);
-		for (uint32 i = 0; i < capacity; ++i)
+		for (uint32 i = 0; i < MAX_ENTITY_COUNT; ++i)
 		{
 			mIndexes[i] = -1;
 		}
+		initBlocks();
+		mLastFree = 0;
 	}
 	~GComponentPool() 
 	{
@@ -83,22 +94,28 @@ public:
 	class GPoolIterator : public std::iterator<std::forward_iterator_tag, C*>
 	{
 	private:
-		Block* mCurrentBlock;
+		GBasePool* mPool;
+		uint32     mIndex;
 	public:
-		GPoolIterator(Block* block) : mCurrentBlock(block)
+		GPoolIterator(GBasePool* pool, uint32 index) : mPool(pool), mIndex(index)
 		{}
 		GPoolIterator& operator=(const GPoolIterator& iter) 
 		{
-			mCurrentBlock = iter.mCurrentBlock;
+			mPool = iter.mPool;
+			mIndex = iter.mIndex;
 			return *this;
 		}
 		C* operator*() const
 		{
-			return &mCurrentBlock->mComponent;
+			if (!mPool)
+				return nullptr;
+			Block* ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
+			return &ptrToBlock->mComponent;
 		}
 		GPoolIterator& operator++()
 		{
-			++mCurrentBlock;
+			if (mPool)
+				++mIndex;
 			return *this;
 		}
 
@@ -111,11 +128,11 @@ public:
 
 		bool operator==(const GPoolIterator& iter)
 		{
-			return mCurrentBlock == iter.mCurrentBlock;
+			return mIndex == iter.mIndex;
 		}
 		bool operator!=(const GPoolIterator& iter)
 		{
-			return mCurrentBlock != iter.mCurrentBlock;
+			return mIndex != iter.mIndex;
 		}
 
 	};
@@ -123,27 +140,33 @@ public:
 	class GPoolPairIterator : public std::iterator<std::forward_iterator_tag, std::pair<Entity, C*>>
 	{
 	private:
-		Block* mCurrentBlock;
+		GBasePool* mPool;
+		uint32     mIndex;
 		typedef std::pair<Entity, C*> ValuePair;
 		mutable ValuePair pair;
 
 	public:
-		GPoolPairIterator(Block* block) : mCurrentBlock(block)
+		GPoolPairIterator(GBasePool* pool, uint32 index) : mPool(pool), mIndex(index)
 		{}
 		GPoolPairIterator& operator=(const GPoolIterator& iter)
 		{
-			mCurrentBlock = iter.mCurrentBlock;
+			mPool = iter.mPool;
+			mIndex = iter.mIndex;
 			return *this;
 		}
 		ValuePair* operator*() const
 		{
-			pair.first = mCurrentBlock->mEntity;
-			pair.second = &mCurrentBlock->mComponent;
+			if (!mPool)
+				return nullptr;
+			Block* ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
+			pair.first = ptrToBlock->mEntity;
+			pair.second = &ptrToBlock->mComponent;
 			return &pair;
 		}
 		GPoolPairIterator& operator++()
 		{
-			++mCurrentBlock;
+			if (mPool)
+				++mIndex;
 			return *this;
 		}
 
@@ -156,40 +179,36 @@ public:
 
 		bool operator==(const GPoolPairIterator& iter)
 		{
-			return mCurrentBlock == iter.mCurrentBlock;
+			return mIndex == iter.mIndex;
 		}
 		bool operator!=(const GPoolPairIterator& iter)
 		{
-			return mCurrentBlock != iter.mCurrentBlock;
+			return mIndex != iter.mIndex;
 		}
 
 	};
 
 	GPoolIterator begin() 
 	{ 
-		Block* ptr = static_cast<Block*>(mData);
-		return(GPoolIterator(mSize == 0 ? nullptr : ptr));
+		return(GPoolIterator(this, 0));
 	}
 
 	GPoolIterator end()
 	{
-		Block* ptr = static_cast<Block*>(mData);
-		return(GPoolIterator(mSize == 0 ? nullptr : &ptr[mSize]));
+		return(GPoolIterator(this, mSize));
 	}
 
 	GPoolPairIterator beginPair()
 	{
-		Block* ptr = static_cast<Block*>(mData);
-		return(GPoolPairIterator(mSize == 0 ? nullptr : ptr));
+		return(GPoolPairIterator(this, 0));
 	}
 
 	GPoolPairIterator endPair()
 	{
-		Block* ptr = static_cast<Block*>(mData);
-		return(GPoolPairIterator(mSize == 0 ? nullptr : &ptr[mSize]));
+		return(GPoolPairIterator(this, mSize));
 	}
 
-	C* get(Entity entity)
+	C* getComponent(Entity entity)
 	{
 		if (entity >= mIndexes.size())
 			return nullptr;
@@ -197,15 +216,13 @@ public:
 		if (index == -1)
 			return nullptr;
 
-		Block* ptr = static_cast<Block*>(mData);
-		Block* ptrToBlock = &ptr[index];
+		Block* ptrToBlock = static_cast<Block*>(get(index));
 		return &(ptrToBlock->mComponent);
 	}
 
 	Entity getEntity(uint32 index)
 	{
-		Block* ptr = static_cast<Block*>(mData);
-		Block* ptrToBlock = &ptr[index];
+		Block* ptrToBlock = static_cast<Block*>(get(index));
 		return ptrToBlock->mEntity;
 	}
 
@@ -220,15 +237,21 @@ public:
 
 		if (mSize == mCapacity)
 		{
-			if (!reserve(mChunkSize))
-				return nullptr;
+			reserve(mChunkSize);
+			initBlocks();
+			mLastFree = mSize;
 		}
-		size_t index = mSize++;
+		size_t index = mLastFree;
 		mIndexes[entity] = index;
 
-		Block* ptr = static_cast<Block*>(mData);
-		Block* ptrToBlock = &ptr[index];
+		Block* ptrToBlock = static_cast<Block*>(get(index));
+
 		ptrToBlock->mEntity = entity;
+		mLastFree = ptrToBlock->mNextFree != index ? ptrToBlock->mNextFree : -1;
+		ptrToBlock->mNextFree = index;
+		ptrToBlock->mInUse = true;
+		mSize++;
+
 		new (&ptrToBlock->mComponent) C(args...);
 		return &(ptrToBlock->mComponent);
 	}
@@ -237,16 +260,13 @@ public:
 	{
 		uint32 index = mIndexes[entity];
 
-		Block* ptr = static_cast<Block*>(mData);
-		Block* ptrDestroy = &ptr[index];
+		Block* ptrDestroy = static_cast<Block*>(get(index));
+		ptrDestroy->mNextFree = mLastFree;
+		mLastFree = index;
+		ptrDestroy->mInUse = false;
+
 		ptrDestroy->mComponent.~C();
 		mIndexes[entity] = -1;
-
-		if (index != mSize - 1)
-		{
-			memcpy(ptrDestroy, &ptr[mSize - 1], BLOCK_SIZE);
-			mIndexes[ptrDestroy->mEntity] = index;
-		}
 		--mSize;
 	}
 
@@ -256,6 +276,18 @@ public:
 	}
 
 private:
+	void initBlocks()
+	{
+		for (uint32 i = mSize; i < mCapacity; ++i)
+		{
+			Block* ptrToBlock = static_cast<Block*>(get(i));
+			ptrToBlock->mInUse = false;
+			ptrToBlock->mNextFree = i < (mCapacity - 1) ? i + 1 : i;
+		}
+	}
+
+private:
+	int              mLastFree;
 	std::vector<int> mIndexes;
 };
 #endif

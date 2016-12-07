@@ -9,7 +9,7 @@ class GTextureObject
 	friend class GTextureDictinary;
 	friend class GTextureManager;
 private:
-	GTextureObject();
+	GTextureObject(const char* name);
 	~GTextureObject();
 
 private:
@@ -17,7 +17,7 @@ private:
 	GTextureObject* mPrev;
 	GTextureObject* mSameHash;
 
-	const char*     mKey;
+	char*     mKey;
 
 	int mRefCounter;  // count of refernces on this texture
 	int mGLTextureId; // id of the texture

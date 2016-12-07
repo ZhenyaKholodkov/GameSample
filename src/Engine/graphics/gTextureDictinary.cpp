@@ -31,7 +31,7 @@ GTextureObject* GTextureDictinary::find(const char* key)
 	
 	while (texture)
 	{
-		if (texture->mKey == key)
+		if (strcmp(texture->mKey, key) == 0)
 		{
 			break;
 		}
@@ -86,7 +86,9 @@ void GTextureDictinary::destroy()
 {
 	while (mChain) 
 	{
+		GTextureObject* objectToDelete = mChain;
 		GTextureManager::Instance()->unloadTexture(mChain);
+		SAFE_DELETE(objectToDelete);
 	}
 	delete[] mTable;
 }

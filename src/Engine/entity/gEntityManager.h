@@ -71,7 +71,7 @@ private:
 
 	std::vector<GBasePool*>        mComponentPools;
 
-	const uint32 DEFUALT_POOL_SIZE = 6;
+	const uint32 DEFUALT_POOL_SIZE = 10;
 };
 
 template<typename C, typename... Args>

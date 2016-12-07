@@ -13,7 +13,7 @@ public:
 		STATE_SCALE = BIT(2)
 	};
 
-	GScalableComponent(float beginXScale, float beginYScale, float endXScale, float endYScale, float time)
+	GScalableComponent(float beginXScale, float beginYScale, float endXScale, float endYScale, int time)
 		: mBeginXScale(beginXScale), mBeginYScale(beginYScale), mEndXScale(endXScale), mEndYScale(endYScale),
 		  mTime(time), mCurrentTime(0), mState(STATE_WAIT)
 	{

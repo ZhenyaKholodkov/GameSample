@@ -27,7 +27,7 @@ int32 Application::OnCreate()
 
 	GRenderManager::Instance()->init(mWidth, mHeight);
 
-	srand(time(0));
+	srand((uint32)time(0));
 
 	mGame = IGame::Instane();
 	mGame->Create();
@@ -116,6 +116,7 @@ GKey Application::convertToGKey(uint32 key)
 		return KEY_DOWN;
 		break;
 	}
+	return KEY_NONE;
 }
 
 Application::~Application()

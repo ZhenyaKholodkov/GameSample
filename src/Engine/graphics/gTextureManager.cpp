@@ -36,8 +36,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 	ulong32 height;
 	LoadPngImage(path, &data, &width, &height);
 
-	texture = new GTextureObject();
-	texture->mKey = name;
+	texture = new GTextureObject(name);
 	texture->mGLTextureId = GRenderManager::Instance()->loadTexture(data, width, height);
 	texture->mWidth = width;
 	texture->mHeight = height;
@@ -53,5 +52,5 @@ void GTextureManager::unloadTexture(GTextureObject* texture)
 	GTextureDictinary* dictionary = GTextureDictinary::Instance();
 	dictionary->remove(texture);
 
-	SAFE_DELETE(texture);
+	GRenderManager::Instance()->unloadTexture(texture->mGLTextureId);
 }

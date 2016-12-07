@@ -23,6 +23,13 @@ void GCollisionSystem::checkCollision(Entity checkEntity)
 		if (checkEntity == entity)
 			continue;
 
+		if (mEntityManager->DoesHaveComponent<GRenderableComponent>(entity))
+		{
+			GRenderableComponent*  renderable = mEntityManager->GetComponent<GRenderableComponent>(entity);
+			if (!renderable->isVisible())
+				continue;
+		}
+
 		GCollisionComponent* collision = (*iter)->second;
 		GLocationComponent*  location = mEntityManager->GetComponent<GLocationComponent>(entity);
 

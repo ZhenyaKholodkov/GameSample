@@ -54,7 +54,7 @@ void GGame::CreateGame()
 
 	GSprite* spritePlayer = GResManager::Instance()->GetSprite("player.png");
 	Entity playerEntity = mEntityManager->CreateEntity();
-	GLocationComponent* playerLocation = mEntityManager->AddComponentsToEntity<GLocationComponent>(playerEntity, 200.0f, 200.0f);
+	GLocationComponent* playerLocation = mEntityManager->AddComponentsToEntity<GLocationComponent>(playerEntity, 960.0f, 704.0f);
 	mEntityManager->AddComponentsToEntity<GRenderableComponent>(playerEntity, spritePlayer);
 	GMoveableComponent* playerMoveable = mEntityManager->AddComponentsToEntity<GMoveableComponent>(playerEntity, 5.0f, 5.0f);
 	GCollisionComponent* playerCollision = mEntityManager->AddComponentsToEntity<GCollisionComponent>(playerEntity, spritePlayer->GetWidth() / 2, spritePlayer->GetHeight() / 2);
@@ -81,7 +81,7 @@ void GGame::CreateField()
 {
 	GSprite* spriteBrick = GResManager::Instance()->GetSprite("stones.png");
 	GSprite* spriteGrass = GResManager::Instance()->GetSprite("Grass.png");
-	uint32 size = spriteGrass->GetWidth();
+	int size = spriteGrass->GetWidth();
 
 	const uint32 rows = 6, cols = 8;
 	uint32 field[rows][cols] = {1, 1, 1, 1, 1, 1, 1, 1,
@@ -91,11 +91,11 @@ void GGame::CreateField()
 		                  0, 1, 1, 1, 1, 1, 0, 1,
 		                  0, 0, 0, 0, 0, 0, 0, 0};
 
-	float x = size / 2;
-	float y = size / 2;
+	float x = (float)size / 2;
+	float y = (float)size / 2;
 	for (uint32 i = 0; i < rows; ++i)
 	{
-		x = size / 2;
+		x = (float)size / 2;
 		for (uint32 j = 0; j < cols; ++j)
 		{
 			Entity entity = mEntityManager->CreateEntity();

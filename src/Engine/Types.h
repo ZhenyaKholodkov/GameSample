@@ -18,10 +18,11 @@ using namespace std;
 
 typedef enum  GKey
 {
-	KEY_UP = BIT(1),
-	KEY_DOWN = BIT(2),
-	KEY_LEFT = BIT(3),
-	KEY_RIGHT = BIT(4),
+	KEY_NONE  = BIT(1),
+	KEY_UP    = BIT(2),
+	KEY_DOWN  = BIT(3),
+	KEY_LEFT  = BIT(4),
+	KEY_RIGHT = BIT(5),
 }GKey;
 
 typedef int           int32;
@@ -170,7 +171,6 @@ class Rect
 {
 public:
 	Rect() {                     }
-	Rect(Pixel pp1, Pixel pp2) { Set(pp1, pp2); }
 	Rect(int32 x1, int32 y1, int32 x2, int32 y2) { Set(x1, y1, x2, y2); }
 
 	void Set() { x1 = x2 = y1 = y2 = 0; }                   
@@ -179,11 +179,7 @@ public:
 	void Set(int32 xx1, int32 yy1, int32 xx2, int32 yy2) { x1 = xx1;  y1 = yy1;  x2 = xx2;  y2 = yy2; }
 
 	int32   W() { return abs(x2 - x1); }                     
-	int32   H() { return abs(y2 - y1); }                     
-	Pixel Size() { return Pixel(W(), H()); }                 
-
-	Pixel P1() { return Pixel(x1, y1); }                    
-	Pixel P2() { return Pixel(x2, y2); }                    
+	int32   H() { return abs(y2 - y1); }                   
 
 	int32   X1() { return x1; }                             
 	int32   Y1() { return y1; }                             
@@ -209,9 +205,9 @@ class GVector3
 public:
 	GVector3() {}
 	GVector3(float xV, float yV, float zV) :x(xV), y(yV), z(zV) {}
-	float x;             //!< x-coordinate of the vector
-	float y;             //!< y-coordinate of the vector
-	float z;             //!< z-coordinate of the vector   
+	float x;             
+	float y;             
+	float z;               
 	bool operator == (GVector3 const & v) const
 	{
 		return (
@@ -227,8 +223,8 @@ class GVector2
 public:
 	GVector2() {}
 	GVector2(float xV, float yV) :x(xV), y(yV) {}
-	float x;             //!< x-coordinate of the vector
-	float y;             //!< y-coordinate of the vector
+	float x;             
+	float y;             
 	bool operator == (GVector2 const & v) const
 	{
 		return (
@@ -250,33 +246,5 @@ public:
 	void              SetRotZ(float r = 0, bool resetTrans = true, bool setZeros = true);
 	static GMatrix   matMul(GMatrix const & A, GMatrix const & B);	                          
 	static GVector3  matVecMul(GMatrix const & A, GVector3 const & V);	                      
-
-	bool operator == (GMatrix const & m0) const
-	{
-		return IsRotSame(m0) && IsTransSame(m0);
-	}
-
-	bool operator != (GMatrix const & m0) const
-	{
-		return !IsRotSame(m0) || !IsTransSame(m0);
-	}
-
-	bool IsRotSame(GMatrix const& m0) const
-	{
-		return  m[0][0] == m0.m[0][0] &&
-			m[0][1] == m0.m[0][1] &&
-			m[0][2] == m0.m[0][2] &&
-			m[1][0] == m0.m[1][0] &&
-			m[1][1] == m0.m[1][1] &&
-			m[1][2] == m0.m[1][2] &&
-			m[2][0] == m0.m[2][0] &&
-			m[2][1] == m0.m[2][1] &&
-			m[2][2] == m0.m[2][2];
-	}
-
-	bool IsTransSame(GMatrix const& m0) const
-	{
-		return (t == m0.t);
-	}
 };
 #endif // !TEPYS_H

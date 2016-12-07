@@ -7,10 +7,10 @@ class GCollisionComponent : public GComponent<GCollisionComponent>
 {
 	friend class GCollisionSystem;
 public:
-	GCollisionComponent(uint32 xRadius, uint32 yRadius)
+	GCollisionComponent(int xRadius, int yRadius)
 	{
-		mRadius.x = xRadius;
-		mRadius.y = yRadius;
+		mRadius.x = (float)xRadius;
+		mRadius.y = (float)yRadius;
 	};
 	virtual ~GCollisionComponent() {};
 	

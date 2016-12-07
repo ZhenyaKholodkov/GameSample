@@ -46,7 +46,6 @@ bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* 
 	if (infoPtr == NULL)
 	{
 		png_destroy_read_struct(&pngPtr, (png_infopp)NULL, (png_infopp)NULL);
-		//if (!raw.isResBase)
 		fclose(raw.file);
 		return false;
 	}
@@ -55,7 +54,6 @@ bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* 
 	if (endInfo == NULL)
 	{
 		png_destroy_read_struct(&pngPtr, &infoPtr, (png_infopp)NULL);
-		//if (!raw.isResBase)
 		fclose(raw.file);
 		return false;
 	}
@@ -97,16 +95,12 @@ bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* 
 	if (numComponents == 0)
 	{
 		png_destroy_read_struct(&pngPtr, &infoPtr, (png_infopp)NULL);
-		//if (!raw.isResBase)
 		fclose(raw.file);
 		return false;
 	}
 
-	// чтоб избавиться от фрагментации памяти, выделяем ниже блок, необходимый для обработки изображения, доведенного до степени двойки
-
 	*aHeight = height;
 	*aWidth = width;
-	//*aImage = (unsigned char*)malloc(bin_ceil(width) * bin_ceil(height) * 4 * sizeof(unsigned char));
 	*aImage = (unsigned char*)malloc(width * height * 4 * sizeof(unsigned char));
 
 
@@ -118,7 +112,6 @@ bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* 
 
 	png_read_image(pngPtr, row_ptr);
 
-	// now rebuild the image
 	for (int i = 0; i < height; i++)
 	{
 		png_bytep	ptr = row_ptr[i];
@@ -144,7 +137,6 @@ bool LoadPngImage(const char* aFileName, unsigned char** aImage, unsigned long* 
 
 					if (!png_get_PLTE(pngPtr, infoPtr, (png_colorp *)&pngPal, (int*)&numColors))
 					{
-						// This is a grayscale image, build a grayscale palette
 						numColors = numEntries + 1;
 						pngPal = pal;
 
