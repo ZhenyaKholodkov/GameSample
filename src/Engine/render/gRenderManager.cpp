@@ -139,36 +139,36 @@ void GRenderManager::rotate( float ang )
    if (ang==0.0f)
       return;
 
-   IGMatrix		rotZ;
+   GMatrix		rotZ;
    rotZ.SetRotZ( -ang * DEGREE_TO_RAD );
 
-   mMatrix = IGMatrix::matMul(rotZ, mMatrix);
+   mMatrix = GMatrix::matMul(rotZ, mMatrix);
 }
 
 void GRenderManager::rotate( float angX, float angY, float angZ )
 {
    if (angX!=0.0f)
    {
-      IGMatrix		rotX;
+      GMatrix		rotX;
       rotX.SetRotX( -angX * DEGREE_TO_RAD );
 
-      mMatrix = IGMatrix::matMul(rotX, mMatrix);
+      mMatrix = GMatrix::matMul(rotX, mMatrix);
    }
 
    if (angY!=0.0f)
    {
-      IGMatrix		rotY;
+      GMatrix		rotY;
       rotY.SetRotY( -angY * DEGREE_TO_RAD );
 
-      mMatrix = IGMatrix::matMul(rotY, mMatrix);
+      mMatrix = GMatrix::matMul(rotY, mMatrix);
    }
 
    if (angZ!=0.0f)
    {
-      IGMatrix		rotZ;
+      GMatrix		rotZ;
       rotZ.SetRotZ( -angZ * DEGREE_TO_RAD );
 
-      mMatrix = IGMatrix::matMul(rotZ, mMatrix);
+      mMatrix = GMatrix::matMul(rotZ, mMatrix);
    }
 }
 
@@ -200,7 +200,7 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
    if (!visible())																			
       return;
 
-   IGVector3 tmpVertexData0, tmpVertexData2;												
+   GVector3 tmpVertexData0, tmpVertexData2;												
 
    tmpVertexData0.x = x;			tmpVertexData0.y = y;			tmpVertexData0.z = z;		
    tmpVertexData2.x = x + tex_w;	tmpVertexData2.y = y + tex_h;	tmpVertexData2.z = z;
@@ -208,12 +208,12 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
    convertVertexDataToModelSpace(tmpVertexData0);
    convertVertexDataToModelSpace(tmpVertexData2);
 
-   IGVector3 &vertexData0 = mVertexData[mCacheVertIndex];												
-   IGVector3 &vertexData1 = mVertexData[mCacheVertIndex+1];
-   IGVector3 &vertexData2 = mVertexData[mCacheVertIndex+2];
-   IGVector3 &vertexData3 = mVertexData[mCacheVertIndex+3];
-   IGVector3 &vertexData4 = mVertexData[mCacheVertIndex+4];
-   IGVector3 &vertexData5 = mVertexData[mCacheVertIndex+5];
+   GVector3 &vertexData0 = mVertexData[mCacheVertIndex];												
+   GVector3 &vertexData1 = mVertexData[mCacheVertIndex+1];
+   GVector3 &vertexData2 = mVertexData[mCacheVertIndex+2];
+   GVector3 &vertexData3 = mVertexData[mCacheVertIndex+3];
+   GVector3 &vertexData4 = mVertexData[mCacheVertIndex+4];
+   GVector3 &vertexData5 = mVertexData[mCacheVertIndex+5];
 
    vertexData0 = tmpVertexData0;
    vertexData2 = tmpVertexData2;
@@ -239,12 +239,12 @@ void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h
 
    }
 
-   IGVector2 &textCoordData0 = mTextCoordData[mCacheVertIndex];
-   IGVector2 &textCoordData1 = mTextCoordData[mCacheVertIndex+1];
-   IGVector2 &textCoordData2 = mTextCoordData[mCacheVertIndex+2];
-   IGVector2 &textCoordData3 = mTextCoordData[mCacheVertIndex+3];
-   IGVector2 &textCoordData4 = mTextCoordData[mCacheVertIndex+4];
-   IGVector2 &textCoordData5 = mTextCoordData[mCacheVertIndex+5];
+   GVector2 &textCoordData0 = mTextCoordData[mCacheVertIndex];
+   GVector2 &textCoordData1 = mTextCoordData[mCacheVertIndex+1];
+   GVector2 &textCoordData2 = mTextCoordData[mCacheVertIndex+2];
+   GVector2 &textCoordData3 = mTextCoordData[mCacheVertIndex+3];
+   GVector2 &textCoordData4 = mTextCoordData[mCacheVertIndex+4];
+   GVector2 &textCoordData5 = mTextCoordData[mCacheVertIndex+5];
 
    float texLeft  = (float)tex_x / (float)( full_tex_w );											
    float texUp    = (float)tex_y / (float)( full_tex_h );
@@ -306,9 +306,9 @@ void	GRenderManager::reallocVertexCache()
 }
 
 
-void	GRenderManager::convertVertexDataToModelSpace(IGVector3 &vertex) const
+void	GRenderManager::convertVertexDataToModelSpace(GVector3 &vertex) const
 {
-	IGVector3 newVertexData;
+	GVector3 newVertexData;
 	newVertexData.x = mMatrix.m[0][0] * vertex.x + mMatrix.m[1][0] * vertex.y + mMatrix.t.x;
 	newVertexData.y = mMatrix.m[0][1] * vertex.x + mMatrix.m[1][1] * vertex.y + mMatrix.t.y;
 	newVertexData.z = mMatrix.m[0][2] * vertex.x + mMatrix.m[1][2] * vertex.y + mMatrix.t.z;
@@ -322,7 +322,7 @@ void	GRenderManager::convertVertexDataToModelSpace(IGVector3 &vertex) const
 	vertex = newVertexData;
 }
 
-bool	GRenderManager::testOutsideScreen(IGVector3 &vertex0, IGVector3 &vertex2) const
+bool	GRenderManager::testOutsideScreen(GVector3 &vertex0, GVector3 &vertex2) const
 {
 	return (
 		(vertex0.x < 0.0f		&& vertex2.x < 0.0f) ||

@@ -1,5 +1,20 @@
 #include "g2048MechanicSystem.h"
 
+#include <Windows.h>
+#include <iostream>
+#include <sstream>
+
+void Output(const char* szFormat, ...)
+{
+	char szBuff[1024];
+	va_list arg;
+	va_start(arg, szFormat);
+	_vsnprintf(szBuff, sizeof(szBuff), szFormat, arg);
+	va_end(arg);
+
+	OutputDebugString(szBuff);
+}
+
 
 G2048MechanicSystem::G2048MechanicSystem() 
 {
@@ -15,13 +30,14 @@ void G2048MechanicSystem::createField()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
+		int index = 0;
 		for (uint32 i = 0; i < mCurrentMechanic->mRows; ++i)
 		{
 			for (uint32 j = 0; j < mCurrentMechanic->mCols; ++j)
 			{
-				mCurrentMechanic->mLogicalNet[i*mCurrentMechanic->mRows + j] = -1;
-				mCurrentMechanic->mTitles[i*mCurrentMechanic->mRows + j] = createTitle(i, j, (*iter)->first);
-				mCurrentMechanic->mAvailableEntities.push_back(mCurrentMechanic->mTitles[i*mCurrentMechanic->mRows + j]);
+				index = i*mCurrentMechanic->mRows + j;
+				mCurrentMechanic->mLogicalNet[index] = -1;
+				mCurrentMechanic->mTitles[index] = createTitle(i, j, (*iter)->first);
 			}
 		}
 	}
@@ -38,7 +54,7 @@ Entity G2048MechanicSystem::createTitle(uint32 row, uint32 col, Entity self)
 	titleRenderable->setVisible(false);
 	GScalableComponent* scalble = mEntityManager->AddComponentsToEntity<GScalableComponent>(titleEntity, 0.0f, 0.0f, 1.0f, 1.0f, 500);
 	mEntityManager->AddComponentsToEntity<GCounterComponent>(titleEntity, 0);
-	GMoveableComponent* moveable = mEntityManager->AddComponentsToEntity<GMoveableComponent>(titleEntity);
+	GMoveableAnimationComponent* moveable = mEntityManager->AddComponentsToEntity<GMoveableAnimationComponent>(titleEntity);
 
 	moveable->signal_LocationChanged.connect(titleLocation, &GLocationComponent::slot_LocationChanged);
 	moveable->signal_MovingFinished.connect(mCurrentMechanic, &G2048MechanicComponent::slot_ReportMovingFinished);
@@ -61,22 +77,58 @@ void G2048MechanicSystem::runGame()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
-		showRandomTitle(0 , 0);
-		showRandomTitle(0, 2);
-		showRandomTitle(2, 1);
-		showRandomTitle(3, 0);
-		showRandomTitle(3, 1);
-		showRandomTitle(3, 2);
-		showRandomTitle(3, 3);
+		showRandomTitle();
+		showRandomTitle();
 	}
 }
-
-void G2048MechanicSystem::showRandomTitle(int i , int j)
+void G2048MechanicSystem::showTitle(int i, int j, int a)
 {
-	int indexI = i;//randInt(0, component->mRows - 1);
-	int indexJ = j;//randInt(0, component->mCols - 1);
+	int index = i * mCurrentMechanic->mRows + j;
 
-	Entity title = mCurrentMechanic->mTitles[indexI*mCurrentMechanic->mRows+indexJ];
+	Entity title = mCurrentMechanic->mTitles[index];
+
+	GRenderableComponent* renderable = mEntityManager->GetComponent<GRenderableComponent>(title);
+	renderable->setVisible(true);
+	GCounterComponent* counter = mEntityManager->GetComponent<GCounterComponent>(title);
+
+	GChildComponent* child = mEntityManager->GetComponent<GChildComponent>(title);
+	GRenderableComponent* numberRenderable = mEntityManager->GetComponent<GRenderableComponent>(child->getChild());
+	if (randInt(1, 100) <= 10)
+	{
+		numberRenderable->SetSprite(mCurrentMechanic->mTitleSprites[a -1]);
+		mCurrentMechanic->mLogicalNet[index] = a;
+	}
+	else
+	{
+		numberRenderable->SetSprite(mCurrentMechanic->mTitleSprites[a -1]);
+		mCurrentMechanic->mLogicalNet[index] = a;
+	}
+
+	GScalableComponent* scalable = mEntityManager->GetComponent<GScalableComponent>(title);
+	scalable->Reset();
+	scalable->setBeginXScale(0.0f);
+	scalable->setBeginYScale(0.0f);
+	scalable->setEndXScale(1.0f);
+	scalable->setEndYScale(1.0f);
+	scalable->SetState(GScalableComponent::STATE_SCALE);
+}
+
+
+void G2048MechanicSystem::showRandomTitle()
+{
+	std::vector<int> availableTitles;
+	for (uint32 i = 0; i < mCurrentMechanic->mRows * mCurrentMechanic->mCols; ++i)
+	{
+		if (mCurrentMechanic->mLogicalNet[i] == -1)
+		{
+			availableTitles.push_back(i);
+		}
+	}
+
+	int i = randInt(0, availableTitles.size() - 1);
+	int index = availableTitles[i];
+
+	Entity title = mCurrentMechanic->mTitles[index];
 
 	GRenderableComponent* renderable = mEntityManager->GetComponent<GRenderableComponent>(title);
 	renderable->setVisible(true);
@@ -87,12 +139,12 @@ void G2048MechanicSystem::showRandomTitle(int i , int j)
 	if (randInt(1, 100) <= 10)
 	{
 		numberRenderable->SetSprite(mCurrentMechanic->mTitleSprites[1]);
-		mCurrentMechanic->mLogicalNet[indexI*mCurrentMechanic->mRows+indexJ] = 2;
+		mCurrentMechanic->mLogicalNet[index] = 2;
 	}
 	else
 	{
 		numberRenderable->SetSprite(mCurrentMechanic->mTitleSprites[0]);
-		mCurrentMechanic->mLogicalNet[indexI*mCurrentMechanic->mRows+indexJ] = 1;
+		mCurrentMechanic->mLogicalNet[index] = 1;
 	}
 
 	GScalableComponent* scalable = mEntityManager->GetComponent<GScalableComponent>(title);
@@ -109,7 +161,11 @@ void G2048MechanicSystem::slot_MoveLeft()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
-		moveField(DIRECTION_LEFT);
+		if (mCurrentMechanic->mState == G2048MechanicComponent::STATE_WAIT)
+		{
+			mCurrentMechanic->mState = G2048MechanicComponent::STATE_ANIMATING;
+			moveField(DIRECTION_LEFT);
+		}
 	}
 }
 
@@ -118,7 +174,11 @@ void G2048MechanicSystem::slot_MoveRight()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
-		moveField(DIRECTION_RIGHT);
+		if (mCurrentMechanic->mState == G2048MechanicComponent::STATE_WAIT)
+		{
+			mCurrentMechanic->mState = G2048MechanicComponent::STATE_ANIMATING;
+			moveField(DIRECTION_RIGHT);
+		}
 	}
 }
 
@@ -127,7 +187,11 @@ void G2048MechanicSystem::slot_MoveTop()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
-		moveField(DIRECTION_TOP);
+		if (mCurrentMechanic->mState == G2048MechanicComponent::STATE_WAIT)
+		{
+			mCurrentMechanic->mState = G2048MechanicComponent::STATE_ANIMATING;
+			moveField(DIRECTION_TOP);
+		}
 	}
 }
 
@@ -136,7 +200,11 @@ void G2048MechanicSystem::slot_MoveBottom()
 	for (auto iter = mEntityManager->GetBeginPairComponent<G2048MechanicComponent>(); iter != mEntityManager->GetEndPairComponent<G2048MechanicComponent>(); iter++)
 	{
 		mCurrentMechanic = static_cast<G2048MechanicComponent*>((*iter)->second);
-		moveField(DIRECTION_BOTTOM);
+		if (mCurrentMechanic->mState == G2048MechanicComponent::STATE_WAIT)
+		{
+			mCurrentMechanic->mState = G2048MechanicComponent::STATE_ANIMATING;
+			moveField(DIRECTION_BOTTOM);
+		}
 	}
 }
 
@@ -145,9 +213,9 @@ void G2048MechanicSystem::moveField(uint32 direction)
 	int incremental = 1;
 
 	int rowBeg = 0;
-	int rowEnd = mCurrentMechanic->mRows - 1;
+	int rowEnd = mCurrentMechanic->mRows;
 	int colBeg = 0;
-	int colEnd = mCurrentMechanic->mCols - 1;
+	int colEnd = mCurrentMechanic->mCols;
 
 	int width = mCurrentMechanic->mCols;
 	int height = mCurrentMechanic->mRows;
@@ -160,7 +228,7 @@ void G2048MechanicSystem::moveField(uint32 direction)
 		width = 1;
 	}
 
-	if (direction == DIRECTION_RIGHT || direction == DIRECTION_TOP)
+	if (direction == DIRECTION_RIGHT || direction == DIRECTION_BOTTOM)
 	{
 		rowBeg = mCurrentMechanic->mRows - 1;
 		rowEnd = -1;
@@ -182,20 +250,23 @@ void G2048MechanicSystem::moveField(uint32 direction)
 		{
 			movedIndex = row * height + col * width;
 
-			if (mCurrentMechanic->mLogicalNet[movedIndex] != -1)
+			if (movedIndex != moveToIndex && mCurrentMechanic->mLogicalNet[movedIndex] != -1)
 			{
 				if (mCurrentMechanic->mLogicalNet[movedIndex] == mCurrentMechanic->mLogicalNet[moveToIndex])
 				{
 					mCurrentMechanic->mLogicalNet[movedIndex] = -1;
 					mCurrentMechanic->mLogicalNet[moveToIndex]++;
 					moveTitleToTitle(mCurrentMechanic->mTitles[movedIndex], mCurrentMechanic->mTitles[moveToIndex], mCurrentMechanic->mLogicalNet[moveToIndex]);
+					moveToIndex += (width * incremental);
 				}
 				else
 				{
 					if (mCurrentMechanic->mLogicalNet[moveToIndex] != -1)
 					{
-						moveToIndex += incremental;
+						moveToIndex += (width * incremental);
 					}
+					if (movedIndex == moveToIndex)
+						continue;
 					mCurrentMechanic->mLogicalNet[moveToIndex] = mCurrentMechanic->mLogicalNet[movedIndex];
 					mCurrentMechanic->mLogicalNet[movedIndex] = -1;
 					moveTitleToTitle(mCurrentMechanic->mTitles[movedIndex], mCurrentMechanic->mTitles[moveToIndex], mCurrentMechanic->mLogicalNet[moveToIndex]);
@@ -205,8 +276,26 @@ void G2048MechanicSystem::moveField(uint32 direction)
 		}
 		row += incremental;
 	}
-}
 
+	if (mCurrentMechanic->mTitlesInMoving == 0)
+	{
+		mCurrentMechanic->mState = G2048MechanicComponent::STATE_WAIT;
+	}
+	int index = 0;
+	Output("matrix: \n");
+	for (uint32 i = 0; i < mCurrentMechanic->mRows; ++i)
+	{
+		for (uint32 j = 0; j < mCurrentMechanic->mCols; ++j)
+		{
+			index = i*mCurrentMechanic->mRows + j;
+			if(mCurrentMechanic->mLogicalNet[index] != -1)
+				Output(" ");
+
+			Output(" %d",mCurrentMechanic->mLogicalNet[index]);
+		}
+		Output("\n");
+	}
+}
 void G2048MechanicSystem::recalFieldAfterAnimation()
 {
 	Entity entity = -1;
@@ -227,7 +316,7 @@ void G2048MechanicSystem::recalFieldAfterAnimation()
 				renderable->setVisible(true);
 				GChildComponent* child = mEntityManager->GetComponent<GChildComponent>(entity);
 				GRenderableComponent* childRenderable = mEntityManager->GetComponent<GRenderableComponent>(child->getChild());
-				childRenderable->SetSprite(mCurrentMechanic->mTitleSprites[value]);
+				childRenderable->SetSprite(mCurrentMechanic->mTitleSprites[value - 1]);
 			}
 			else
 			{
@@ -239,7 +328,7 @@ void G2048MechanicSystem::recalFieldAfterAnimation()
 
 void G2048MechanicSystem::moveTitleToTitle(Entity movedTitle, Entity toTitle, int newValue)
 {
-	GMoveableComponent*   movedMoveable = mEntityManager->GetComponent<GMoveableComponent>(movedTitle);
+	GMoveableAnimationComponent*   movedMoveable = mEntityManager->GetComponent<GMoveableAnimationComponent>(movedTitle);
 	GLocationComponent*   movedLocation = mEntityManager->GetComponent<GLocationComponent>(movedTitle);
 	GRenderableComponent* movedRenderable = mEntityManager->GetComponent<GRenderableComponent>(movedTitle);
 	GLocationComponent*   toLocation = mEntityManager->GetComponent<GLocationComponent>(toTitle);
@@ -289,6 +378,7 @@ void G2048MechanicSystem::update(int dt)
 		if (mCurrentMechanic->mState == G2048MechanicComponent::STATE_RECALC_MATRIX)
 		{
 			recalFieldAfterAnimation();
+			showRandomTitle();
 			mCurrentMechanic->mState = G2048MechanicComponent::STATE_WAIT;
 		}
 	}

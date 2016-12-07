@@ -1,4 +1,4 @@
-#include "gMoveableSystem.h"
+#include "GMoveableSystem.h"
 
 
 GMoveableSystem::GMoveableSystem()
@@ -6,7 +6,7 @@ GMoveableSystem::GMoveableSystem()
 	mEntityManager = GEntityManager::Instance();
 }
 
-GMoveableSystem::~GMoveableSystem() 
+GMoveableSystem::~GMoveableSystem()
 {
 }
 
@@ -18,23 +18,28 @@ void GMoveableSystem::update(int dt)
 		Entity entity = (*iter)->first;
 		GMoveableComponent* moveable = (*iter)->second;
 
-		if (!mEntityManager->DoesHaveComponent<GLocationComponent>(entity) || !mEntityManager->DoesHaveComponent<GMoveableComponent>(entity))
+		if (!mEntityManager->DoesHaveComponent<GLocationComponent>(entity))
 			continue;
-		
-		if (moveable->mState == GMoveableComponent::STATE_WAIT)
+
+		if (moveable->mState == GMoveableComponent::STATE_STOP)
 			continue;
-	
-		moveable->mCurrentTime += dt;
-		if (moveable->mMovingTime > moveable->mCurrentTime)
+
+		switch (moveable->mState)
 		{
-			moveable->signal_LocationChanged(moveable->getCurrentX(), moveable->getCurrentY());
+		case GMoveableComponent::STATE_MOVE_DX:
+			moveable->signal_LocationChanged(moveable->mDX, 0.0f);
+			break;
+		case GMoveableComponent::STATE_MOVE_DY:
+			moveable->signal_LocationChanged(0.0f, moveable->mDY);
+			break;
+		case GMoveableComponent::STATE_MOVE_DX_REVERT:
+			moveable->signal_LocationChanged(-moveable->mDX, 0.0f);
+			break;
+		case GMoveableComponent::STATE_MOVE_DY_REVERT:
+			moveable->signal_LocationChanged(0.0f, -moveable->mDY);
+			break;
 		}
-		else
-		{
-			moveable->signal_LocationChanged(moveable->GetXDestination(), moveable->GetYDestination());
-			moveable->signal_MovingFinished(entity);
-			moveable->signal_MovingFinishedWithData(entity, moveable->signal_Data);
-			moveable->SetState(GMoveableComponent::STATE_WAIT);
-		}
+		moveable->signal_Moved(entity);
+		//moveable->mState = GMoveableComponent::STATE_STOP;
 	}
 }

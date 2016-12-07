@@ -3,12 +3,13 @@
 
 #include "gBaseSystem.h"
 #include "gRenderSystem.h"
+#include "gMoveableAnimationSystem.h"
 #include "gMoveableSystem.h"
 #include "gUserInputSystem.h"
 #include "gScalableSystem.h"
+#include "gCollisionSystem.h"
 #include "g2048MechanicSystem.h"
 
-//template<class Component>
 class GSystemManager
 {
 public:
@@ -28,7 +29,7 @@ private:
 
 	uint32 GetSystemCount();
 private:
-	vector<GBaseSystem*>            mSystems; // тоже самое
+	std::vector<GBaseSystem*>            mSystems; 
 };
 
 

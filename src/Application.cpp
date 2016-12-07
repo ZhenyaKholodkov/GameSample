@@ -99,22 +99,6 @@ void Application::OnMouseWheelUp(Pixel mouse_pos)
 	GCursor point; point.x = (float)mouse_pos.X(); point.y = (float)mouse_pos.Y();
 }
 
-void Application::onActivate()
-{
-}
-
-void Application::onDeactivate()
-{
-}
-
-void Application::onMinimize()
-{
-}
-
-void Application::onMaximize()
-{
-}
-
 GKey Application::convertToGKey(uint32 key)
 {
 	switch (key)

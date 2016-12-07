@@ -46,24 +46,24 @@ public:
 
 
 
-	IGMatrix getTransform() { return mMatrix; }
+	GMatrix getTransform() { return mMatrix; }
 
 	int		width() { return mWidth; }
 	int		height() { return mHeight; }
 
-	void  	setTransform(IGMatrix val) { mMatrix = val; }
+	void  	setTransform(GMatrix val) { mMatrix = val; }
 	void	setLineColor(float r, float g, float b);
 	void	setLineColor(uint32 c);
 	void	setFillColor(float r, float g, float b);
 	void	setFillColor(uint32 c);
 
 private:
-	IGMatrix 	           mMatrix;
+	GMatrix 	           mMatrix;
 
-	std::stack<IGMatrix>   mMatrixStack;
+	std::stack<GMatrix>   mMatrixStack;
 						   
-	std::vector<IGVector3> mVertexData;
-	std::vector<IGVector2> mTextCoordData;
+	std::vector<GVector3> mVertexData;
+	std::vector<GVector2> mTextCoordData;
 	std::vector<uint16>    mIndexesData;
 
 	float                  mClearColorR;
@@ -90,8 +90,8 @@ private:
 	void allocVertexCache();
 	void reallocVertexCache();
 
-	void convertVertexDataToModelSpace(IGVector3 &vertex)	const;
-	bool testOutsideScreen(IGVector3 &vertex0, IGVector3 &vertex2) const;
+	void convertVertexDataToModelSpace(GVector3 &vertex)	const;
+	bool testOutsideScreen(GVector3 &vertex0, GVector3 &vertex2) const;
 
 	int  checkForGLErrors(GThreadSafeErrors &err);
 };

@@ -45,6 +45,8 @@ public:/*slots*/
 	{
 		SetState(GAnimationComponent::STATE_WAIT);
 	}
+public:/*signals*/
+	sigslot::signal0<>  signal_AnimationFinished;
 private:
 	vector<GSprite*> mFrames;
 	uint32           mCurrentFrame;

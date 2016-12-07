@@ -39,11 +39,7 @@ private:
 	void OnMouseWheelDown(Pixel);
 	void OnMouseWheelUp(Pixel);
 	void OnKeyDown(uint32 key);                             
-	void OnKeyUp(uint32 key);                               
-	void onActivate();										
-	void onDeactivate();									
-	void onMinimize();										
-	void onMaximize();	
+	void OnKeyUp(uint32 key);      
 
 	GKey convertToGKey(uint32 key);
 private:

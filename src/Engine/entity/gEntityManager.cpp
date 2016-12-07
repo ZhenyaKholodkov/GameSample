@@ -45,7 +45,8 @@ void GEntityManager::DestroyEntity(Entity entity)
 	mAvailableEntities.push(entity);
 	for (uint32 index = 0; index < GetComponentCount(); ++index)
 	{
-		mComponentPools[index]->destroy(entity);
+		if (mComponentPools[index])
+			mComponentPools[index]->destroy(entity);
 	}
 }
 

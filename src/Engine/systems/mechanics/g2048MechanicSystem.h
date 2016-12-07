@@ -15,7 +15,8 @@ public:
 	void createField();
 	void runGame();
 
-	void showRandomTitle(int i , int j);
+	void showRandomTitle();
+	void showTitle(int i, int j, int a);
 	void moveTitleToTitle(Entity movedTitle, Entity toTitle, int newValue);
 	void recalFieldAfterAnimation();
 

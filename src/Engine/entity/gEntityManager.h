@@ -16,6 +16,8 @@
 #include "gMouseMoveEventComponent.h"
 #include "gRenderableComponent.h"
 #include "gMoveableComponent.h"
+#include "gMoveableAnimationComponent.h"
+#include "gCollisionComponent.h"
 #include "gChildComponent.h"
 #include "gParentComponent.h"
 #include "gCounterComponent.h"
@@ -68,6 +70,8 @@ private:
 	queue<Entity>                   mAvailableEntities;
 
 	std::vector<GBasePool*>        mComponentPools;
+
+	const uint32 DEFUALT_POOL_SIZE = 6;
 };
 
 template<typename C, typename... Args>
@@ -78,7 +82,7 @@ C*   GEntityManager::AddComponentsToEntity(Entity entity, Args&& ... args)
 	GComponentPool<C>* componentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
 	if (componentPool == nullptr)
 	{
-		componentPool = new GComponentPool<C>(150);
+		componentPool = new GComponentPool<C>(DEFUALT_POOL_SIZE);
 		mComponentPools[index] = static_cast<GBasePool*>(componentPool);
 	}
 	C* new_component = componentPool->create(entity, std::forward<Args>(args) ...);
@@ -95,8 +99,7 @@ C* GEntityManager::GetComponent (Entity entity)
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
 	if (mComponentPool == nullptr)
 		return nullptr;
-	return mComponentPool->get(entity);
-	//return static_cast<C*>(mComponents[index][entity]);
+	return mComponentPool->getComponent(entity);
 }
 
 template<typename C>
@@ -107,7 +110,6 @@ bool GEntityManager::DoesHaveComponent(Entity entity)
 	if (mComponentPool == nullptr)
 		return nullptr;
 	return mComponentPool->doesContainComponent(entity);
-	//return mComponents[index][entity] != nullptr;
 }
 
 
@@ -117,7 +119,7 @@ typename GComponentPool<C>::GPoolIterator GEntityManager::GetBeginComponent()
 	typedef typename GComponentPool<C>::GPoolIterator GPoolIterator;
 	uint32 index = GComponent<C>::GetComponentId();
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
-	return mComponentPool == nullptr ? GPoolIterator(nullptr) : mComponentPool->begin();
+	return mComponentPool == nullptr ? GPoolPairIterator(nullptr, 0) : mComponentPool->begin();
 }
 
 template<typename C>
@@ -126,7 +128,7 @@ typename GComponentPool<C>::GPoolIterator GEntityManager::GetEndComponent()
 	typedef typename GComponentPool<C>::GPoolIterator GPoolIterator;
 	uint32 index = GComponent<C>::GetComponentId();
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
-	return mComponentPool == nullptr ? GPoolIterator(nullptr) : mComponentPool->end();
+	return mComponentPool == nullptr ? GPoolPairIterator(nullptr, 0) : mComponentPool->end();
 }
 
 template<typename C>
@@ -135,7 +137,7 @@ typename GComponentPool<C>::GPoolPairIterator GEntityManager::GetBeginPairCompon
 	typedef typename GComponentPool<C>::GPoolPairIterator GPoolPairIterator;
 	uint32 index = GComponent<C>::GetComponentId();
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
-	return mComponentPool == nullptr ? GPoolPairIterator(nullptr) : mComponentPool->beginPair();
+	return mComponentPool == nullptr ? GPoolPairIterator(nullptr, 0) : mComponentPool->beginPair();
 }
 template<typename C>
 typename GComponentPool<C>::GPoolPairIterator GEntityManager::GetEndPairComponent()
@@ -143,7 +145,7 @@ typename GComponentPool<C>::GPoolPairIterator GEntityManager::GetEndPairComponen
 	typedef typename GComponentPool<C>::GPoolPairIterator GPoolPairIterator;
 	uint32 index = GComponent<C>::GetComponentId();
 	GComponentPool<C>* mComponentPool = static_cast<GComponentPool<C>*>(mComponentPools[index]);
-	return mComponentPool == nullptr ? GPoolPairIterator(nullptr) : mComponentPool->endPair();
+	return mComponentPool == nullptr ? GPoolPairIterator(nullptr, 0) : mComponentPool->endPair();
 }
 #endif
 

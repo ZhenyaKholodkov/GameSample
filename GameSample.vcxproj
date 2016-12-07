@@ -104,7 +104,10 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>src/thirdparty/sigslot;src/thirdparty/libz;src/thirdparty/Tinyxml;src/thirdparty/libpng;src/thirdparty;src/Game;src/Engine/systems/mechanics;src/Engine/io;src/Engine/systems;src/Engine/render;src/Engine/graphics;src/Engine/resources;src/Engine/entity/help;src/Engine/entity;src/Engine/graphics/gpngloader;src/Engine/control;src/Engine/components/mechanics;src/Engine/components;src/Engine;$(SolutionDir)\src\thirdparty\zlib;$(SolutionDir)\src\thirdparty\zlib\INCLUDE;$(SolutionDir)\src\thirdparty\libpng\INCLUDE;$(SolutionDir)\src\thirdparty\libpng;$(SolutionDir)\src\Game;$(SolutionDir)\src\Engine\OpenGL\ext;$(SolutionDir)\src\Engine\OpenGL;$(SolutionDir)\src\Engine;$(SolutionDir)\src</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>_CRT_SECURE_NO_WARNINGS;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,7 +130,6 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Engine\components\gBaseComponent.cpp" />
-    <ClCompile Include="src\Engine\control\gControlManager.cpp" />
     <ClCompile Include="src\Engine\entity\gEntityManager.cpp" />
     <ClCompile Include="src\Engine\io\gIOFile.cpp" />
     <ClCompile Include="src\Engine\graphics\gpngloader\gPngLoader.cpp" />
@@ -144,12 +146,13 @@
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
     <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gBaseSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gCollisionSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gMoveableAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gMoveableSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gScalableSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
-    <ClCompile Include="src\Engine\systems\mechanics\g2048MechanicSystem.cpp" />
     <ClCompile Include="src\Engine\Types.cpp" />
     <ClCompile Include="src\Engine\Utils.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
@@ -195,6 +198,7 @@
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
     <ClInclude Include="src\Engine\components\gChildComponent.h" />
+    <ClInclude Include="src\Engine\components\gCollisionComponent.h" />
     <ClInclude Include="src\Engine\components\gCounterComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyDownEventComponent.h" />
     <ClInclude Include="src\Engine\components\gKeyUpEventComponent.h" />
@@ -203,13 +207,12 @@
     <ClInclude Include="src\Engine\components\gLocationComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h" />
     <ClInclude Include="src\Engine\components\gMouseUpEventComponent.h" />
+    <ClInclude Include="src\Engine\components\gMoveableAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gMoveableComponent.h" />
     <ClInclude Include="src\Engine\components\gParentComponent.h" />
     <ClInclude Include="src\Engine\components\gRenderableComponent.h" />
     <ClInclude Include="src\Engine\components\gScalableComponent.h" />
     <ClInclude Include="src\Engine\components\gSizeComponent.h" />
-    <ClInclude Include="src\Engine\components\mechanics\g2048MechanicComponent.h" />
-    <ClInclude Include="src\Engine\control\gControlManager.h" />
     <ClInclude Include="src\Engine\entity\gEntityManager.h" />
     <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
@@ -227,13 +230,14 @@
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
     <ClInclude Include="src\Engine\systems\gAnimationSystem.h" />
     <ClInclude Include="src\Engine\systems\gBaseSystem.h" />
+    <ClInclude Include="src\Engine\systems\gCollisionSystem.h" />
+    <ClInclude Include="src\Engine\systems\gMoveableAnimationSystem.h" />
     <ClInclude Include="src\Engine\systems\gMoveableSystem.h" />
     <ClInclude Include="src\Engine\systems\gScalableSystem.h" />
     <ClInclude Include="src\Engine\systems\gUserInputSystem.h" />
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystemManager.h" />
-    <ClInclude Include="src\Engine\systems\mechanics\g2048MechanicSystem.h" />
     <ClInclude Include="src\Engine\Types.h" />
     <ClInclude Include="src\Engine\Utils.h" />
     <ClInclude Include="src\Engine\entity\help\gPool.h" />

@@ -2,7 +2,6 @@
 
 
 GRenderSystem::GRenderSystem() :
-//	mBackgroundColor(0xffffff)
  mBackgroundColor(0x000000)
 {
 	mRenderer = GRenderManager::Instance();
@@ -33,7 +32,7 @@ void GRenderSystem::update(int dt)
 			continue;
 
 		mRenderer->save();
-		mRenderer->translate(location->getX(), location->getY(), location->getZ());
+		mRenderer->translate(location->getX(), location->getY());
 		mRenderer->scale(renderable->getXScale(), renderable->getYScale());
 
 		mRenderer->drawImage(sprite->mTextureHandle.getTextureGLId(), sprite->mTextureHandle.getTextureWidth(), 

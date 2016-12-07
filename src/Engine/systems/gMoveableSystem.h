@@ -3,7 +3,6 @@
 
 #include "gSystem.h"
 #include "gEntityManager.h"
-#include "GMoveableSystem.h"
 #include "gLocationComponent.h"
 #include "gMoveableComponent.h"
 

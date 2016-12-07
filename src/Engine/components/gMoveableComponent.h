@@ -7,81 +7,57 @@ class GMoveableComponent : public GComponent<GMoveableComponent>, public sigslot
 {
 	friend class GMoveableSystem;
 public:
-	GMoveableComponent() : signal_Data(nullptr), mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
-	GMoveableComponent(float begX, float begY, float xDest, float yDest, int time) :
-		signal_Data(nullptr), mBeginX(begX), mBeginY(begY), mXDestination(xDest),
-		mYDestination(yDest), mMovingTime(time), mCurrentTime(0), mState(STATE_WAIT)
-	{
-		recalcDxDy();
-	};
+	GMoveableComponent(float dx, float dy) :
+		mDX(dx), mDY(dy), mState(STATE_STOP)
+	{	};
 	virtual ~GMoveableComponent() {};
 
-	float getCurrentX()
-	{
-		return mBeginX + mDX * mCurrentTime / mMovingTime;
-	}
-	float getCurrentY()
-	{
-		return mBeginY + mDY * mCurrentTime / mMovingTime;
-	}
-
-	float GetXDestination() { return mXDestination; }
-	void  SetXDestination(float xDest) { mXDestination = xDest; recalcDxDy(); }
-	float GetYDestination() { return mYDestination; }
-	void  SetYDestination(float yDest) { mYDestination = yDest; recalcDxDy(); }
-
-	float GetBeginX() { return mBeginX; }
-	void  SetBeginX(float x) { mBeginX = x; recalcDxDy(); }
-	float GetBeginY() { return mBeginY; }
-	void  SetBeginY(float y) { mBeginY = y; recalcDxDy(); }
-
-	int   GetMvingTimne() { return mMovingTime; }
-	void  SetMovingTime(int time) { mMovingTime = time; }
-
-	void Reset() { mCurrentTime = 0; }
+	float GetDX() { return mDX; }
+	void  SetDX(float x) { mDX = x; }
+	float GetDY() { return mDY; }
+	void  SetDY(float y) { mDY = y; }
 
 
 public:/*slots*/
-	void slot_Move()
+	void slot_MoveDxRevert()
 	{
-		Reset();
-		SetState(GMoveableComponent::STATE_MOVE);
+		mState = STATE_MOVE_DX_REVERT;
+	}
+	void slot_MoveDyRevert()
+	{
+		mState = STATE_MOVE_DY_REVERT;
+	}
+	void slot_MoveDx()
+	{
+		mState = STATE_MOVE_DX;
+	}
+	void slot_MoveDy()
+	{
+		mState = STATE_MOVE_DY;
+	}
+	void slot_Stop()
+	{
+		mState = STATE_STOP;
 	}
 
 public: /*signals*/
 	sigslot::signal2<float, float>     signal_LocationChanged;
-	sigslot::signal1<Entity>           signal_MovingFinished;
-	sigslot::signal2<Entity, void*>    signal_MovingFinishedWithData;
+	sigslot::signal1<Entity>           signal_Moved;
 
-	void* signal_Data;
-
-private:
-	void SetState(uint32 state) { mState = state; }
-
-	void recalcDxDy()
-	{
-		mDX = mXDestination - mBeginX;
-		mDY = mYDestination - mBeginY;
-	}
 private: 
-	enum
+	typedef enum MoveableState
 	{
-		STATE_WAIT = BIT(1),
-		STATE_MOVE = BIT(2)
-	};
-	float mBeginX;
-	float mBeginY;
-
-	float mXDestination;
-	float mYDestination;
-
-	int mMovingTime;
-	int mCurrentTime;
-
-	uint32 mState;
+		STATE_STOP = BIT(1),
+		STATE_MOVE_DX = BIT(2),
+		STATE_MOVE_DY = BIT(3),
+		STATE_MOVE_DX_REVERT = BIT(4),
+		STATE_MOVE_DY_REVERT = BIT(5)
+	}MoveableState;
 
 	float mDX;
 	float mDY;
+
+	MoveableState mState;
 };
 
 #endif //GMOVEABLECOMPONENT_H

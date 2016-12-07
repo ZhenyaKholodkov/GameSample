@@ -47,12 +47,12 @@ public:/*slots*/
 		setVisible(isVisible);
 	}
 
-	void slot_SetInvisible(Entity who)
+	void slot_SetInvisible()
 	{
 		setVisible(false);
 	}
 
-	void slot_SetVisible(Entity who)
+	void slot_SetVisible()
 	{
 		setVisible(true);
 	}

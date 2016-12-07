@@ -59,17 +59,8 @@
     <Filter Include="src\thirdparty\sigslot">
       <UniqueIdentifier>{ddb80474-614a-444a-ab13-f1c891460785}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Engine\control">
-      <UniqueIdentifier>{a20a20c0-fc4b-4132-b1d6-d45ccdbbe1ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Engine\entity\help">
       <UniqueIdentifier>{06459ab9-bc00-4ec6-9177-3bca00c17146}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Engine\components\mechanics">
-      <UniqueIdentifier>{ecbc3902-5e71-49f9-8ef3-bf38f00538ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Engine\systems\mechanics">
-      <UniqueIdentifier>{94d9b81e-5c4f-481b-992f-7bb37a00006d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,17 +244,17 @@
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\control\gControlManager.cpp">
-      <Filter>src\Engine\control</Filter>
+    <ClCompile Include="src\Engine\systems\gScalableSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\systems\gMoveableAnimationSystem.cpp">
+      <Filter>src\Engine\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\systems\gMoveableSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\systems\gScalableSystem.cpp">
+    <ClCompile Include="src\Engine\systems\gCollisionSystem.cpp">
       <Filter>src\Engine\systems</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\systems\mechanics\g2048MechanicSystem.cpp">
-      <Filter>src\Engine\systems\mechanics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,15 +447,6 @@
     <ClInclude Include="src\thirdparty\sigslot\sigslot.h">
       <Filter>src\thirdparty\sigslot</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\control\gControlManager.h">
-      <Filter>src\Engine\control</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\components\gMoveableComponent.h">
-      <Filter>src\Engine\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\systems\gMoveableSystem.h">
-      <Filter>src\Engine\systems</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
@@ -489,14 +471,26 @@
     <ClInclude Include="src\Engine\systems\gScalableSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\components\mechanics\g2048MechanicComponent.h">
-      <Filter>src\Engine\components\mechanics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\systems\mechanics\g2048MechanicSystem.h">
-      <Filter>src\Engine\systems\mechanics</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\components\gCounterComponent.h">
       <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gMoveableAnimationComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gMoveableAnimationSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gMoveableComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gMoveableSystem.h">
+      <Filter>src\Engine\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\components\gCollisionComponent.h">
+      <Filter>src\Engine\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\systems\gCollisionSystem.h">
+      <Filter>src\Engine\systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

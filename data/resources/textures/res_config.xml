@@ -20,47 +20,23 @@ verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
 <TextureAtlases>
-<TextureAtlas imagePath="texture_1.png" width="434" height="603">
-    <sprite n="01.png" x="0" y="0" w="15" h="14" pX="0.5" pY="0.5"/>
-    <sprite n="02.png" x="53" y="0" w="67" h="59" pX="0.5" pY="0.5"/>
-    <sprite n="03.png" x="300" y="100" w="125" h="110" pX="0.5" pY="0.5"/>
-    <sprite n="04.png" x="169" y="447" w="180" h="156" pX="0.5" pY="0.5"/>
-    <sprite n="05.png" x="0" y="447" w="169" h="143" pX="0.5" pY="0.5"/>
-    <sprite n="06.png" x="245" y="210" w="156" h="137" pX="0.5" pY="0.5"/>
-    <sprite n="07.png" x="0" y="210" w="112" h="125" pX="0.5" pY="0.5"/>
-    <sprite n="08.png" x="112" y="210" w="133" h="110" pX="0.5" pY="0.5"/>
-    <sprite n="09.png" x="120" y="0" w="114" h="63" pX="0.5" pY="0.5"/>
-    <sprite n="10.png" x="15" y="0" w="38" h="34" pX="0.5" pY="0.5"/>
-    <sprite n="button1.png" x="0" y="347" w="200" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="button1_down.png" x="200" y="347" w="200" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="frame1.png" x="0" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="frame2.png" x="200" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="frame3.png" x="100" y="100" w="100" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="frame4.png" x="234" y="0" w="100" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="frame5.png" x="334" y="0" w="100" h="100" pX="0.5" pY="0.5"/>
+<TextureAtlas imagePath="texture_labyrinth.png" width="512" height="484">
+    <sprite n="0.png" x="0" y="0" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="1.png" x="300" y="100" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="3.png" x="0" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="4.png" x="128" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="5.png" x="256" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="6.png" x="384" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="7.png" x="0" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="8.png" x="128" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="Bomb.png" x="428" y="0" w="64" h="64" pX="0.5" pY="0.5"/>
+    <sprite n="coin.png" x="428" y="128" w="32" h="32" pX="0.5" pY="0.5"/>
+    <sprite n="Grass.png" x="256" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="over.png" x="0" y="128" w="300" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="player.png" x="428" y="64" w="64" h="64" pX="0.5" pY="0.5"/>
+    <sprite n="stones.png" x="384" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="won.png" x="128" y="0" w="300" h="100" pX="0.5" pY="0.5"/>
 </TextureAtlas>
-<TextureAtlas imagePath="texture_2.png" width="393" height="129">
-    <sprite n="btn_2.png" x="0" y="0" w="131" h="129" pX="0.5" pY="0.5"/>
-    <sprite n="btn_3.png" x="131" y="0" w="131" h="129" pX="0.5" pY="0.5"/>
-    <sprite n="btn_4.png" x="262" y="0" w="131" h="129" pX="0.5" pY="0.5"/>
-</TextureAtlas>
-<TextureAtlas imagePath="texture_main.png" width="678" height="780">
-    <sprite n="field.png" x="0" y="0" w="660" h="620" pX="0.5" pY="0.5"/>
-    <sprite n="play_btn_down.png" x="0" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
-    <sprite n="play_btn_move.png" x="300" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
-    <sprite n="play_btn_up.png" x="0" y="680" w="300" h="60" pX="0.5" pY="0.5"/>
-    <sprite n="title.png" x="300" y="680" w="100" h="100" pX="0.5" pY="0.5"/>
-    <sprite n="title_2.png" x="400" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_4.png" x="408" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_8.png" x="416" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_16.png" x="424" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_32.png" x="442" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_64.png" x="460" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_128.png" x="478" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_256.png" x="518" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_512.png" x="558" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
-    <sprite n="title_1024.png" x="598" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
-    <sprite n="title_2048.png" x="638" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
-</TextureAtlas>
+
 
 </TextureAtlases>

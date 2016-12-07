@@ -8,7 +8,7 @@ class G2048MechanicComponent : public GComponent<G2048MechanicComponent>, public
 	friend class G2048MechanicSystem;
 public:
 	G2048MechanicComponent(uint32 rows, uint32 cols) : mRows(rows), mCols(cols), mFieldWidth(0),
-		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), mTitlesInMoving(0)
+		mFieldHieght(0), mTitleWidth(0), mTitleHieght(0), mTitlesInMoving(0), mState(STATE_WAIT)
 	{
 		mTitleSprites.resize(10); //2048
 		mTitles = new Entity[mRows * mCols];
@@ -40,7 +40,7 @@ public:/*slots*/
 		if (mTitlesInMoving != 0)
 		{
 			mTitlesInMoving--;
-			if (mTitlesInMoving)
+			if (mTitlesInMoving == 0)
 			{
 				setState(STATE_RECALC_MATRIX);
 			}
@@ -65,7 +65,6 @@ private:
 
 	GSprite* mTitleBackground;
 	std::vector<GSprite*> mTitleSprites; //!< 
-	std::vector<Entity> mAvailableEntities;
 
 	Entity* mTitles;
 	int*    mLogicalNet;

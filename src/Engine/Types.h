@@ -193,51 +193,26 @@ public:
 	void   X1(int32 xx1) { x1 = xx1; }                      
 	void   Y1(int32 yy1) { y1 = yy1; }                      
 	void   X2(int32 xx2) { x2 = xx2; }                      
-	void   Y2(int32 yy2) { y2 = yy2; }                      
-
-	int32   LF() { return x1; }                             
-	int32   RT() { return x2; }                             
-	int32   UP() { return y1; }                             
-	int32   DN() { return y2; }                             
-
-	void Shift(int32  dx, int32  dy) { x1 += dx; x2 += dx; y1 += dy; y2 += dy; } 
-	void MoveTo(Pixel &p) { x2 = p.x + W(); y2 = p.y + H(); x1 = p.x; y1 = p.y; }
-	void MoveTo(int32 x, int32 y) { MoveToX(x); MoveToY(y); } 
-	void MoveToX(int32 x) { x2 = x + W(); x1 = x; } 
-	void MoveToY(int32 y) { y2 = y + H(); y1 = y; } 
-	void Scale(float sx, float sy) { x2 = int32(x1 + W()*sx); y2 = int32(y1 + H()*sy); } 
-	void ScaleC(float sx, float sy) { int32 x = (x2 + x1) / 2, y = (y2 + y1) / 2; Scale(sx, sy); Center(x, y); }  
-	void Center(int32 x, int32 y) { int32 x0 = x - W() / 2, y0 = y - H() / 2;MoveTo(x0, y0); }  
-	void Center(Pixel &p) { Center(p.x, p.y); } 
+	void   Y2(int32 yy2) { y2 = yy2; }     
 
 	bool   In(const Pixel &p) { return x1 <= p.x && p.x <= x2 && y1 <= p.y && p.y <= y2; }
 	bool   Empty() { return x1 >= x2 || y1 >= y2; }                         
-																		
-	friend Rect operator |(const Rect &r1, const Rect &r2)  
-	{
-		return Rect(Min(r1.x1, r2.x1), Min(r1.y1, r2.y1),
-			Max(r1.x2, r2.x2), Max(r1.y2, r2.y2));
-	}
-	friend Rect operator &(const Rect &r1, const Rect &r2)   
-	{
-		return Rect(Max(r1.x1, r2.x1), Max(r1.y1, r2.y1),
-			Min(r1.x2, r2.x2), Min(r1.y2, r2.y2));
-	}
+		
 private:
 	int32 x1, y1;                
 	int32 x2, y2;                
 };
 
 
-class IGVector3
+class GVector3
 {
 public:
-	IGVector3() {}
-	IGVector3(float xV, float yV, float zV) :x(xV), y(yV), z(zV) {}
+	GVector3() {}
+	GVector3(float xV, float yV, float zV) :x(xV), y(yV), z(zV) {}
 	float x;             //!< x-coordinate of the vector
 	float y;             //!< y-coordinate of the vector
 	float z;             //!< z-coordinate of the vector   
-	bool operator == (IGVector3 const & v) const
+	bool operator == (GVector3 const & v) const
 	{
 		return (
 			v.x == x &&
@@ -247,14 +222,14 @@ public:
 	}
 };
 
-class IGVector2
+class GVector2
 {
 public:
-	IGVector2() {}
-	IGVector2(float xV, float yV) :x(xV), y(yV) {}
+	GVector2() {}
+	GVector2(float xV, float yV) :x(xV), y(yV) {}
 	float x;             //!< x-coordinate of the vector
 	float y;             //!< y-coordinate of the vector
-	bool operator == (IGVector2 const & v) const
+	bool operator == (GVector2 const & v) const
 	{
 		return (
 			v.x == x &&
@@ -264,29 +239,29 @@ public:
 };
 
 
-class IGMatrix        
+class GMatrix        
 {
 public:
 	float             m[3][3];
-	IGVector3         t;
+	GVector3         t;
 	void              setIdentity();
 	void              SetRotX(float r = 0, bool resetTrans = true, bool setZeros = true);
 	void              SetRotY(float r = 0, bool resetTrans = true, bool setZeros = true);
 	void              SetRotZ(float r = 0, bool resetTrans = true, bool setZeros = true);
-	static IGMatrix   matMul(IGMatrix const & A, IGMatrix const & B);	                          
-	static IGVector3  matVecMul(IGMatrix const & A, IGVector3 const & V);	                      
+	static GMatrix   matMul(GMatrix const & A, GMatrix const & B);	                          
+	static GVector3  matVecMul(GMatrix const & A, GVector3 const & V);	                      
 
-	bool operator == (IGMatrix const & m0) const
+	bool operator == (GMatrix const & m0) const
 	{
 		return IsRotSame(m0) && IsTransSame(m0);
 	}
 
-	bool operator != (IGMatrix const & m0) const
+	bool operator != (GMatrix const & m0) const
 	{
 		return !IsRotSame(m0) || !IsTransSame(m0);
 	}
 
-	bool IsRotSame(IGMatrix const& m0) const
+	bool IsRotSame(GMatrix const& m0) const
 	{
 		return  m[0][0] == m0.m[0][0] &&
 			m[0][1] == m0.m[0][1] &&
@@ -299,7 +274,7 @@ public:
 			m[2][2] == m0.m[2][2];
 	}
 
-	bool IsTransSame(IGMatrix const& m0) const
+	bool IsTransSame(GMatrix const& m0) const
 	{
 		return (t == m0.t);
 	}

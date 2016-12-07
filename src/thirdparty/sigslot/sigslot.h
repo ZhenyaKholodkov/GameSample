@@ -1954,7 +1954,7 @@ namespace sigslot {
 			connections_list::const_iterator itNext, it = m_connected_slots.begin();
 			connections_list::const_iterator itEnd = m_connected_slots.end();
 
-			while(it != itEnd)
+			while (it != itEnd)
 			{
 				itNext = it;
 				++itNext;
