@@ -32,34 +32,34 @@ class GEntityManager
 public:
 	static GEntityManager* Instance();
 
-	Entity CreateEntity();
-	void   DestroyEntity(Entity entity);
+	Entity CreateEntity();                  // creates and return new Entity. 
+	void   DestroyEntity(Entity entity);    // destoryes the entity with compnents.
 	
-	bool IsInsideEntity(Entity entity, GCursor point);
-	void LocalPoint(Entity entity, GCursor& point, GCursor& localPoint);
+	bool IsInsideEntity(Entity entity, GCursor point);                   // check if the mouse cursor inside the entity
+	void LocalPoint(Entity entity, GCursor& point, GCursor& localPoint); // localized point in entity coordinates
 
-	void setChildParentRelations(Entity parent, Entity child);
-	void removeParent(Entity child);
+	void setChildParentRelations(Entity parent, Entity child);          // sets child-parent relationships between entites. Creates the ChildComponent and ParentComponent behind the scene.
+	void removeParent(Entity child);                                    // removes parent for entity
 
 public:
 	template<typename C, typename... Args>
-	C* AddComponentsToEntity(Entity entity, Args&& ... args);
+	C* AddComponentsToEntity(Entity entity, Args&& ... args);           //Creates Component C for entity. If it is first component of that type, The ComponentPool will be created.
 
 	template<typename C>
-	C* GetComponent(Entity entity);
+	C* GetComponent(Entity entity);                                     // returns pointer on the component C for an entity
 
 	template<typename C>
-	bool DoesHaveComponent(Entity entity);
+	bool DoesHaveComponent(Entity entity);                              //checks if entity contains the component C
 
 	template<typename C>
-	typename GComponentPool<C>::GPoolIterator GetBeginComponent();
+	typename GComponentPool<C>::GPoolIterator GetBeginComponent();      // returns the iterator pointed on the first compnent in the pool
 	template<typename C>
-	typename GComponentPool<C>::GPoolIterator GetEndComponent();
+	typename GComponentPool<C>::GPoolIterator GetEndComponent();        // returns the iterator pointed on the lst compnent in the pool
 
 	template<typename C>
-	typename GComponentPool<C>::GPoolPairIterator GetBeginPairComponent();
+	typename GComponentPool<C>::GPoolPairIterator GetBeginPairComponent();  // returns the iterator with pair of Entity-Component pointed on the first compnent in the pool
 	template<typename C>
-	typename GComponentPool<C>::GPoolPairIterator GetEndPairComponent();
+	typename GComponentPool<C>::GPoolPairIterator GetEndPairComponent();    // returns the iterator with pair of Entity-Component pointed on the last compnent in the pool
 
 private:
 	GEntityManager();
@@ -67,11 +67,11 @@ private:
 	
 	uint32 GetComponentCount();
 private:
-	queue<Entity>                   mAvailableEntities;
+	queue<Entity>                   mAvailableEntities;   // the queue of available entities 
 
-	std::vector<GBasePool*>        mComponentPools;
+	std::vector<GBasePool*>        mComponentPools;       // pools of components. Each Component class has the static identifier that determines the index in this vector for the component pool.
 
-	const uint32 DEFUALT_POOL_SIZE = 10;
+	const uint32 DEFUALT_POOL_SIZE = 10;  
 };
 
 template<typename C, typename... Args>

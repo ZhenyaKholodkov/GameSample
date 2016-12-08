@@ -14,7 +14,7 @@ public:
 
 	static uint32 GetComponentId();
 private:
-	static uint32 s_component_id;
+	static uint32 s_component_id; // identifier of the component class.
 };
 
 template<typename C>

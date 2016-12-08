@@ -47,11 +47,12 @@ void GGame::CreateGame()
 	CreateField();
 	mEntityManager = GEntityManager::Instance();
 
+	// create entity for processing the keyboard keys
 	Entity controlsEntity = mEntityManager->CreateEntity();
 	GKeyUpEventComponent* keyUpComponent = mEntityManager->AddComponentsToEntity<GKeyUpEventComponent>(controlsEntity);
 	GKeyDownEventComponent* keyDownComponent = mEntityManager->AddComponentsToEntity<GKeyDownEventComponent>(controlsEntity);
 
-
+	// create plater entity
 	GSprite* spritePlayer = GResManager::Instance()->GetSprite("player.png");
 	Entity playerEntity = mEntityManager->CreateEntity();
 	GLocationComponent* playerLocation = mEntityManager->AddComponentsToEntity<GLocationComponent>(playerEntity, 960.0f, 704.0f);
@@ -90,6 +91,8 @@ void GGame::CreateField()
 		                  0, 0, 0, 0, 3, 1, 2, 1,
 		                  0, 1, 1, 1, 1, 1, 0, 1,
 		                  0, 0, 0, 0, 0, 0, 0, 0};
+
+	// 0 - grass, 1 - stone wall , 2 - bomb on the grass, 3 - coin on the grass
 
 	float x = (float)size / 2;
 	float y = (float)size / 2;
@@ -157,9 +160,9 @@ void GGame::CreateBomb(float x, float y)
 	animationComponent->AddFrame(sprite7);
 	animationComponent->AddFrame(sprite8);
 
-	collision->signal_Collisioned.connect(animationComponent, &GAnimationComponent::slot_RunAnimation);
-	collision->signal_Collisioned.connect(animationRender, &GRenderableComponent::slot_SetVisible);
-	animationComponent->signal_AnimationFinished.connect(this, &GGame::slot_Lost);
+	collision->signal_Collisioned.connect(animationComponent, &GAnimationComponent::slot_RunAnimation); // run animation after the signal about the collision
+	collision->signal_Collisioned.connect(animationRender, &GRenderableComponent::slot_SetVisible);   
+	animationComponent->signal_AnimationFinished.connect(this, &GGame::slot_Lost);                     // after animation the game will be over
 	animationComponent->signal_AnimationFinished.connect(renderable, &GRenderableComponent::slot_SetInvisible);
 	animationComponent->signal_AnimationFinished.connect(animationRender, &GRenderableComponent::slot_SetInvisible);
 }
@@ -173,9 +176,9 @@ void GGame::CreateCoin(float x, float y)
 	GCollisionComponent* collision = mEntityManager->AddComponentsToEntity<GCollisionComponent>(entity, spriteCoin->GetWidth() / 2, spriteCoin->GetHeight() / 2);
 	GScalableComponent* scalable = mEntityManager->AddComponentsToEntity<GScalableComponent>(entity, 1.0f, 1.0f, 0.0f, 0.0f, 500);
 
-	collision->signal_Collisioned.connect(scalable, &GScalableComponent::slot_Scale);
+	collision->signal_Collisioned.connect(scalable, &GScalableComponent::slot_Scale);       // scales the coin after the collision signal 
 	scalable->signal_ScaleChanged.connect(renderable, &GRenderableComponent::slot_ChangeScale);
-	scalable->signal_ScaleChangingFinished.connect(this, &GGame::slot_Won);
+	scalable->signal_ScaleChangingFinished.connect(this, &GGame::slot_Won);                // and game will be won after scaling
 }
 
 void GGame::slot_Won()
@@ -212,7 +215,7 @@ void GGame::Update(int dt)
 void GGame::LoadResources()
 {
 	GResManager* resManager = GResManager::Instance();
-	resManager->LoadResources("data/resources/textures/res_config.xml");
+	resManager->LoadResources("data/resources/textures/res_config.xml"); // load resources
 }
 
 void GGame::OnMouseDown(GCursor point)

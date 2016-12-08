@@ -24,8 +24,7 @@ public:
 
 	static GResManager* Instance();
 
-	bool LoadResource(int id);
-	bool LoadResources(const char* pathToConfig);
+	bool LoadResources(const char* pathToConfig); // parses the congif file andcreates needed sprites
 	GSprite* GetSprite(const char* key);
 
 	void setResDirectory(const char* dir);

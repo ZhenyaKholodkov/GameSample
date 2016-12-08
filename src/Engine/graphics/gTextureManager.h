@@ -9,7 +9,7 @@ class GTextureManager
 public:
 	static GTextureManager* Instance();
 
-	GTextureObject* LoadTexture(const char* name);
+	GTextureObject* LoadTexture(const char* name);  // return the texture and loads it if needed.
 	void unloadTexture(GTextureObject* texture);
 private:
 	GTextureManager();

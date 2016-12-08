@@ -20,7 +20,7 @@ public :
 
 	int GetTextureGLId() { return mTextureHandle.getTextureGLId(); }
 
-	GTextureHandle mTextureHandle; // should be private
+	GTextureHandle mTextureHandle; // handle of the texture
 
 	void load();
 

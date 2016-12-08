@@ -16,10 +16,10 @@ public:
 	uint32 getTextureWidth()  { return mTexture->mWidth;  }
 	uint32 getTextureHeight() { return mTexture->mHeight; }
 
-	void Set(const char* texturePath);
+	void Set(const char* texturePath);     // set texture
 private:
-	void lock();
-	void unlock();
+	void lock();      // increases the texture reference countar 
+	void unlock();    // decreases the texture reference countar and unload it if needed
 
 
 	inline bool NotNull(void) const { return mTexture != nullptr; }

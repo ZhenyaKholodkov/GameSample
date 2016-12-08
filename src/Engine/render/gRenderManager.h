@@ -58,9 +58,9 @@ public:
 	void	setFillColor(uint32 c);
 
 private:
-	GMatrix 	           mMatrix;
+	GMatrix 	           mMatrix;       
 
-	std::stack<GMatrix>   mMatrixStack;
+	std::stack<GMatrix>   mMatrixStack;     
 						   
 	std::vector<GVector3> mVertexData;
 	std::vector<GVector2> mTextCoordData;
