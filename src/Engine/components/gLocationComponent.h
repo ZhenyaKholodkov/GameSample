@@ -8,7 +8,10 @@ class GLocationComponent : public GComponent<GLocationComponent>, public sigslot
 public:
 	GLocationComponent() :  mPosition(0.0f, 0.0f), mDefaultX(0.0f), mDefaultY(0.0f) {};
 	GLocationComponent(float x, float y) : mPosition(x, y), mDefaultX(x), mDefaultY(y), mLastX(x), mLastY(y) {};
-	virtual ~GLocationComponent() {};
+	virtual ~GLocationComponent() 
+	{
+		signal_LocationChangedWithDxDy.disconnect_all();
+	};
 
 	void setX(float x) { mLastX = mPosition.x; mPosition.x = x; }
 	void setY(float y) { mLastY = mPosition.y; mPosition.y = y;  }

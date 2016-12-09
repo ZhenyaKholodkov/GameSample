@@ -12,7 +12,10 @@ public:
 		mRadius.x = (float)xRadius;
 		mRadius.y = (float)yRadius;
 	};
-	virtual ~GCollisionComponent() {};
+	virtual ~GCollisionComponent() 
+	{
+		signal_Collisioned.disconnect_all();
+	};
 	
 public:/*signals*/
 	sigslot::signal0<> signal_Collisioned;

@@ -19,8 +19,8 @@ GGame::~GGame()
 
 IGame* IGame::Instane()
 {
-	static IGame* instance = new GGame();
-	return instance;
+	static GGame instance;
+	return &instance;
 }
 
 void GGame::Create()

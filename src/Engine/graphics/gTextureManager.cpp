@@ -5,8 +5,8 @@
 
 GTextureManager* GTextureManager::Instance()
 {
-	static GTextureManager* instance = new GTextureManager();
-	return instance;
+	static GTextureManager instance;
+	return &instance;
 }
 
 
@@ -43,6 +43,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 
 	dictionary->insert(texture);
 
+	free(data);
 	return texture;
 }
 

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include <windows.h>
 #include <stdio.h>
+#include <vld.h>
 
 bool checkInstance();
 int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT32 mode);
