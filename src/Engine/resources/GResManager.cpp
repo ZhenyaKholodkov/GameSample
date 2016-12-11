@@ -54,22 +54,27 @@ GSprite* GResManager::GetSprite(const char* key)
 
 bool GResManager::LoadResources(const char* pathToConfig)
 {
+	GLog::printLog("GResManager::LoadResources()\n");
 	TiXmlDocument confDocument;
 	if (!confDocument.LoadFile(pathToConfig))
 	{
+		GLog::printLog("!confDocument.LoadFile(pathToConfig)\n");
 		return false;
 	}
+	GLog::printLog("GResManager::LoadResources()1\n");
 	if (confDocument.Error())
 	{
 		return false;
 	}
 
+	GLog::printLog("GResManager::LoadResources()2\n");
 	TiXmlElement* root = confDocument.RootElement();
 	if (!root)
 	{
 		return false;
 	}
 
+	GLog::printLog("GResManager::LoadResources() opened\n");
 	TiXmlElement* atlasTextureData = root->FirstChildElement("TextureAtlas");
 	while (atlasTextureData)
 	{
@@ -102,6 +107,7 @@ bool GResManager::LoadResources(const char* pathToConfig)
 		}
 		atlasTextureData = atlasTextureData->NextSiblingElement();
 	}
+	GLog::printLog("GResManager::LoadResources() end\n");
 	return true;
 }
 

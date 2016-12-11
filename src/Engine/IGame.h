@@ -10,7 +10,7 @@ public:
 	~IGame() {}
 
 	static IGame* Instane();
-	virtual void Create() = 0;
+	virtual bool Create() = 0;
 	virtual void Update(int dt) = 0;
 
 	virtual void OnMouseDown(GCursor point) = 0;

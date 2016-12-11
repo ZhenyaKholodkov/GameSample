@@ -15,7 +15,6 @@ public:
 	void SetSpriteMoveOut(GSprite* sprite) { mSpriteMoveOut = sprite; }
 
 public: /*signals*/
-	//sigslot::signal2<float, float>     signal_MouseMove;
 	sigslot::signal2<float, float>     signal_PressedMouseMovedIn;
 	sigslot::signal2<float, float>     signal_PressedMouseMovedOut;
 	sigslot::signal2<Entity, GSprite*> signal_MouseMovedInEntity;

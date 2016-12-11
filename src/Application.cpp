@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Utils.h"
 
 Application*	Application::sInstance = NULL;
 
@@ -30,7 +31,8 @@ int32 Application::OnCreate()
 	srand((uint32)time(0));
 
 	mGame = IGame::Instane();
-	mGame->Create();
+	if(!mGame->Create())
+		return 0;
 	return 1;
 }
 

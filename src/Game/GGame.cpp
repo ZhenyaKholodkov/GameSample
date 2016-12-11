@@ -23,10 +23,12 @@ IGame* IGame::Instane()
 	return &instance;
 }
 
-void GGame::Create()
+bool GGame::Create()
 {
-	LoadResources();
-
+	if (!LoadResources())
+	{
+		return false;
+	}
 	mEntityManager = GEntityManager::Instance();
 	mSystemManager = GSystemManager::Instatnce();
 	mSystemManager->RegisterSystem<GAnimationSystem>();
@@ -39,7 +41,7 @@ void GGame::Create()
 
 	CreateGame();
 
-
+	return true;
 }
 
 void GGame::CreateGame()
@@ -212,10 +214,11 @@ void GGame::Update(int dt)
 	mSystemManager->update(dt);
 }
 
-void GGame::LoadResources()
+bool GGame::LoadResources()
 {
+	GLog::printLog("LoadResources()\n");
 	GResManager* resManager = GResManager::Instance();
-	resManager->LoadResources("data/resources/textures/res_config.xml"); // load resources
+	return resManager->LoadResources("resources/textures/res_config.xml"); // load resources
 }
 
 void GGame::OnMouseDown(GCursor point)

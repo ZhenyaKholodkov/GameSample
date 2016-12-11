@@ -28,13 +28,13 @@ public:
 	void	drawTri(float x1, float y1, float x2, float y2, float x3, float y3);
 	void	drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
 
-	uint32  loadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih);
-	void    unloadTexture(uint32 textureId);
+	uint32  loadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih); // loads texture to VRAM and returns the GL id.
+	void    unloadTexture(uint32 textureId);                                                  // unloads the texture with GL id from VRAM.
 
 
 	void	loadIdentityMatrix();
-	void	save();
-	void	restore();
+	void	save();                              // puts the current matrix to stack
+	void	restore();                           // gets the current matrix to stack
 
 	void	translate(float x, float y, float z = 0.0f);
 	void	rotate(float ang);
@@ -42,7 +42,7 @@ public:
 	void	scale(float x, float y, float z = 1.0f);
 	void	drawImage(uint32 textureId, int full_tex_w, int full_tex_h,
 		              int tex_x, int tex_y, int tex_w, int tex_h,
-		              float x, float y, float z = 0.0f);
+		              float x, float y, float z = 0.0f);                 // calculates vertexes, texture coordanates and pushes it to array for rendering
 
 
 
@@ -62,8 +62,8 @@ private:
 
 	std::stack<GMatrix>   mMatrixStack;     
 						   
-	std::vector<GVector3> mVertexData;
-	std::vector<GVector2> mTextCoordData;
+	std::vector<GVector3> mVertexData;                 // vertexes for rendering
+	std::vector<GVector2> mTextCoordData;              // texture coordinates for rendering
 	std::vector<uint16>    mIndexesData;
 
 	float                  mClearColorR;
@@ -74,7 +74,7 @@ private:
 	uint32				   mBatchVertIndex;
 	int                    mVertexes;
 
-	int			           mCurrentTextureID;
+	int			           mCurrentTextureID;        // current texture for rendering . If there are few textures we will switch them while rendering sprites from different textures.
 
 	int					   mWidth;
 	int					   mHeight;
@@ -85,7 +85,7 @@ private:
 private:
 	bool visible();
 	void addBatchTris(int triCnt);
-	void drawBatchedTris();
+	void drawBatchedTris();                       // draws the couple of triangle with mVertexData and mTextCoordData
 
 	void allocVertexCache();
 	void reallocVertexCache();

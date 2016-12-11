@@ -1,5 +1,6 @@
 #include "OWindow.h"                                              
 #include "CommCtrl.h"
+#include "Utils.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4311) // 'type cast' : pointer truncation from 'LPVOID' to 'Int32'
@@ -36,7 +37,6 @@ Window::~Window()
 
 int32 Window::Create(char *caption, char *name, int32 w, int32 h, int32 mode)
 {
-
 	mWndMode = mode;
 	mWindowBrush = (HBRUSH)CreateSolidBrush(mColorBkground.getColor());
 	WNDCLASSEX wcl;                                             // window class.
@@ -230,7 +230,7 @@ int32 Window::OnWindowMessage(HWND iHWND, UINT message, WPARAM wParam, LPARAM lP
 	case WM_TIMER:
 		if (mSlowTimer) {
 			int32 tm = timeGetTime(), dTime = tm - mLastTime;
-			if (dTime >= mPeriod) { mLastTime = tm; OnTimer(dTime); } // сработало таймерное событие
+			if (dTime >= mPeriod) { mLastTime = tm; OnTimer(dTime); }
 		}
 		break;
 	case WM_CREATE:

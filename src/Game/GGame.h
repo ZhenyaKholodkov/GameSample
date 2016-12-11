@@ -13,7 +13,7 @@ public:
 	GGame();
 	~GGame();
 
-	virtual void Create();
+	virtual bool Create();
 	virtual void Update(int dt);
 
 	virtual void OnMouseDown(GCursor point);
@@ -22,12 +22,11 @@ public:
 	virtual void keyUp(GKey key);
 	virtual void keyDown(GKey key);
 
-	void LoadResources();
+	bool LoadResources();
 public:/*slots*/
 	void slot_Won();
 	void slot_Lost();
 private:
-	void Create2048Game();
 	void CreateGame();
 	void CreateField();
 	void CreateBomb(float x, float y);

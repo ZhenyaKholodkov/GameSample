@@ -3,7 +3,7 @@
 
 #include "Types.h"
 #include "GDefines.h"
-class GBasePool
+class GBasePool                 // bas class for pool. Contains the data and method for reserving new chunks of memory and getting the blocks of memory.
 {
 public:
 	GBasePool(size_t capacity, size_t chunkSize, size_t dataSize):
@@ -59,15 +59,15 @@ protected:
 };
 
 template<typename C>
-class GComponentPool : public GBasePool
+class GComponentPool : public GBasePool      // class for storing components
 {
 private:
-	struct Block
+	struct Block       // block of memory for storing in the pool
 	{
-		bool   mInUse;
-		uint32 mNextFree;
-		Entity mEntity;
-		C      mComponent;
+		bool   mInUse;         // is it used(active) 
+		uint32 mNextFree;      // next free block. If the block is used, mNextFree point to himself
+		Entity mEntity;        // entity, which is the owner of the component
+		C      mComponent;     // component
 	};
 
 	const int BLOCK_SIZE = sizeof(Block);
@@ -287,8 +287,10 @@ private:
 	}
 
 private:
-	int              mLastFree;
-	std::vector<int> mIndexes;
+	int              mLastFree;      // last free entity. If it -1 , chunks are over and we need to resorve the new one
+	std::vector<int> mIndexes;       // indexes of components, which are owned by entities. 
+	                                 // for example, the entity with identifier 3 has component with 4 index in the pool. 
+	                                 // then mIndexes[3] == 4
 };
 #endif
 

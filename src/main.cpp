@@ -2,7 +2,8 @@
 #include "Application.h"
 #include <windows.h>
 #include <stdio.h>
-#include <vld.h>
+//#include <vld.h>
+#include "Utils.h"
 
 bool checkInstance();
 int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT32 mode);
@@ -10,8 +11,12 @@ int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, IN
 INT32 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT32 mode)
 {
 	if (checkInstance())
+	{
 		return 0;
-	return subWinMain(hInstance, hPrevInstance, lpCmdLine, mode);
+	}
+	int res = subWinMain(hInstance, hPrevInstance, lpCmdLine, mode);
+	GLog::finish();
+	return res;
 }
 
 int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT32 mode)
@@ -27,8 +32,10 @@ int subWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, IN
 	wnd.screenWidth(winWConf);
 	wnd.screenHeight(winHConf);
 	
-	if (!wnd.Create(WindowCaption, "AbsViewerClass", (int)wnd.screenWidth(), (int)wnd.screenHeight(), mode)) return 0;
-	
+	if (!wnd.Create(WindowCaption, "AbsViewerClass", (int)wnd.screenWidth(), (int)wnd.screenHeight(), mode)) {
+		return 0;
+	}
+
 	wnd.Period(5);                                        
 	wnd.Show();                                           
 	int retVal = wnd.Run();                               
