@@ -22,7 +22,7 @@ public:/*slots*/
 private:
 	void checkCollision(Entity checkEntity);
 private:
-	GEntityManager* mEntityManager;
+	const GEntityManager* mEntityManager;
 };
 
 #endif //GCOLLISION_SYSTEM_H

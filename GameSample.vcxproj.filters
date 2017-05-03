@@ -64,21 +64,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\Types.cpp">
-      <Filter>src\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Application.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OWindow.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\IGame.cpp">
-      <Filter>src\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\GGame.cpp">
       <Filter>src\Game</Filter>
     </ClCompile>
@@ -220,9 +205,6 @@
     <ClCompile Include="src\Engine\resources\gResourceDictionary.cpp">
       <Filter>src\Engine\resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Utils.cpp">
-      <Filter>src\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
@@ -256,23 +238,11 @@
     <ClCompile Include="src\Engine\systems\gCollisionSystem.cpp">
       <Filter>src\Engine\systems</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\utils\Types.cpp" />
+    <ClCompile Include="src\Engine\utils\Utils.cpp" />
+    <ClCompile Include="src\Game\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Engine\Types.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OWindow.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\Utils.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\IGame.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\GGame.h">
       <Filter>src\Game</Filter>
     </ClInclude>
@@ -387,9 +357,6 @@
     <ClInclude Include="src\Engine\render\gRenderManager.h">
       <Filter>src\Engine\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\GDefines.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\resources\gResource.h">
       <Filter>src\Engine\resources</Filter>
     </ClInclude>
@@ -492,6 +459,9 @@
     <ClInclude Include="src\Engine\systems\gCollisionSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\utils\GDefines.h" />
+    <ClInclude Include="src\Engine\utils\Types.h" />
+    <ClInclude Include="src\Engine\utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

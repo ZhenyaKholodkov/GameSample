@@ -2,12 +2,9 @@
 #ifndef GGAME_H
 #define GGAME_H
 
-#include "IGame.h"
+#include "GGameWindow.h"
 
-#include "gEntityManager.h"
-#include "gSystemManager.h"
-
-class GGame: public IGame, public sigslot::has_slots<>
+class GGame: public GGameWindow, public sigslot::has_slots<>
 {
 public:
 	GGame();
@@ -16,11 +13,15 @@ public:
 	virtual bool Create();
 	virtual void Update(int dt);
 
-	virtual void OnMouseDown(GCursor point);
-	virtual void OnMouseUp(GCursor point);
-	virtual void OnMouseMove(GCursor point);
-	virtual void keyUp(GKey key);
-	virtual void keyDown(GKey key);
+	virtual int32  onCreate();
+	virtual void   onClose();
+
+	virtual void onTimer(int32 dTime);
+	virtual void onMouseMove(GCursor point);
+	virtual void onLMouseDown(GCursor point);
+	virtual void onLMouseUp(GCursor point);
+	virtual void onKeyDown(GKey key);
+	virtual void onKeyUp(GKey key);
 
 	bool LoadResources();
 public:/*slots*/
@@ -32,10 +33,9 @@ private:
 	void CreateBomb(float x, float y);
 	void CreateCoin(float x, float y);
 private:
+	bool            isGameOver;
 	GSystemManager* mSystemManager;
 	GEntityManager* mEntityManager;
-
-	bool isGameOver;
 };
 
 #endif

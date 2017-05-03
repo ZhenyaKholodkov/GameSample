@@ -2,31 +2,29 @@
 
 
 GRenderSystem::GRenderSystem() :
- mBackgroundColor(0x000000)
+	mBackgroundColor(0x000000)
 {
+	mEntityManager = GEntityManager::instance();
 	mRenderer = GRenderManager::Instance();
-	mEntityManager = GEntityManager::Instance();
 }
 
 GRenderSystem::~GRenderSystem() 
 {
 }
 
-
 void GRenderSystem::update(int dt)
 {
 	mRenderer->setClearColor(mBackgroundColor);
-	mRenderer->clear();
 	mRenderer->startFrame();
 
-	for (auto iter = mEntityManager->GetBeginPairComponent<GRenderableComponent>(); iter != mEntityManager->GetEndPairComponent<GRenderableComponent>(); iter++)
+	for(auto pair : mEntityManager->getComponentPool<GRenderableComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GRenderableComponent* renderable = (*iter)->second;
+		Entity entity = pair->first;
+		GRenderableComponent* renderable = pair->second;
 		if (!renderable->isVisible())
 			continue;
 
-		GLocationComponent* location = mEntityManager->GetComponent<GLocationComponent>(entity);
+		GLocationComponent* location = mEntityManager->getComponent<GLocationComponent>(entity);
 		GSprite* sprite = renderable->GetSprite();
 		if (!sprite)
 			continue;
@@ -35,9 +33,7 @@ void GRenderSystem::update(int dt)
 		mRenderer->translate(location->getX(), location->getY());
 		mRenderer->scale(renderable->getXScale(), renderable->getYScale());
 
-		mRenderer->drawImage(sprite->mTextureHandle.getTextureGLId(), sprite->mTextureHandle.getTextureWidth(), 
-			sprite->mTextureHandle.getTextureHeight(), sprite->GetXPos(), sprite->GetYPos(), sprite->GetWidth(),
-			sprite->GetHeight(), -sprite->GetPivotX(), -sprite->GetPivotY(), 0.0f);
+		mRenderer->drawSprite(sprite);
 
 		mRenderer->restore();
 	}

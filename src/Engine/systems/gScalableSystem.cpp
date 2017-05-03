@@ -3,7 +3,7 @@
 
 GScalableSystem::GScalableSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GScalableSystem::~GScalableSystem()
@@ -13,10 +13,10 @@ GScalableSystem::~GScalableSystem()
 
 void GScalableSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GScalableComponent>(); iter != mEntityManager->GetEndPairComponent<GScalableComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GScalableComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GScalableComponent* scalable = (*iter)->second;
+		Entity entity = pair->first;
+		GScalableComponent* scalable = pair->second;
 				
 		if (scalable->mState == GScalableComponent::STATE_WAIT)
 			continue;

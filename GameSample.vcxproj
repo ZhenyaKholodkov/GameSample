@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -33,20 +33,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -109,7 +109,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>src/thirdparty/sigslot;src/thirdparty/libz;src/thirdparty/Tinyxml;src/thirdparty/libpng;src/thirdparty;src/Game;src/Engine/systems/mechanics;src/Engine/io;src/Engine/systems;src/Engine/render;src/Engine/graphics;src/Engine/resources;src/Engine/entity/help;src/Engine/entity;src/Engine/graphics/gpngloader;src/Engine/control;src/Engine/components/mechanics;src/Engine/components;src/Engine;$(SolutionDir)\src\thirdparty\zlib;$(SolutionDir)\src\thirdparty\zlib\INCLUDE;$(SolutionDir)\src\thirdparty\libpng\INCLUDE;$(SolutionDir)\src\thirdparty\libpng;$(SolutionDir)\src\Game;$(SolutionDir)\src\Engine\OpenGL\ext;$(SolutionDir)\src\Engine\OpenGL;$(SolutionDir)\src\Engine;$(SolutionDir)\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src/Engine/utils;C:\Program Files %28x86%29\Visual Leak Detector\include;src/thirdparty/sigslot;src/thirdparty/libz;src/thirdparty/Tinyxml;src/thirdparty/libpng;src/thirdparty;src/Game;src/Engine/systems/mechanics;src/Engine/io;src/Engine/systems;src/Engine/render;src/Engine/graphics;src/Engine/resources;src/Engine/entity/help;src/Engine/entity;src/Engine/graphics/gpngloader;src/Engine/control;src/Engine/components/mechanics;src/Engine/components;src/Engine;$(SolutionDir)\src\thirdparty\zlib;$(SolutionDir)\src\thirdparty\zlib\INCLUDE;$(SolutionDir)\src\thirdparty\libpng\INCLUDE;$(SolutionDir)\src\thirdparty\libpng;$(SolutionDir)\src\Game;$(SolutionDir)\src\Engine\OpenGL\ext;$(SolutionDir)\src\Engine\OpenGL;$(SolutionDir)\src\Engine;$(SolutionDir)\src</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>_CRT_SECURE_NO_WARNINGS;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -133,7 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Engine\components\gBaseComponent.cpp" />
     <ClCompile Include="src\Engine\entity\gEntityManager.cpp" />
     <ClCompile Include="src\Engine\io\gIOFile.cpp" />
@@ -146,7 +145,6 @@
     <ClCompile Include="src\Engine\resources\gResourceDictionary.cpp" />
     <ClCompile Include="src\Engine\resources\gResource.cpp" />
     <ClCompile Include="src\Engine\resources\GSprite.cpp" />
-    <ClCompile Include="src\Engine\IGame.cpp" />
     <ClCompile Include="src\Engine\render\gRenderManager.cpp" />
     <ClCompile Include="src\Engine\resources\gTextureAtlas.cpp" />
     <ClCompile Include="src\Engine\systems\gAnimationSystem.cpp" />
@@ -158,11 +156,11 @@
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
-    <ClCompile Include="src\Engine\Types.cpp" />
-    <ClCompile Include="src\Engine\Utils.cpp" />
+    <ClCompile Include="src\Engine\utils\Types.cpp" />
+    <ClCompile Include="src\Engine\utils\Utils.cpp" />
+    <ClCompile Include="src\Engine\GGameWindow.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\OWindow.cpp" />
+    <ClCompile Include="src\Game\main.cpp" />
     <ClCompile Include="src\thirdparty\libpng\png.c" />
     <ClCompile Include="src\thirdparty\libpng\pngerror.c" />
     <ClCompile Include="src\thirdparty\libpng\pngget.c" />
@@ -199,7 +197,6 @@
     <ClCompile Include="src\thirdparty\zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Engine\components\gAnimationComponent.h" />
     <ClInclude Include="src\Engine\components\gBaseComponent.h" />
     <ClInclude Include="src\Engine\components\gChildComponent.h" />
@@ -222,7 +219,7 @@
     <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
-    <ClInclude Include="src\Engine\GDefines.h" />
+    <ClInclude Include="src\Engine\utils\GDefines.h" />
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h" />
     <ClInclude Include="src\Engine\graphics\gTextureManager.h" />
     <ClInclude Include="src\Engine\graphics\gTextureObject.h" />
@@ -230,7 +227,6 @@
     <ClInclude Include="src\Engine\resources\gResourceDictionary.h" />
     <ClInclude Include="src\Engine\resources\gResource.h" />
     <ClInclude Include="src\Engine\resources\GSprite.h" />
-    <ClInclude Include="src\Engine\IGame.h" />
     <ClInclude Include="src\Engine\render\gRenderManager.h" />
     <ClInclude Include="src\Engine\resources\gTextureAtlas.h" />
     <ClInclude Include="src\Engine\systems\gAnimationSystem.h" />
@@ -243,11 +239,11 @@
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystemManager.h" />
-    <ClInclude Include="src\Engine\Types.h" />
-    <ClInclude Include="src\Engine\Utils.h" />
+    <ClInclude Include="src\Engine\utils\Types.h" />
+    <ClInclude Include="src\Engine\utils\Utils.h" />
+    <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\entity\help\gPool.h" />
     <ClInclude Include="src\Game\GGame.h" />
-    <ClInclude Include="src\OWindow.h" />
     <ClInclude Include="src\thirdparty\libpng\config.h" />
     <ClInclude Include="src\thirdparty\libpng\png.h" />
     <ClInclude Include="src\thirdparty\libpng\pngconf.h" />

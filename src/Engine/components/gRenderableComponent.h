@@ -9,7 +9,11 @@ class GRenderableComponent : public GComponent<GRenderableComponent>, public sig
 public:
 	GRenderableComponent() : mSprite(nullptr), mCurrentXScale(0.0f), mCurrentYScale(0.0f), mIsVisible(true){};
 	GRenderableComponent(GSprite* sprite, float currentScalem = 1.0f, float currentScale = 1.0f) :
-		mSprite(sprite), mCurrentXScale(currentScalem), mCurrentYScale(currentScale), mIsVisible(true) {};
+		mSprite(sprite), mCurrentXScale(currentScalem), mCurrentYScale(currentScale), mIsVisible(true) 
+	{
+		mSprite = sprite;
+		bool g = true;
+	};
 
 	virtual ~GRenderableComponent() {};
 
@@ -26,9 +30,9 @@ public:
 
 	bool IsPiontInsideWH(GCursor localPoint)
 	{
-		if (!mSprite || ((localPoint.x < -mSprite->GetPivotX()) || (localPoint.y < -mSprite->GetPivotY()) ||
-			(localPoint.x >= mSprite->GetWidth()) || 
-			(localPoint.y >= mSprite->GetHeight())))
+		if (!mSprite || ((localPoint.x < -mSprite->getPivotX()) || (localPoint.y < -mSprite->getPivotY()) ||
+			(localPoint.x >= mSprite->getWidth()) || 
+			(localPoint.y >= mSprite->getHeight())))
 		{
 			return false;
 		}

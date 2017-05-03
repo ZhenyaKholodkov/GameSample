@@ -10,7 +10,6 @@ class GBaseComponent
 public:
 	GBaseComponent() {};
 	virtual ~GBaseComponent() {};
-	virtual void Reset() = 0;
 protected:
 	static uint32 s_component_counter;
 };

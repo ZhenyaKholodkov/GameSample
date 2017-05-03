@@ -24,10 +24,10 @@ public:
 	void setTitleBackground(GSprite* sprite)
 	{
 		mTitleBackground = sprite;
-		mFieldWidth = mRows * sprite->GetWidth();
-		mFieldHieght = mCols * sprite->GetHeight();
-		mTitleWidth = sprite->GetWidth();
-		mTitleHieght = sprite->GetHeight();
+		mFieldWidth = mRows * sprite->getWidth();
+		mFieldHieght = mCols * sprite->getHeight();
+		mTitleWidth = sprite->getWidth();
+		mTitleHieght = sprite->getHeight();
 	}
 private:
 	void setState(uint32 state)

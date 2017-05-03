@@ -1,15 +1,9 @@
 #include "gUserInputSystem.h"
 
-#include "gMouseDownEventComponent.h"
-#include "gMouseUpEventComponent.h"
-#include "gMouseMoveEventComponent.h"
-#include "gRenderableComponent.h"
-#include "gKeyUpEventComponent.h"
-#include "gKeyDownEventComponent.h"
 
 GUserInputSystem::GUserInputSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GUserInputSystem::~GUserInputSystem()
@@ -18,15 +12,15 @@ GUserInputSystem::~GUserInputSystem()
 
 void GUserInputSystem::OnMouseDown(GCursor point)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseDownEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseDownEventComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GMouseDownEventComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GMouseDownEventComponent* mouseDown = (*iter)->second;
+		Entity entity = pair->first;
+		GMouseDownEventComponent* mouseDown = pair->second;
 
 		if (!mouseDown)
 			continue;
 
-		if (mEntityManager->IsInsideEntity(entity, point))
+		if (mEntityManager->isInsideEntity(entity, point))
 		{
 			mouseDown->signal_MouseDown.emit();
 			mouseDown->signal_MouseDownOnEntity.emit(entity);
@@ -37,15 +31,15 @@ void GUserInputSystem::OnMouseDown(GCursor point)
 
 void GUserInputSystem::OnMouseUp(GCursor point)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseUpEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseUpEventComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GMouseUpEventComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GMouseUpEventComponent* upDown = (*iter)->second;
+		Entity entity = pair->first;
+		GMouseUpEventComponent* upDown = pair->second;
 
 		if (!upDown)
 			continue;
 
-		if (mEntityManager->IsInsideEntity(entity, point))
+		if (mEntityManager->isInsideEntity(entity, point))
 		{
 			upDown->signal_MouseUp.emit();
 			upDown->signal_MouseUpOnEntity.emit(entity);
@@ -56,15 +50,15 @@ void GUserInputSystem::OnMouseUp(GCursor point)
 
 void GUserInputSystem::OnMouseMove(GCursor point)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMouseMoveEventComponent>(); iter != mEntityManager->GetEndPairComponent<GMouseMoveEventComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GMouseMoveEventComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GMouseMoveEventComponent* moveMove = (*iter)->second;
+		Entity entity = pair->first;
+		GMouseMoveEventComponent* moveMove = pair->second;
 
 		if (!moveMove)
 			continue;
 
-		if (mEntityManager->IsInsideEntity(entity, point))
+		if (mEntityManager->isInsideEntity(entity, point))
 		{
 			if (point.mWasPressed) 
 			{
@@ -89,10 +83,10 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 
 void GUserInputSystem::OnKeyUp(GKey key)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GKeyUpEventComponent>(); iter != mEntityManager->GetEndPairComponent<GKeyUpEventComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GKeyUpEventComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GKeyUpEventComponent* keyUp = (*iter)->second;
+		Entity entity = pair->first;
+		GKeyUpEventComponent* keyUp = pair->second;
 		switch (key)
 		{
 		case KEY_LEFT:
@@ -113,10 +107,10 @@ void GUserInputSystem::OnKeyUp(GKey key)
 
 void GUserInputSystem::OnKeyDown(GKey key)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GKeyDownEventComponent>(); iter != mEntityManager->GetEndPairComponent<GKeyDownEventComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GKeyDownEventComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GKeyDownEventComponent* keyDown = (*iter)->second;
+		Entity entity = pair->first;
+		GKeyDownEventComponent* keyDown = pair->second;
 		switch (key)
 		{
 		case KEY_LEFT:

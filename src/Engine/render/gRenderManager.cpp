@@ -4,6 +4,7 @@
 #include <gl\GL.h>
 #include <gl\GLU.h>
 
+#include "GSprite.h"
 #include "Utils.h"
 
 
@@ -21,23 +22,17 @@ mHeight( 0 ),
 mClearColorR(1.0f),
 mClearColorG(1.0f),
 mClearColorB(1.0f),
-mFillR(0.0f),
-mFillG(0.0f),
-mFillB(0.0f),
-mLineR(0.0f),
-mLineG(0.0f),
-mLineB(0.0f),
 mVertexes(32000),
-mCacheVertIndex(0),
+mCacheVertLastIndex(0),
 mCurrentTextureID(-1),
-mBatchVertIndex(0),
+mBatchVertLastIndex(0),
 BATCHED_VERTEXES_SIZE(4092)
 {
    allocVertexCache();
-	int val = 0;
+   int val = 0;
 }
 
-void	GRenderManager::init( int w, int h )
+void GRenderManager::init( int w, int h )
 {
     mWidth = w;
 	mHeight = h;
@@ -58,7 +53,7 @@ void	GRenderManager::init( int w, int h )
 
 	glLoadMatrixf((GLfloat*)matrix);
 
-	glOrtho(0, (float)mWidth, 0, (float)mHeight, 2000, -50000);
+	glOrtho(0, (float)mWidth, 0, (float)mHeight, 1, -1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glShadeModel(GL_SMOOTH);
@@ -66,43 +61,15 @@ void	GRenderManager::init( int w, int h )
 	glEnable(GL_BLEND);
 }
 
-void	GRenderManager::startFrame()
+void GRenderManager::startFrame() const
 {
 	clear();
 }
 
-void	GRenderManager::endFrame()
+void GRenderManager::endFrame()
 {
-	draw();
-   mCurrentTextureID = -1;
-}
-
-void GRenderManager::setLineColor( float r, float g, float b )
-{
-	mLineR = r;
-	mLineG = g;
-	mLineB = b;
-}
-
-void GRenderManager::setLineColor(uint32 c )
-{
-	mLineR = ((c>>16)&0xFF)/255.0f;
-	mLineG = ((c>> 8)&0xFF)/255.0f;
-	mLineB = ((  c  )&0xFF)/255.0f;
-}
-
-void GRenderManager::setFillColor( float r, float g, float b )
-{
-	mFillR = r;
-	mFillG = g;
-	mFillB = b;
-}
-
-void GRenderManager::setFillColor(uint32 c )
-{
-	mFillR = ((c>>16)&0xFF)/255.0f;
-	mFillG = ((c>> 8)&0xFF)/255.0f;
-	mFillB = ((  c  )&0xFF)/255.0f;
+	drawAll();
+	mCurrentTextureID = -1;
 }
 
 void GRenderManager::loadIdentityMatrix()
@@ -119,7 +86,7 @@ void GRenderManager::restore()
 {
    if(mMatrixStack.size() )
    {
-	   mMatrix = mMatrixStack.top();
+	  mMatrix = mMatrixStack.top();
 	  mMatrixStack.pop();
    }
 }
@@ -185,7 +152,7 @@ void GRenderManager::scale( float x, float y, float z/*=1.0f*/  )
    mMatrix.m[2][1] *= z;
 }
 
-bool GRenderManager::visible()
+bool GRenderManager::visible() const
 {
    if (fabsf(mMatrix.m[0][0]*mMatrix.m[1][1] - mMatrix.m[0][1]*mMatrix.m[1][0])<0.0001f)
       return false;
@@ -193,120 +160,92 @@ bool GRenderManager::visible()
    return true;
 }
 
-void GRenderManager::drawImage( uint32 textureId, int full_tex_w, int full_tex_h,
-                                int tex_x, int tex_y, int tex_w, int tex_h,
-                                float x, float y, float z/* = 0.0f*/)
+void GRenderManager::drawSprite(GSprite* sprite)
 {
-   if (!visible())																			
-      return;
+	if (!visible())
+		return;
 
-   GVector3 tmpVertexData0, tmpVertexData2;												
+	uint32 textureId = sprite->getTextureGLId();
+	if (mCurrentTextureID != (int)textureId)
+	{
+		drawBatchedTris();
+		mCurrentTextureID = textureId;
+	}
 
-   tmpVertexData0.x = x;			tmpVertexData0.y = y;			tmpVertexData0.z = z;		
-   tmpVertexData2.x = x + tex_w;	tmpVertexData2.y = y + tex_h;	tmpVertexData2.z = z;
+	uint32 textureWidth = sprite->getTextureWidth();
+	uint32 textureHeight = sprite->getTextureHeight();
+	float imageXPos = (float)sprite->getXPos();
+	float imageYPos = (float)sprite->getYPos();
+	float imageWidth = (float)sprite->getWidth();
+	float imageHeight = (float)sprite->getHeight();
+	float x = -sprite->getPivotX();
+	float y = -sprite->getPivotY();
 
-   convertVertexDataToModelSpace(tmpVertexData0);
-   convertVertexDataToModelSpace(tmpVertexData2);
+	mVertexData[mCacheVertLastIndex].x = x;
+	mVertexData[mCacheVertLastIndex].y = y;
+	mVertexData[mCacheVertLastIndex].z = 0;
+	mVertexData[mCacheVertLastIndex + 1].x = x;
+	mVertexData[mCacheVertLastIndex + 1].y = y + imageHeight;
+	mVertexData[mCacheVertLastIndex + 1].z = 0;
+	mVertexData[mCacheVertLastIndex + 2].x = x + imageWidth;
+	mVertexData[mCacheVertLastIndex + 2].y = y + imageHeight;
+	mVertexData[mCacheVertLastIndex + 2].z = 0;
+	mVertexData[mCacheVertLastIndex + 5].x = x + imageWidth;
+	mVertexData[mCacheVertLastIndex + 5].y = y;
+	mVertexData[mCacheVertLastIndex + 5].z = 0;
 
-   GVector3 &vertexData0 = mVertexData[mCacheVertIndex];												
-   GVector3 &vertexData1 = mVertexData[mCacheVertIndex+1];
-   GVector3 &vertexData2 = mVertexData[mCacheVertIndex+2];
-   GVector3 &vertexData3 = mVertexData[mCacheVertIndex+3];
-   GVector3 &vertexData4 = mVertexData[mCacheVertIndex+4];
-   GVector3 &vertexData5 = mVertexData[mCacheVertIndex+5];
+	convertVertexDataToModelSpace(mVertexData[mCacheVertLastIndex]);
+	convertVertexDataToModelSpace(mVertexData[mCacheVertLastIndex + 1]);
+	convertVertexDataToModelSpace(mVertexData[mCacheVertLastIndex + 2]);
+	convertVertexDataToModelSpace(mVertexData[mCacheVertLastIndex + 5]);
 
-   vertexData0 = tmpVertexData0;
-   vertexData2 = tmpVertexData2;
+	mVertexData[mCacheVertLastIndex + 3] = mVertexData[mCacheVertLastIndex];
+	mVertexData[mCacheVertLastIndex + 4] = mVertexData[mCacheVertLastIndex + 2];
 
-   vertexData1.x = x;	        vertexData1.y = y + tex_h;	vertexData1.z = z;
-   vertexData3.x = x + tex_w;	vertexData3.y = y;			vertexData3.z = z;
+	float texLeft = imageXPos / textureWidth;
+	float texUp = imageYPos / textureHeight;
+	float texRight = (imageWidth + imageXPos) / textureWidth;
+	float texDown = (imageHeight + imageYPos) / textureHeight;
 
-   convertVertexDataToModelSpace(vertexData1);
-   convertVertexDataToModelSpace(vertexData3);
+	mTextCoordData[mCacheVertLastIndex].x = mTextCoordData[mCacheVertLastIndex + 3].x = texLeft;
+	mTextCoordData[mCacheVertLastIndex].y = mTextCoordData[mCacheVertLastIndex + 3].y = texUp;
+	mTextCoordData[mCacheVertLastIndex + 1].x = texLeft;
+	mTextCoordData[mCacheVertLastIndex + 1].y = texDown;
+	mTextCoordData[mCacheVertLastIndex + 2].x = mTextCoordData[mCacheVertLastIndex + 4].x = texRight;
+	mTextCoordData[mCacheVertLastIndex + 2].y = mTextCoordData[mCacheVertLastIndex + 4].y = texDown;
+	mTextCoordData[mCacheVertLastIndex + 5].x = texRight;
+	mTextCoordData[mCacheVertLastIndex + 5].y = texUp;
 
-   vertexData5 = vertexData3; 
-   vertexData3 = vertexData0; 
-   vertexData4 = vertexData2; 
+	mIndexesData[mCacheVertLastIndex] = mBatchVertLastIndex++;
+	mIndexesData[mCacheVertLastIndex + 1] = mBatchVertLastIndex++;
+	mIndexesData[mCacheVertLastIndex + 2] = mBatchVertLastIndex++;
+	mIndexesData[mCacheVertLastIndex + 3] = mBatchVertLastIndex++;
+	mIndexesData[mCacheVertLastIndex + 4] = mBatchVertLastIndex++;
+	mIndexesData[mCacheVertLastIndex + 5] = mBatchVertLastIndex++;
 
-   if (																				
-      (mCurrentTextureID < 0) ||													
-      (mCurrentTextureID != (int)textureId) 										
-      )
-   {
+	mCacheVertLastIndex += 6;
 
-      drawBatchedTris();
-      mCurrentTextureID = textureId;
-
-   }
-
-   GVector2 &textCoordData0 = mTextCoordData[mCacheVertIndex];
-   GVector2 &textCoordData1 = mTextCoordData[mCacheVertIndex+1];
-   GVector2 &textCoordData2 = mTextCoordData[mCacheVertIndex+2];
-   GVector2 &textCoordData3 = mTextCoordData[mCacheVertIndex+3];
-   GVector2 &textCoordData4 = mTextCoordData[mCacheVertIndex+4];
-   GVector2 &textCoordData5 = mTextCoordData[mCacheVertIndex+5];
-
-   float texLeft  = (float)tex_x / (float)( full_tex_w );											
-   float texUp    = (float)tex_y / (float)( full_tex_h );
-   float texRight = (float)( tex_w + tex_x ) / (float)( full_tex_w );
-   float texDown  = (float)( tex_h + tex_y ) / (float)( full_tex_h );
-
-   textCoordData0.x = texLeft;	textCoordData0.y = texUp;														
-   textCoordData1.x = texLeft;	textCoordData1.y = texDown;	
-   textCoordData2.x = texRight;	textCoordData2.y = texDown;	
-   textCoordData3.x = texRight;	textCoordData3.y = texUp;	
-
-   textCoordData5 = textCoordData3; 
-   textCoordData3 = textCoordData0; 
-   textCoordData4 = textCoordData2; 
-
-   int firstImgIndex = mBatchVertIndex;
-
-   mIndexesData[mCacheVertIndex]   = firstImgIndex++;
-   mIndexesData[mCacheVertIndex+1] = firstImgIndex++;
-   mIndexesData[mCacheVertIndex+2] = firstImgIndex++;
-   mIndexesData[mCacheVertIndex+3] = firstImgIndex++;
-   mIndexesData[mCacheVertIndex+4] = firstImgIndex++;
-   mIndexesData[mCacheVertIndex+5] = firstImgIndex++;
-   
-   addBatchTris(2);
+	if (mCacheVertLastIndex + 6 >= mVertexData.size())
+	{
+		reallocVertexCache();
+	}
 }
 
-void	GRenderManager::addBatchTris(int triCnt)
-{
-   int VertexesByTris = triCnt*3;
-   mCacheVertIndex+=VertexesByTris;
-   mBatchVertIndex+=VertexesByTris;
-
-   if ((mCacheVertIndex + (uint32)VertexesByTris)>=mVertexData.size())
-   {
-      reallocVertexCache();
-   }
-   else
-   {
-      if (mBatchVertIndex>= BATCHED_VERTEXES_SIZE)
-      {
-         drawBatchedTris();
-      }
-   }
-}
-
-void	GRenderManager::allocVertexCache()
+void GRenderManager::allocVertexCache()
 {
    mVertexData.resize(mVertexes);
    mTextCoordData.resize(mVertexes);
    mIndexesData.resize(mVertexes);
 }
 
-void	GRenderManager::reallocVertexCache()
+void GRenderManager::reallocVertexCache()
 {
-   draw();
-   mVertexes*=2;
-   allocVertexCache();
+	drawBatchedTris();
+	mVertexes *= 2;
+	allocVertexCache();
 }
 
-
-void	GRenderManager::convertVertexDataToModelSpace(GVector3 &vertex) const
+void GRenderManager::convertVertexDataToModelSpace(GVector3 &vertex) const
 {
 	GVector3 newVertexData;
 	newVertexData.x = mMatrix.m[0][0] * vertex.x + mMatrix.m[1][0] * vertex.y + mMatrix.t.x;
@@ -322,15 +261,6 @@ void	GRenderManager::convertVertexDataToModelSpace(GVector3 &vertex) const
 	vertex = newVertexData;
 }
 
-bool	GRenderManager::testOutsideScreen(GVector3 &vertex0, GVector3 &vertex2) const
-{
-	return (
-		(vertex0.x < 0.0f		&& vertex2.x < 0.0f) ||
-		(vertex0.x > mWidth	&& vertex2.x > mWidth) ||
-		(vertex0.y < 0.0f		&& vertex2.y < 0.0f) ||
-		(vertex0.y > mHeight	&& vertex2.y > mHeight)
-		);
-}
 
 void GRenderManager::setClearColor(unsigned int c)
 {
@@ -341,21 +271,20 @@ void GRenderManager::setClearColor(unsigned int c)
 	glClearColor(mClearColorR, mClearColorG, mClearColorB, 1);
 }
 
-void GRenderManager::clear()
+void GRenderManager::clear() const
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GRenderManager::draw()
+void GRenderManager::drawAll()
 {
 	drawBatchedTris();
-
-	mCacheVertIndex = 0;
+	mCacheVertLastIndex = 0;
 }
 
 void GRenderManager::drawBatchedTris()
 {
-	if (mBatchVertIndex == 0)
+	if (mBatchVertLastIndex == 0)
 		return;
 
 	if (mCurrentTextureID >= 0)
@@ -368,8 +297,7 @@ void GRenderManager::drawBatchedTris()
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	int vertexCount = mBatchVertIndex;
-	int vertexFirstIndex = mCacheVertIndex - vertexCount;
+	int vertexFirstIndex = mCacheVertLastIndex - mBatchVertLastIndex;
 
 	save();
 
@@ -383,7 +311,7 @@ void GRenderManager::drawBatchedTris()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, &mVertexData[vertexFirstIndex]);
 
-	glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_SHORT, &mIndexesData[vertexFirstIndex]);
+	glDrawElements(GL_TRIANGLES, mBatchVertLastIndex, GL_UNSIGNED_SHORT, &mIndexesData[vertexFirstIndex]);
 
 	if (mCurrentTextureID >= 0)
 	{
@@ -393,44 +321,24 @@ void GRenderManager::drawBatchedTris()
 	restore();
 
 	mCurrentTextureID = -1;
-	mBatchVertIndex = 0;
+	mBatchVertLastIndex = 0;
 }
 
-void GRenderManager::drawTri(float x1, float y1, float x2, float y2, float x3, float y3)
-{
-	drawBatchedTris();
-
-	glDisable(GL_TEXTURE_2D);
-
-	glDisable(GL_BLEND);
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	glColor4f(mFillR, mFillG, mFillB, 1.0f);
-	glBegin(GL_POLYGON);
-	glVertex2f(x1, y1);
-	glVertex2f(x2, y2);
-	glVertex2f(x3, y3);
-	glVertex2f(x1, y1);
-	glEnd();
-	glPopAttrib();
-	glEnable(GL_BLEND);
-}
-
-void GRenderManager::drawLine(float x1, float y1, float z1, float x2, float y2, float z2)
+void GRenderManager::drawLine(GVector3 posLeft, GVector3 posRight, IGColor color)
 {
 	drawBatchedTris();
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	glColor4f(mLineR, mLineG, mLineB, 1.0f);
+	glColor4f(color.r, color.g, color.b, 1.0f);
 	glBegin(GL_LINES);
-	glVertex3f(x1, y1, z1);
-	glVertex3f(x2, y2, z2);
+	glVertex3f(posLeft.x, posLeft.y, posLeft.z);
+	glVertex3f(posRight.x, posRight.y, posRight.z);
 	glEnd();
 	glPopAttrib();
 	glEnable(GL_BLEND);
 }
-
 
 uint32 GRenderManager::loadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih)
 {
@@ -459,7 +367,7 @@ void  GRenderManager::unloadTexture(uint32 textureId)
 	glDeleteTextures(1, &textureId);
 }
 
-int GRenderManager::checkForGLErrors(GThreadSafeErrors &err)
+int GRenderManager::checkForGLErrors(GThreadSafeErrors &err) const
 {
 	int errors = 0;
 

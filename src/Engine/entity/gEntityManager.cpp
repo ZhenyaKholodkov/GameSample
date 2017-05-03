@@ -1,7 +1,6 @@
 #include "gEntityManager.h"
 
-
-GEntityManager* GEntityManager::Instance()
+GEntityManager* GEntityManager::instance()
 {
 	static GEntityManager instance;
 	return &instance;
@@ -14,8 +13,8 @@ GEntityManager::GEntityManager()
 		mAvailableEntities.push(index);
 	}
 
-	mComponentPools.resize(GetComponentCount());
-	for (uint32 index = 0; index < GetComponentCount(); ++index)
+	mComponentPools.resize(getComponentCount());
+	for (uint32 index = 0; index < getComponentCount(); ++index)
 	{
 		mComponentPools[index] = nullptr;
 	}
@@ -29,7 +28,7 @@ GEntityManager::~GEntityManager()
 	}
 }
 
-Entity GEntityManager::CreateEntity()
+Entity GEntityManager::createEntity()
 {
 	Entity newEntity = mAvailableEntities.front();
 	mAvailableEntities.pop();
@@ -37,41 +36,41 @@ Entity GEntityManager::CreateEntity()
 	return newEntity;
 }
 
-void GEntityManager::DestroyEntity(Entity entity)
+void GEntityManager::destroyEntity(Entity entity)
 {
 	if (entity < 0)
 		return;
 
 	mAvailableEntities.push(entity);
-	for (uint32 index = 0; index < GetComponentCount(); ++index)
+	for (uint32 index = 0; index < getComponentCount(); ++index)
 	{
 		if (mComponentPools[index])
 			mComponentPools[index]->destroy(entity);
 	}
 }
 
-uint32 GEntityManager::GetComponentCount()
+uint32 GEntityManager::getComponentCount()
 {
 	return GBaseComponent::s_component_counter;
 }
 
-bool GEntityManager::IsInsideEntity(Entity entity, GCursor point)
+bool GEntityManager::isInsideEntity(Entity entity, GCursor point) const
 {
-	if (!DoesHaveComponent<GLocationComponent>(entity) ||
-		!DoesHaveComponent<GRenderableComponent>(entity))
+	if (!doesHaveComponent<GLocationComponent>(entity) ||
+		!doesHaveComponent<GRenderableComponent>(entity))
 	{
 		return false;
 	}
 	GCursor localPoint;       //localized relativly the entity
-	LocalPoint(entity, point, localPoint);
+	getLocalPoint(entity, point, localPoint);
 
-	GRenderableComponent* renderable = GetComponent<GRenderableComponent>(entity);
+	auto renderable = getComponent<GRenderableComponent>(entity);
 	return renderable->IsPiontInsideWH(localPoint);
 }
 
-void GEntityManager::LocalPoint(Entity entity, GCursor& point, GCursor& localPoint)
+void GEntityManager::getLocalPoint(Entity entity, GCursor& point, GCursor& localPoint) const
 {
-	GLocationComponent* location = GetComponent<GLocationComponent>(entity);
+	auto location = getComponent<GLocationComponent>(entity);
 
 	float ang = 0;                         
 	float c = cosf(ang), s = sinf(ang);
@@ -81,18 +80,18 @@ void GEntityManager::LocalPoint(Entity entity, GCursor& point, GCursor& localPoi
 
 void GEntityManager::removeParent(Entity child)
 {
-	GParentComponent* parentComponent = GetComponent<GParentComponent>(child);
+	auto parentComponent = getComponent<GParentComponent>(child);
 	if (parentComponent)
 	{
 		Entity parent = parentComponent->getParent();
-		GChildComponent*  childComponent = GetComponent<GChildComponent>(parent);
+		auto  childComponent = getComponent<GChildComponent>(parent);
 
 		parentComponent->setParent(-1);
 		if (childComponent)
 		{
 			childComponent->setChild(-1);
-			GLocationComponent* parentLocation = GetComponent<GLocationComponent>(parent);
-			GLocationComponent* childLocation = GetComponent<GLocationComponent>(child);
+			auto parentLocation = getComponent<GLocationComponent>(parent);
+			auto childLocation = getComponent<GLocationComponent>(child);
 			float newX = childLocation->getX() - parentLocation->getX();
 			float newY = childLocation->getY() - parentLocation->getY();
 			childLocation->setXY(newX, newY);
@@ -104,20 +103,20 @@ void GEntityManager::removeParent(Entity child)
 void GEntityManager::setChildParentRelations(Entity parent, Entity child)
 {
 	removeParent(child);
-	GLocationComponent* parentLocation = GetComponent<GLocationComponent>(parent);
-	GLocationComponent* childLocation = GetComponent<GLocationComponent>(child);
+	auto parentLocation = getComponent<GLocationComponent>(parent);
+	auto childLocation = getComponent<GLocationComponent>(child);
 
-	GParentComponent* parentComponent = GetComponent<GParentComponent>(child);
+	auto parentComponent = getComponent<GParentComponent>(child);
 	if (!parentComponent)
 	{
-		parentComponent = AddComponentsToEntity<GParentComponent>(child);
+		parentComponent = addComponentsToEntity<GParentComponent>(child);
 	}
 	parentComponent->setParent(parent);
 
-	GChildComponent* childComponent = GetComponent<GChildComponent>(parent);
+	auto childComponent = getComponent<GChildComponent>(parent);
 	if (!childComponent)
 	{
-		childComponent = AddComponentsToEntity<GChildComponent>(parent);
+		childComponent = addComponentsToEntity<GChildComponent>(parent);
 	}
 	childComponent->setChild(child);
 
@@ -127,8 +126,8 @@ void GEntityManager::setChildParentRelations(Entity parent, Entity child)
 	childLocation->setDefaultXY(newX, newY);
 	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
 
-	GRenderableComponent* parentRenderable = GetComponent<GRenderableComponent>(parent);
-	GRenderableComponent* childRenderable = GetComponent<GRenderableComponent>(child);
+	auto parentRenderable = getComponent<GRenderableComponent>(parent);
+	auto childRenderable = getComponent<GRenderableComponent>(child);
 	if (parentRenderable && childRenderable)
 	{
 		parentRenderable->signal_ScaleChanged.connect(childRenderable, &GRenderableComponent::slot_ChangeScale);

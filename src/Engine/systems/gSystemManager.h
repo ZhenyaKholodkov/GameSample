@@ -1,6 +1,8 @@
 #ifndef GSYSTEM_MANAGER_H
 #define GSYSTEM_MANAGER_H
 
+#include <memory>
+
 #include "gBaseSystem.h"
 #include "gRenderSystem.h"
 #include "gMoveableAnimationSystem.h"
@@ -9,17 +11,18 @@
 #include "gScalableSystem.h"
 #include "gCollisionSystem.h"
 #include "g2048MechanicSystem.h"
+#include "gAnimationSystem.h"
 
 class GSystemManager
 {
 public:
-	static GSystemManager* Instatnce();
+	static GSystemManager* instance();
 
 	template<typename S>
-	void RegisterSystem();
+	void registerSystem();
 
 	template<typename S>
-	GBaseSystem* GetSystem();
+	std::shared_ptr<GBaseSystem>  getSystem() const;
 
 	void update(int dt);
 
@@ -27,25 +30,20 @@ private:
 	GSystemManager();
 	~GSystemManager();
 
-	uint32 GetSystemCount();
+	uint32 getSystemCount() const;
 private:
-	std::vector<GBaseSystem*>            mSystems; 
+	std::vector<std::shared_ptr<GBaseSystem>> mSystems; 
 };
 
-
-
 template<typename S>
-void GSystemManager::RegisterSystem()
+void GSystemManager::registerSystem()
 {
 	uint32 index = GSystem<S>::getSystemId();
-	if (mSystems[index] == nullptr) 
-	{
-		mSystems[index] = new S();
-	}
+	mSystems[index] = std::shared_ptr<GBaseSystem>(new S());
 }
 
 template<typename S>
-GBaseSystem* GSystemManager::GetSystem()
+std::shared_ptr<GBaseSystem> GSystemManager::getSystem() const
 {
 	uint32 index = GSystem<S>::getSystemId();
 	return mSystems[index];

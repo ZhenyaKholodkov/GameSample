@@ -6,22 +6,17 @@
 #include <time.h>
 
 GGame::GGame():
-	mSystemManager(nullptr),
-	mEntityManager(nullptr),
+	GGameWindow(),
 	isGameOver(false)
 {
+	mSystemManager = GSystemManager::instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GGame::~GGame()
 {
-
 }
 
-IGame* IGame::Instane()
-{
-	static GGame instance;
-	return &instance;
-}
 
 bool GGame::Create()
 {
@@ -29,15 +24,13 @@ bool GGame::Create()
 	{
 		return false;
 	}
-	mEntityManager = GEntityManager::Instance();
-	mSystemManager = GSystemManager::Instatnce();
-	mSystemManager->RegisterSystem<GAnimationSystem>();
-	mSystemManager->RegisterSystem<GUserInputSystem>();
-	mSystemManager->RegisterSystem<GMoveableAnimationSystem>();
-	mSystemManager->RegisterSystem<GMoveableSystem>();
-	mSystemManager->RegisterSystem<GScalableSystem>();	
-	mSystemManager->RegisterSystem<GCollisionSystem>();
-	mSystemManager->RegisterSystem<GRenderSystem>();
+	mSystemManager->registerSystem<GAnimationSystem>();
+	mSystemManager->registerSystem<GUserInputSystem>();
+	mSystemManager->registerSystem<GMoveableAnimationSystem>();
+	mSystemManager->registerSystem<GMoveableSystem>();
+	mSystemManager->registerSystem<GScalableSystem>();
+	mSystemManager->registerSystem<GCollisionSystem>();
+	mSystemManager->registerSystem<GRenderSystem>();
 
 	CreateGame();
 
@@ -47,20 +40,19 @@ bool GGame::Create()
 void GGame::CreateGame()
 {
 	CreateField();
-	mEntityManager = GEntityManager::Instance();
 
 	// create entity for processing the keyboard keys
-	Entity controlsEntity = mEntityManager->CreateEntity();
-	GKeyUpEventComponent* keyUpComponent = mEntityManager->AddComponentsToEntity<GKeyUpEventComponent>(controlsEntity);
-	GKeyDownEventComponent* keyDownComponent = mEntityManager->AddComponentsToEntity<GKeyDownEventComponent>(controlsEntity);
+	Entity controlsEntity = mEntityManager->createEntity();
+	GKeyUpEventComponent* keyUpComponent = mEntityManager->addComponentsToEntity<GKeyUpEventComponent>(controlsEntity);
+	GKeyDownEventComponent* keyDownComponent = mEntityManager->addComponentsToEntity<GKeyDownEventComponent>(controlsEntity);
 
 	// create plater entity
 	GSprite* spritePlayer = GResManager::Instance()->GetSprite("player.png");
-	Entity playerEntity = mEntityManager->CreateEntity();
-	GLocationComponent* playerLocation = mEntityManager->AddComponentsToEntity<GLocationComponent>(playerEntity, 960.0f, 704.0f);
-	mEntityManager->AddComponentsToEntity<GRenderableComponent>(playerEntity, spritePlayer);
-	GMoveableComponent* playerMoveable = mEntityManager->AddComponentsToEntity<GMoveableComponent>(playerEntity, 5.0f, 5.0f);
-	GCollisionComponent* playerCollision = mEntityManager->AddComponentsToEntity<GCollisionComponent>(playerEntity, spritePlayer->GetWidth() / 2, spritePlayer->GetHeight() / 2);
+	Entity playerEntity = mEntityManager->createEntity();
+	GLocationComponent* playerLocation = mEntityManager->addComponentsToEntity<GLocationComponent>(playerEntity, 960.0f, 704.0f);
+	mEntityManager->addComponentsToEntity<GRenderableComponent>(playerEntity, spritePlayer);
+	GMoveableComponent* playerMoveable = mEntityManager->addComponentsToEntity<GMoveableComponent>(playerEntity, 5.0f, 5.0f);
+	GCollisionComponent* playerCollision = mEntityManager->addComponentsToEntity<GCollisionComponent>(playerEntity, spritePlayer->getWidth() / 2, spritePlayer->getHeight() / 2);
 
 	playerCollision->signal_Collisioned.connect(playerLocation, &GLocationComponent::slot_LocationRestoreToLast);
 	keyDownComponent->signal_KeyRight.connect(playerMoveable, &GMoveableComponent::slot_MoveDx);
@@ -72,9 +64,9 @@ void GGame::CreateGame()
 	keyUpComponent->signal_KeyUp.connect(playerMoveable, &GMoveableComponent::slot_Stop);
 	keyUpComponent->signal_KeyDown.connect(playerMoveable, &GMoveableComponent::slot_Stop);
 
-	GCollisionSystem* collisionSystem = (GCollisionSystem*)mSystemManager->GetSystem<GCollisionSystem>();
+	std:shared_ptr<GCollisionSystem> collisionSystem = std::static_pointer_cast<GCollisionSystem>(mSystemManager->getSystem<GCollisionSystem>());
 
-	playerMoveable->signal_Moved.connect(collisionSystem, &GCollisionSystem::slot_CheckCollision);
+	playerMoveable->signal_Moved.connect(collisionSystem.get(), &GCollisionSystem::slot_CheckCollision);
 
 	playerMoveable->signal_LocationChanged.connect(playerLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
 
@@ -84,7 +76,7 @@ void GGame::CreateField()
 {
 	GSprite* spriteBrick = GResManager::Instance()->GetSprite("stones.png");
 	GSprite* spriteGrass = GResManager::Instance()->GetSprite("Grass.png");
-	int size = spriteGrass->GetWidth();
+	int size = spriteGrass->getWidth();
 
 	const uint32 rows = 6, cols = 8;
 	uint32 field[rows][cols] = {1, 1, 1, 1, 1, 1, 1, 1,
@@ -103,17 +95,17 @@ void GGame::CreateField()
 		x = (float)size / 2;
 		for (uint32 j = 0; j < cols; ++j)
 		{
-			Entity entity = mEntityManager->CreateEntity();
-			mEntityManager->AddComponentsToEntity<GLocationComponent>(entity, x, y);
+			Entity entity = mEntityManager->createEntity();
+			mEntityManager->addComponentsToEntity<GLocationComponent>(entity, x, y);
 			if (field[i][j] == 1)
 			{
-				mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteBrick);
-				mEntityManager->AddComponentsToEntity<GCollisionComponent>(entity, spriteBrick->GetWidth() / 2, spriteBrick->GetHeight() / 2);
+				mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteBrick);
+				mEntityManager->addComponentsToEntity<GCollisionComponent>(entity, spriteBrick->getWidth() / 2, spriteBrick->getHeight() / 2);
 
 			}
 			else
 			{
-				mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteGrass);
+				mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteGrass);
 				if (field[i][j] == 2)
 				{
 					CreateBomb(x, y);
@@ -132,10 +124,10 @@ void GGame::CreateField()
 void GGame::CreateBomb(float x, float y)
 {
 	GSprite* spriteBomb = GResManager::Instance()->GetSprite("Bomb.png");
-	Entity entity = mEntityManager->CreateEntity();
-	mEntityManager->AddComponentsToEntity<GLocationComponent>(entity, x, y);
-	GRenderableComponent* renderable = mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteBomb);
-	GCollisionComponent* collision = mEntityManager->AddComponentsToEntity<GCollisionComponent>(entity, spriteBomb->GetWidth() / 2, spriteBomb->GetHeight() / 2);
+	Entity entity = mEntityManager->createEntity();
+	mEntityManager->addComponentsToEntity<GLocationComponent>(entity, x, y);
+	GRenderableComponent* renderable = mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteBomb);
+	GCollisionComponent* collision = mEntityManager->addComponentsToEntity<GCollisionComponent>(entity, spriteBomb->getWidth() / 2, spriteBomb->getHeight() / 2);
 
 	GSprite* sprite0 = GResManager::Instance()->GetSprite("0.png");
 	GSprite* sprite1 = GResManager::Instance()->GetSprite("1.png");
@@ -146,12 +138,12 @@ void GGame::CreateBomb(float x, float y)
 	GSprite* sprite6 = GResManager::Instance()->GetSprite("6.png");
 	GSprite* sprite7 = GResManager::Instance()->GetSprite("7.png");
 	GSprite* sprite8 = GResManager::Instance()->GetSprite("8.png");
-	Entity animationEntity = mEntityManager->CreateEntity();
-	mEntityManager->AddComponentsToEntity<GLocationComponent>(animationEntity, x, y);
-	GRenderableComponent* animationRender = mEntityManager->AddComponentsToEntity<GRenderableComponent>(animationEntity, sprite0);
+	Entity animationEntity = mEntityManager->createEntity();
+	mEntityManager->addComponentsToEntity<GLocationComponent>(animationEntity, x, y);
+	GAnimationComponent* animationComponent = mEntityManager->addComponentsToEntity<GAnimationComponent>(animationEntity, 1000 / 60, false);
+
+	GRenderableComponent* animationRender = mEntityManager->addComponentsToEntity<GRenderableComponent>(animationEntity, sprite0);
 	animationRender->setVisible(false);
-	GAnimationComponent* animationComponent = mEntityManager->AddComponentsToEntity<GAnimationComponent>(animationEntity, 1000 / 60, false);
-	
 	animationComponent->AddFrame(sprite0);
 	animationComponent->AddFrame(sprite1);
 	animationComponent->AddFrame(sprite2);
@@ -172,11 +164,11 @@ void GGame::CreateBomb(float x, float y)
 void GGame::CreateCoin(float x, float y)
 {
 	GSprite* spriteCoin = GResManager::Instance()->GetSprite("coin.png");
-	Entity entity = mEntityManager->CreateEntity();
-	mEntityManager->AddComponentsToEntity<GLocationComponent>(entity, x, y);
-	GRenderableComponent* renderable = mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteCoin);
-	GCollisionComponent* collision = mEntityManager->AddComponentsToEntity<GCollisionComponent>(entity, spriteCoin->GetWidth() / 2, spriteCoin->GetHeight() / 2);
-	GScalableComponent* scalable = mEntityManager->AddComponentsToEntity<GScalableComponent>(entity, 1.0f, 1.0f, 0.0f, 0.0f, 500);
+	Entity entity = mEntityManager->createEntity();
+	mEntityManager->addComponentsToEntity<GLocationComponent>(entity, x, y);
+	GRenderableComponent* renderable = mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteCoin);
+	GCollisionComponent* collision = mEntityManager->addComponentsToEntity<GCollisionComponent>(entity, spriteCoin->getWidth() / 2, spriteCoin->getHeight() / 2);
+	GScalableComponent* scalable = mEntityManager->addComponentsToEntity<GScalableComponent>(entity, 1.0f, 1.0f, 0.0f, 0.0f, 500);
 
 	collision->signal_Collisioned.connect(scalable, &GScalableComponent::slot_Scale);       // scales the coin after the collision signal 
 	scalable->signal_ScaleChanged.connect(renderable, &GRenderableComponent::slot_ChangeScale);
@@ -186,10 +178,10 @@ void GGame::CreateCoin(float x, float y)
 void GGame::slot_Won()
 {
 	GSprite* spriteWon = GResManager::Instance()->GetSprite("won.png");
-	Entity entity = mEntityManager->CreateEntity();
-	mEntityManager->AddComponentsToEntity<GLocationComponent>(entity, 512, 384);
-	GRenderableComponent* renderable = mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteWon);
-	GScalableComponent* scalable = mEntityManager->AddComponentsToEntity<GScalableComponent>(entity, 0.0f, 0.0f, 1.0f, 1.0f, 500);
+	Entity entity = mEntityManager->createEntity();
+	mEntityManager->addComponentsToEntity<GLocationComponent>(entity, 512, 384);
+	GRenderableComponent* renderable = mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteWon);
+	GScalableComponent* scalable = mEntityManager->addComponentsToEntity<GScalableComponent>(entity, 0.0f, 0.0f, 1.0f, 1.0f, 500);
 
 	scalable->signal_ScaleChanged.connect(renderable, &GRenderableComponent::slot_ChangeScale);
 	scalable->slot_Scale();
@@ -199,10 +191,10 @@ void GGame::slot_Won()
 void GGame::slot_Lost()
 {
 	GSprite* spriteWon = GResManager::Instance()->GetSprite("over.png");
-	Entity entity = mEntityManager->CreateEntity();
-	mEntityManager->AddComponentsToEntity<GLocationComponent>(entity, 512, 384);
-	GRenderableComponent* renderable = mEntityManager->AddComponentsToEntity<GRenderableComponent>(entity, spriteWon);
-	GScalableComponent* scalable = mEntityManager->AddComponentsToEntity<GScalableComponent>(entity, 0.0f, 0.0f, 1.0f, 1.0f, 500);
+	Entity entity = mEntityManager->createEntity();
+	mEntityManager->addComponentsToEntity<GLocationComponent>(entity, 512, 384);
+	GRenderableComponent* renderable = mEntityManager->addComponentsToEntity<GRenderableComponent>(entity, spriteWon);
+	GScalableComponent* scalable = mEntityManager->addComponentsToEntity<GScalableComponent>(entity, 0.0f, 0.0f, 1.0f, 1.0f, 500);
 
 	scalable->signal_ScaleChanged.connect(renderable, &GRenderableComponent::slot_ChangeScale);
 	scalable->slot_Scale();
@@ -221,42 +213,60 @@ bool GGame::LoadResources()
 	return resManager->LoadResources("resources/textures/res_config.xml"); // load resources
 }
 
-void GGame::OnMouseDown(GCursor point)
+int32 GGame::onCreate()
+{
+	if (!Create())
+		return 0;
+	else
+		return 1;
+}
+
+void GGame::onClose()
+{
+	destroyGLContext();
+}
+
+void GGame::onTimer(int32 dt)
+{
+	mSystemManager->update(dt);
+}
+
+void GGame::onLMouseDown(GCursor  point)
 {
 	if (isGameOver)
 		return;
-	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
 	inputSystem->OnMouseDown(point);
 }
 
-void GGame::OnMouseUp(GCursor point)
+void GGame::onLMouseUp(GCursor  point)
 {
 	if (isGameOver)
 		return;
-	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
 	inputSystem->OnMouseUp(point);
 }
 
-void GGame::OnMouseMove(GCursor point)
+void GGame::onMouseMove(GCursor point)
 {
 	if (isGameOver)
 		return;
-	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
 	inputSystem->OnMouseMove(point);
 }
 
-void GGame::keyUp(GKey key)
+void GGame::onKeyUp(GKey key)
 {
 	if (isGameOver)
 		return;
-	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
 	inputSystem->OnKeyUp(key);
 }
 
-void GGame::keyDown(GKey key)
+void GGame::onKeyDown(GKey key)
 {
 	if (isGameOver)
 		return;
-	GUserInputSystem* inputSystem = static_cast<GUserInputSystem*>(mSystemManager->GetSystem<GUserInputSystem>());
+	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
 	inputSystem->OnKeyDown(key);
 }

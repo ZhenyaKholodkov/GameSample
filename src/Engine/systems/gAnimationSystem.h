@@ -13,7 +13,7 @@ public:
 
 	virtual void update(int dt);
 private:
-	GEntityManager* mEntityManager;
+	const GEntityManager* mEntityManager;
 };
 
 #endif //GANIMATION_SYSTEM_H

@@ -1,9 +1,10 @@
 #ifndef GUSERINPUT_SYSTEM_H
 #define GUSERINPUT_SYSTEM_H
 
-#include "gEntityManager.h"
 #include "Utils.h"
 #include "Types.h"
+#include "gEntityManager.h"
+#include "gSystem.h"
 
 class GUserInputSystem : public GSystem<GUserInputSystem>
 {
@@ -20,7 +21,7 @@ public:
 	void OnKeyDown(GKey key);
 
 private:
-	GEntityManager* mEntityManager;
+	const GEntityManager* mEntityManager;
 };
 
 #endif //GUSERINPUTSYSTEMSYSTEM_SYSTEM_H

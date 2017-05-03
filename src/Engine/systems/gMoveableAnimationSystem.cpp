@@ -3,7 +3,7 @@
 
 GMoveableAnimationSystem::GMoveableAnimationSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GMoveableAnimationSystem::~GMoveableAnimationSystem() 
@@ -13,12 +13,12 @@ GMoveableAnimationSystem::~GMoveableAnimationSystem()
 
 void GMoveableAnimationSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMoveableAnimationComponent>(); iter != mEntityManager->GetEndPairComponent<GMoveableAnimationComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GMoveableAnimationComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GMoveableAnimationComponent* moveable = (*iter)->second;
+		Entity entity = pair->first;
+		GMoveableAnimationComponent* moveable = pair->second;
 
-		if (!mEntityManager->DoesHaveComponent<GLocationComponent>(entity) || !mEntityManager->DoesHaveComponent<GMoveableAnimationComponent>(entity))
+		if (!mEntityManager->doesHaveComponent<GLocationComponent>(entity) || !mEntityManager->doesHaveComponent<GMoveableAnimationComponent>(entity))
 			continue;
 		
 		if (moveable->mState == GMoveableAnimationComponent::STATE_WAIT)

@@ -7,21 +7,19 @@ template<typename Component>
 class GComponent : public GBaseComponent
 {
 public:
-	GComponent() {};
+	GComponent() : GBaseComponent() { };
 	virtual ~GComponent() {};
 
-	virtual void Reset() {};
-
-	static uint32 GetComponentId();
+	static const uint32 getComponentId();
 private:
-	static uint32 s_component_id; // identifier of the component class.
+	static const uint32 s_component_id; // identifier of the component class.
 };
 
 template<typename C>
-uint32 GComponent<C>::s_component_id = GBaseComponent::s_component_counter++;
+const uint32 GComponent<C>::s_component_id = GBaseComponent::s_component_counter++;
 
 template<typename C>
-uint32 GComponent<C>::GetComponentId()
+const uint32 GComponent<C>::getComponentId()
 {
 	return s_component_id;
 }

@@ -3,7 +3,7 @@
 
 GMoveableSystem::GMoveableSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GMoveableSystem::~GMoveableSystem()
@@ -13,12 +13,12 @@ GMoveableSystem::~GMoveableSystem()
 
 void GMoveableSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GMoveableComponent>(); iter != mEntityManager->GetEndPairComponent<GMoveableComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GMoveableComponent>())
 	{
-		Entity entity = (*iter)->first;
-		GMoveableComponent* moveable = (*iter)->second;
+		Entity entity = pair->first;
+		GMoveableComponent* moveable = pair->second;
 
-		if (!mEntityManager->DoesHaveComponent<GLocationComponent>(entity))
+		if (!mEntityManager->doesHaveComponent<GLocationComponent>(entity))
 			continue;
 
 		if (moveable->mState == GMoveableComponent::STATE_STOP)

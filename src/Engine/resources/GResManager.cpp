@@ -89,17 +89,17 @@ bool GResManager::LoadResources(const char* pathToConfig)
 			GSprite* sprite = new GSprite(spriteData->Attribute("n"));
 
 			sprite->mTextureKey = atlas->mKey;
-			spriteData->QueryIntAttribute("x", &sprite->mXPos);
-			spriteData->QueryIntAttribute("y", &sprite->mYPos);
-			spriteData->QueryIntAttribute("w", &sprite->mWidth);
-			spriteData->QueryIntAttribute("h", &sprite->mHeight);
+			spriteData->QueryIntAttribute("x", &sprite->mRect.mXPos);
+			spriteData->QueryIntAttribute("y", &sprite->mRect.mYPos);
+			spriteData->QueryIntAttribute("w", &sprite->mRect.mWidth);
+			spriteData->QueryIntAttribute("h", &sprite->mRect.mHeight);
 
 			float pivotX = 0.0f;
 			float pivotY = 0.0f; 
 			spriteData->QueryFloatAttribute("pX", &pivotX);
 			spriteData->QueryFloatAttribute("pY", &pivotY);
-			sprite->mPivotX = pivotX * sprite->mWidth;
-			sprite->mPivotY = pivotY * sprite->mHeight;
+			sprite->mRect.mPivotX = pivotX * sprite->mRect.mWidth;
+			sprite->mRect.mPivotY = pivotY * sprite->mRect.mHeight;
 
 			GResourceDictionary::Instance()->insert((GResource*)(sprite));
 

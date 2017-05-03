@@ -4,7 +4,7 @@
 
 GAnimationSystem::GAnimationSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GAnimationSystem::~GAnimationSystem()
@@ -13,12 +13,13 @@ GAnimationSystem::~GAnimationSystem()
 
 void GAnimationSystem::update(int dt)
 {
-	for (auto iter = mEntityManager->GetBeginPairComponent<GAnimationComponent>(); iter != mEntityManager->GetEndPairComponent<GAnimationComponent>(); iter++)
-	{
-		Entity entity = (*iter)->first;
-		GAnimationComponent* animation = (*iter)->second;
 
-		if (!animation || !mEntityManager->DoesHaveComponent<GRenderableComponent>(entity))
+	for (auto pair : mEntityManager->getComponentPool<GAnimationComponent>())
+	{
+		Entity entity = pair->first;
+		GAnimationComponent* animation = pair->second;
+
+		if (!animation || !mEntityManager->doesHaveComponent<GRenderableComponent>(entity))
 			continue;
 
 		if (animation->mState == GAnimationComponent::STATE_WAIT)
@@ -45,7 +46,7 @@ void GAnimationSystem::update(int dt)
 				animation->mCurrentFrame++;
 			}
 
-			GRenderableComponent* renderable = mEntityManager->GetComponent<GRenderableComponent>(entity);
+			GRenderableComponent* renderable = mEntityManager->getComponent<GRenderableComponent>(entity);
 			renderable->SetSprite(animation->mFrames[animation->mCurrentFrame]);
 			animation->mCurrentFrameTime = 0;
 		}

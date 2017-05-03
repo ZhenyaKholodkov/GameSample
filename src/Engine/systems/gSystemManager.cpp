@@ -1,9 +1,14 @@
 #include "gSystemManager.h"
 
+GSystemManager* GSystemManager::instance()
+{
+	static GSystemManager instance;
+	return &instance;
+}
 
 GSystemManager::GSystemManager()
 {
-	mSystems.resize(GetSystemCount());
+	mSystems.resize(getSystemCount());
 	for (auto system : mSystems)
 	{
 		system = nullptr;
@@ -12,19 +17,9 @@ GSystemManager::GSystemManager()
 
 GSystemManager::~GSystemManager()
 {
-	for (auto system : mSystems)
-	{
-		SAFE_DELETE(system);
-	}
 }
 
-GSystemManager* GSystemManager::Instatnce()
-{
-	static GSystemManager  instance;
-	return &instance;
-}
-
-uint32 GSystemManager::GetSystemCount()
+uint32 GSystemManager::getSystemCount() const
 {
 	return GBaseSystem::s_system_counter;
 }

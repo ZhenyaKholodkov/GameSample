@@ -1,4 +1,4 @@
-#ifndef GPOOL_H
+﻿#ifndef GPOOL_H
 #define GPOOL_H
 
 #include "Types.h"
@@ -6,13 +6,8 @@
 class GBasePool                 // bas class for pool. Contains the data and method for reserving new chunks of memory and getting the blocks of memory.
 {
 public:
-	GBasePool(size_t capacity, size_t chunkSize, size_t dataSize):
-		mChunkSize(chunkSize),
-		mBlockSize(dataSize),
-		mCapacity(0),
-		mSize(0)
+	GBasePool()
 	{
-		reserve(capacity);
 	}
 
 	virtual ~GBasePool() 
@@ -38,6 +33,13 @@ public:
 	}
 
 protected:
+	void init(size_t capacity, size_t chunkSize, size_t dataSize)
+	{
+		mChunkSize = chunkSize;
+		mBlockSize = dataSize;
+		mCapacity = 0;
+		mSize = 0;
+	}
 	void reserve(size_t size)
 	{
 		size_t newSize = mCapacity + size;
@@ -73,8 +75,10 @@ private:
 	const int BLOCK_SIZE = sizeof(Block);
 public:
 	GComponentPool(size_t capacity = 5, size_t chunkSize = 5) :
-		GBasePool(capacity, chunkSize, sizeof(Block))
+		GBasePool()
 	{
+		size_t s = sizeof(C);
+		init(capacity, chunkSize, sizeof(Block));
 		mIndexes.resize(MAX_ENTITY_COUNT);
 		for (uint32 i = 0; i < MAX_ENTITY_COUNT; ++i)
 		{
@@ -85,7 +89,7 @@ public:
 	}
 	~GComponentPool() 
 	{
-		for (auto iter = begin(); iter != end(); iter++)
+		for (auto iter = beginSimple(); iter != endSimple(); iter++)
 		{
 			(*iter)->~C();
 		}
@@ -109,7 +113,7 @@ public:
 		{
 			if (!mPool)
 				return nullptr;
-			Block* ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
+			auto ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
 			return &ptrToBlock->mComponent;
 		}
 		GPoolIterator& operator++()
@@ -146,8 +150,14 @@ public:
 		mutable ValuePair pair;
 
 	public:
-		GPoolPairIterator(GBasePool* pool, uint32 index) : mPool(pool), mIndex(index)
-		{}
+		GPoolPairIterator() : mPool(nullptr), mIndex(0)
+		{
+		}
+		GPoolPairIterator(GBasePool* pool, uint32 index)
+		{
+			mPool = pool;
+			mIndex = index;
+		}
 		GPoolPairIterator& operator=(const GPoolIterator& iter)
 		{
 			mPool = iter.mPool;
@@ -158,19 +168,19 @@ public:
 		{
 			if (!mPool)
 				return nullptr;
-			Block* ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
+			auto ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
 			pair.first = ptrToBlock->mEntity;
 			pair.second = &ptrToBlock->mComponent;
 			return &pair;
 		}
-		GPoolPairIterator& operator++()
+		const GPoolPairIterator& operator++()
 		{
 			if (mPool)
 				++mIndex;
 			return *this;
 		}
 
-		GPoolPairIterator operator++(int)
+		const GPoolPairIterator operator++(int)
 		{
 			GPoolPairIterator tmp(*this);
 			++(*this);
@@ -188,24 +198,26 @@ public:
 
 	};
 
-	GPoolIterator begin() 
+	GPoolIterator beginSimple()
 	{ 
 		return(GPoolIterator(this, 0));
 	}
 
-	GPoolIterator end()
+	GPoolIterator endSimple()
 	{
 		return(GPoolIterator(this, mSize));
 	}
 
-	GPoolPairIterator beginPair()
+	GPoolPairIterator begin() const
 	{
-		return(GPoolPairIterator(this, 0));
+		GPoolPairIterator iter(const_cast<GComponentPool<C>*>(this), 0);
+		return iter;
 	}
 
-	GPoolPairIterator endPair()
+	GPoolPairIterator end() const
 	{
-		return(GPoolPairIterator(this, mSize));
+		GPoolPairIterator iter(const_cast<GComponentPool<C>*>(this), mSize);
+		return iter;
 	}
 
 	C* getComponent(Entity entity)
@@ -216,19 +228,20 @@ public:
 		if (index == -1)
 			return nullptr;
 
-		Block* ptrToBlock = static_cast<Block*>(get(index));
+		auto ptrToBlock = static_cast<Block*>(get(index));
 		return &(ptrToBlock->mComponent);
 	}
 
 	Entity getEntity(uint32 index)
 	{
-		Block* ptrToBlock = static_cast<Block*>(get(index));
+		auto ptrToBlock = static_cast<Block*>(get(index));
 		return ptrToBlock->mEntity;
 	}
 
 	template<typename... Args>
 	C* create(Entity entity, Args&& ... args)
 	{
+		size_t s = sizeof(Block);
 		if (entity >= mIndexes.size())
 			return nullptr;
 
@@ -244,7 +257,7 @@ public:
 		size_t index = mLastFree;
 		mIndexes[entity] = index;
 
-		Block* ptrToBlock = static_cast<Block*>(get(index));
+		auto ptrToBlock = static_cast<Block*>(get(index));
 
 		ptrToBlock->mEntity = entity;
 		mLastFree = ptrToBlock->mNextFree != index ? ptrToBlock->mNextFree : -1;
@@ -252,7 +265,9 @@ public:
 		ptrToBlock->mInUse = true;
 		mSize++;
 
-		new (&ptrToBlock->mComponent) C(args...);
+		C* component = getComponent(entity);
+
+		new (component) C(args...);
 		return &(ptrToBlock->mComponent);
 	}
 	
@@ -260,7 +275,7 @@ public:
 	{
 		uint32 index = mIndexes[entity];
 
-		Block* ptrDestroy = static_cast<Block*>(get(index));
+		auto ptrDestroy = static_cast<Block*>(get(index));
 		ptrDestroy->mNextFree = mLastFree;
 		mLastFree = index;
 		ptrDestroy->mInUse = false;
@@ -280,7 +295,7 @@ private:
 	{
 		for (uint32 i = mSize; i < mCapacity; ++i)
 		{
-			Block* ptrToBlock = static_cast<Block*>(get(i));
+			auto ptrToBlock = reinterpret_cast<Block*>(get(i));
 			ptrToBlock->mInUse = false;
 			ptrToBlock->mNextFree = i < (mCapacity - 1) ? i + 1 : i;
 		}

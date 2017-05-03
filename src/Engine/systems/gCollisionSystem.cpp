@@ -1,9 +1,9 @@
 #include "GCollisionSystem.h"
 #include "GCollisionComponent.h"
 
-GCollisionSystem::GCollisionSystem() 
+GCollisionSystem::GCollisionSystem()
 {
-	mEntityManager = GEntityManager::Instance();
+	mEntityManager = GEntityManager::instance();
 }
 
 GCollisionSystem::~GCollisionSystem()
@@ -12,26 +12,26 @@ GCollisionSystem::~GCollisionSystem()
 
 void GCollisionSystem::checkCollision(Entity checkEntity)
 {
-	if (!mEntityManager->DoesHaveComponent<GCollisionComponent>(checkEntity))
+	if (!mEntityManager->doesHaveComponent<GCollisionComponent>(checkEntity))
 		return;
-	GCollisionComponent* checkCollision = mEntityManager->GetComponent<GCollisionComponent>(checkEntity);
-	GLocationComponent* checkLocation = mEntityManager->GetComponent<GLocationComponent>(checkEntity);
+	GCollisionComponent* checkCollision = mEntityManager->getComponent<GCollisionComponent>(checkEntity);
+	GLocationComponent* checkLocation = mEntityManager->getComponent<GLocationComponent>(checkEntity);
 
-	for (auto iter = mEntityManager->GetBeginPairComponent<GCollisionComponent>(); iter != mEntityManager->GetEndPairComponent<GCollisionComponent>(); iter++)
+	for (auto pair : mEntityManager->getComponentPool<GCollisionComponent>())
 	{
-		Entity entity = (*iter)->first;
+		Entity entity = pair->first;
 		if (checkEntity == entity)
 			continue;
 
-		if (mEntityManager->DoesHaveComponent<GRenderableComponent>(entity))
+		if (mEntityManager->doesHaveComponent<GRenderableComponent>(entity))
 		{
-			GRenderableComponent*  renderable = mEntityManager->GetComponent<GRenderableComponent>(entity);
+			GRenderableComponent*  renderable = mEntityManager->getComponent<GRenderableComponent>(entity);
 			if (!renderable->isVisible())
 				continue;
 		}
 
-		GCollisionComponent* collision = (*iter)->second;
-		GLocationComponent*  location = mEntityManager->GetComponent<GLocationComponent>(entity);
+		GCollisionComponent* collision = pair->second;
+		GLocationComponent*  location = mEntityManager->getComponent<GLocationComponent>(entity);
 
 		float dx = checkLocation->getX() - location->getX();
 		float dy = checkLocation->getY() - location->getY();

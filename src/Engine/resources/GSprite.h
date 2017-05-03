@@ -11,30 +11,27 @@ public :
 	GSprite(const char* path);
 	virtual ~GSprite();
 
-	int   GetXPos()   { return mXPos;	}
-	int   GetYPos()   { return mYPos;   }
-	int   GetWidth()  { return mWidth;  }
-	int   GetHeight() { return mHeight; }
-	float GetPivotX() { return mPivotX; }
-	float GetPivotY() { return mPivotY; }
+	int    getXPos()   const { return mRect.mXPos;	 }
+	int    getYPos()   const { return mRect.mYPos;   }
+	int    getWidth()  const { return mRect.mWidth;  }
+	int    getHeight() const { return mRect.mHeight; }
+	float  getPivotX() const { return mRect.mPivotX; }
+	float  getPivotY() const { return mRect.mPivotY; }
 
-	int GetTextureGLId() { return mTextureHandle.getTextureGLId(); }
+	int    getTextureGLId()   const { return mTextureHandle.getTextureGLId(); }
+	uint32 getTextureWidth()  const { return mTextureHandle.getTextureWidth(); }
+	uint32 getTextureHeight() const { return mTextureHandle.getTextureHeight(); }
 
-	GTextureHandle mTextureHandle; // handle of the texture
+	int GetTextureGLId() const { return mTextureHandle.getTextureGLId(); }
 
 	void load();
 
-	bool IsLoaded() { return mIsLoaded; }
+	bool IsLoaded() const { return mIsLoaded; }
 
 private:
-	int   mXPos;
-	int   mYPos;
-	int   mWidth;
-	int   mHeight;
-	float mPivotX;
-	float mPivotY;
-
-	const char* mTextureKey;
+	GObjectRect    mRect;
+	GTextureHandle mTextureHandle; // handle of the texture
+	const char*    mTextureKey;
 
 	bool mIsLoaded;
 

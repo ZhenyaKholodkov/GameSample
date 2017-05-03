@@ -8,9 +8,6 @@
 
 using namespace std;
 
-#define WindowMutex "GameMutex"
-#define WindowCaption "Game"
-
 #define MAX_ENTITY_COUNT 300
 
 #define BIT(x) (1 << (x))   
@@ -43,10 +40,21 @@ template <class T> inline void Swap(T &x, T &y) { T z = x; x = y; y = z; }
 
 class Rect;
 
-//void closeApplication()
-//{
-//	exit(0);
-//}
+struct GObjectRect
+{
+	GObjectRect() :
+		mXPos(0), mYPos(0), mWidth(0), mHeight(0), mPivotX(0.0f), mPivotY(0.0f) {};
+
+	GObjectRect(int xPos, int yPos, int width, int height, float pivotX, float pivotY) :
+		mXPos(xPos), mYPos(yPos), mWidth(width), mHeight(height), mPivotX(pivotX), mPivotY(pivotY) {};
+
+	int   mXPos;
+	int   mYPos;
+	int   mWidth;
+	int   mHeight;
+	float mPivotX;
+	float mPivotY;
+};
 
 class IGColor     
 {
@@ -103,6 +111,7 @@ struct GCursor
 
 	GCursor() : x(0.0f), y(0.0f), mWasPressed(false) {}
 	GCursor(float aX, float aY) : x(aX), y(aY), mWasPressed(false) {}
+	GCursor(float aX, float aY, bool pressed) : x(aX), y(aY), mWasPressed(pressed) {}
 };
 
 struct  Pixel
