@@ -13,7 +13,7 @@ GMoveableSystem::~GMoveableSystem()
 
 void GMoveableSystem::update(int dt)
 {
-	for (auto pair : mEntityManager->getComponentPool<GMoveableComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GMoveableComponent>())
 	{
 		Entity entity = pair->first;
 		GMoveableComponent* moveable = pair->second;

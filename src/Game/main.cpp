@@ -5,7 +5,7 @@
 #include "Utils.h"
 #include "GMouseUpEventComponent.h"
 
-//#include <vld.h>
+#include <vld.h>
 
 const int windowWidth = 1024;
 const int windowHeight = 768;

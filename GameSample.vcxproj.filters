@@ -241,6 +241,7 @@
     <ClCompile Include="src\Engine\utils\Types.cpp" />
     <ClCompile Include="src\Engine\utils\Utils.cpp" />
     <ClCompile Include="src\Game\main.cpp" />
+    <ClCompile Include="src\Engine\GGameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GGame.h">
@@ -462,6 +463,8 @@
     <ClInclude Include="src\Engine\utils\GDefines.h" />
     <ClInclude Include="src\Engine\utils\Types.h" />
     <ClInclude Include="src\Engine\utils\Utils.h" />
+    <ClInclude Include="src\Engine\GGameWindow.h" />
+    <ClInclude Include="src\Engine\utils\GExeptions.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

@@ -14,18 +14,10 @@ GEntityManager::GEntityManager()
 	}
 
 	mComponentPools.resize(getComponentCount());
-	for (uint32 index = 0; index < getComponentCount(); ++index)
-	{
-		mComponentPools[index] = nullptr;
-	}
 }
 
 GEntityManager::~GEntityManager()
 {
-	for (auto pool : mComponentPools)
-	{
-		delete pool;
-	}
 }
 
 Entity GEntityManager::createEntity()
@@ -42,11 +34,10 @@ void GEntityManager::destroyEntity(Entity entity)
 		return;
 
 	mAvailableEntities.push(entity);
-	for (uint32 index = 0; index < getComponentCount(); ++index)
+	/*for (uint32 index = 0; index < getComponentCount(); ++index)
 	{
-		if (mComponentPools[index])
-			mComponentPools[index]->destroy(entity);
-	}
+		mComponentPools[index].destroy(entity);
+	}*/
 }
 
 uint32 GEntityManager::getComponentCount()

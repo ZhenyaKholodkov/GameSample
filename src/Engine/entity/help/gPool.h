@@ -3,7 +3,7 @@
 
 #include "Types.h"
 #include "GDefines.h"
-class GBasePool                 // bas class for pool. Contains the data and method for reserving new chunks of memory and getting the blocks of memory.
+class GBasePool                 // base class for pool. Contains the data and method for reserving new chunks of memory and getting the blocks of memory.
 {
 public:
 	GBasePool()
@@ -19,21 +19,17 @@ public:
 	}
 
 	virtual void destroy(Entity entity) = 0;
-
+	
 	size_t size() { return mSize; }
 	size_t capacity() { return mCapacity; }
 	 
-	void* get(uint32 index)
-	{
-		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
-	}
-	const void* get(uint32 index) const
+	void* get(uint32 index) const
 	{
 		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
 	}
 
 protected:
-	void init(size_t capacity, size_t chunkSize, size_t dataSize)
+	void init(size_t chunkSize, size_t dataSize)
 	{
 		mChunkSize = chunkSize;
 		mBlockSize = dataSize;
@@ -74,73 +70,6 @@ private:
 
 	const int BLOCK_SIZE = sizeof(Block);
 public:
-	GComponentPool(size_t capacity = 5, size_t chunkSize = 5) :
-		GBasePool()
-	{
-		size_t s = sizeof(C);
-		init(capacity, chunkSize, sizeof(Block));
-		mIndexes.resize(MAX_ENTITY_COUNT);
-		for (uint32 i = 0; i < MAX_ENTITY_COUNT; ++i)
-		{
-			mIndexes[i] = -1;
-		}
-		initBlocks();
-		mLastFree = 0;
-	}
-	~GComponentPool() 
-	{
-		for (auto iter = beginSimple(); iter != endSimple(); iter++)
-		{
-			(*iter)->~C();
-		}
-	}
-
-	class GPoolIterator : public std::iterator<std::forward_iterator_tag, C*>
-	{
-	private:
-		GBasePool* mPool;
-		uint32     mIndex;
-	public:
-		GPoolIterator(GBasePool* pool, uint32 index) : mPool(pool), mIndex(index)
-		{}
-		GPoolIterator& operator=(const GPoolIterator& iter) 
-		{
-			mPool = iter.mPool;
-			mIndex = iter.mIndex;
-			return *this;
-		}
-		C* operator*() const
-		{
-			if (!mPool)
-				return nullptr;
-			auto ptrToBlock = static_cast<Block*>(mPool->get(mIndex));
-			return &ptrToBlock->mComponent;
-		}
-		GPoolIterator& operator++()
-		{
-			if (mPool)
-				++mIndex;
-			return *this;
-		}
-
-		GPoolIterator operator++(int)
-		{
-			GPoolIterator tmp(*this);
-			++(*this);
-			return tmp;
-		}
-
-		bool operator==(const GPoolIterator& iter)
-		{
-			return mIndex == iter.mIndex;
-		}
-		bool operator!=(const GPoolIterator& iter)
-		{
-			return mIndex != iter.mIndex;
-		}
-
-	};
-
 	class GPoolPairIterator : public std::iterator<std::forward_iterator_tag, std::pair<Entity, C*>>
 	{
 	private:
@@ -158,12 +87,12 @@ public:
 			mPool = pool;
 			mIndex = index;
 		}
-		GPoolPairIterator& operator=(const GPoolIterator& iter)
+		/*GPoolPairIterator& operator=(const GPoolIterator& iter)
 		{
 			mPool = iter.mPool;
 			mIndex = iter.mIndex;
 			return *this;
-		}
+		}*/
 		ValuePair* operator*() const
 		{
 			if (!mPool)
@@ -198,14 +127,23 @@ public:
 
 	};
 
-	GPoolIterator beginSimple()
-	{ 
-		return(GPoolIterator(this, 0));
-	}
-
-	GPoolIterator endSimple()
+	GComponentPool(size_t chunkSize = 5) :
+		GBasePool()
 	{
-		return(GPoolIterator(this, mSize));
+		init(chunkSize, sizeof(Block));
+		mIndexes.resize(MAX_ENTITY_COUNT);
+		for (uint32 i = 0; i < MAX_ENTITY_COUNT; ++i)
+		{
+			mIndexes[i] = -1;
+		}
+		mLastFree = 0;
+	}
+	~GComponentPool() 
+	{
+		for (auto iter : (*this))
+		{
+			iter->second->~C();
+		}
 	}
 
 	GPoolPairIterator begin() const
@@ -220,7 +158,7 @@ public:
 		return iter;
 	}
 
-	C* getComponent(Entity entity)
+	C* getComponent(Entity entity) const
 	{
 		if (entity >= mIndexes.size())
 			return nullptr;
@@ -232,9 +170,9 @@ public:
 		return &(ptrToBlock->mComponent);
 	}
 
-	Entity getEntity(uint32 index)
+	Entity getEntity(uint32 index) const
 	{
-		auto ptrToBlock = static_cast<Block*>(get(index));
+		auto ptrToBlock = static_cast<const Block*>(get(index));
 		return ptrToBlock->mEntity;
 	}
 
@@ -285,7 +223,7 @@ public:
 		--mSize;
 	}
 
-	bool doesContainComponent(Entity entity)
+	bool doesContainComponent(Entity entity) const
 	{
 		return mIndexes[entity] != -1;
 	}

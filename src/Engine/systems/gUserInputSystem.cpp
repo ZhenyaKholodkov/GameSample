@@ -12,7 +12,10 @@ GUserInputSystem::~GUserInputSystem()
 
 void GUserInputSystem::OnMouseDown(GCursor point)
 {
-	for (auto pair : mEntityManager->getComponentPool<GMouseDownEventComponent>())
+	auto componentPool = mEntityManager->getComponentPool<GMouseDownEventComponent>();
+	if (!componentPool)
+		return;
+	for (auto pair : *componentPool)
 	{
 		Entity entity = pair->first;
 		GMouseDownEventComponent* mouseDown = pair->second;
@@ -31,7 +34,10 @@ void GUserInputSystem::OnMouseDown(GCursor point)
 
 void GUserInputSystem::OnMouseUp(GCursor point)
 {
-	for (auto pair : mEntityManager->getComponentPool<GMouseUpEventComponent>())
+	auto componentPool = mEntityManager->getComponentPool<GMouseUpEventComponent>();
+	if (!componentPool)
+		return;
+	for (auto pair : *componentPool)
 	{
 		Entity entity = pair->first;
 		GMouseUpEventComponent* upDown = pair->second;
@@ -50,7 +56,10 @@ void GUserInputSystem::OnMouseUp(GCursor point)
 
 void GUserInputSystem::OnMouseMove(GCursor point)
 {
-	for (auto pair : mEntityManager->getComponentPool<GMouseMoveEventComponent>())
+	auto componentPool = mEntityManager->getComponentPool<GMouseMoveEventComponent>();
+	if (!componentPool)
+		return;
+	for (auto pair : *componentPool)
 	{
 		Entity entity = pair->first;
 		GMouseMoveEventComponent* moveMove = pair->second;
@@ -60,7 +69,7 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
-			if (point.mWasPressed) 
+			if (point.mWasPressed)
 			{
 				moveMove->signal_PressedMouseMovedIn.emit(point.x, point.y);
 			}
@@ -83,7 +92,7 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 
 void GUserInputSystem::OnKeyUp(GKey key)
 {
-	for (auto pair : mEntityManager->getComponentPool<GKeyUpEventComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GKeyUpEventComponent>())
 	{
 		Entity entity = pair->first;
 		GKeyUpEventComponent* keyUp = pair->second;
@@ -107,7 +116,7 @@ void GUserInputSystem::OnKeyUp(GKey key)
 
 void GUserInputSystem::OnKeyDown(GKey key)
 {
-	for (auto pair : mEntityManager->getComponentPool<GKeyDownEventComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GKeyDownEventComponent>())
 	{
 		Entity entity = pair->first;
 		GKeyDownEventComponent* keyDown = pair->second;

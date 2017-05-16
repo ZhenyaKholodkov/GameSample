@@ -17,7 +17,7 @@ void GRenderSystem::update(int dt)
 	mRenderer->setClearColor(mBackgroundColor);
 	mRenderer->startFrame();
 
-	for(auto pair : mEntityManager->getComponentPool<GRenderableComponent>())
+	for(auto pair : *mEntityManager->getComponentPool<GRenderableComponent>())
 	{
 		Entity entity = pair->first;
 		GRenderableComponent* renderable = pair->second;

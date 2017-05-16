@@ -17,7 +17,7 @@ void GCollisionSystem::checkCollision(Entity checkEntity)
 	GCollisionComponent* checkCollision = mEntityManager->getComponent<GCollisionComponent>(checkEntity);
 	GLocationComponent* checkLocation = mEntityManager->getComponent<GLocationComponent>(checkEntity);
 
-	for (auto pair : mEntityManager->getComponentPool<GCollisionComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GCollisionComponent>())
 	{
 		Entity entity = pair->first;
 		if (checkEntity == entity)

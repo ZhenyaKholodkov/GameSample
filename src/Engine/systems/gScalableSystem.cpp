@@ -13,7 +13,7 @@ GScalableSystem::~GScalableSystem()
 
 void GScalableSystem::update(int dt)
 {
-	for (auto pair : mEntityManager->getComponentPool<GScalableComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GScalableComponent>())
 	{
 		Entity entity = pair->first;
 		GScalableComponent* scalable = pair->second;

@@ -13,7 +13,10 @@ GMoveableAnimationSystem::~GMoveableAnimationSystem()
 
 void GMoveableAnimationSystem::update(int dt)
 {
-	for (auto pair : mEntityManager->getComponentPool<GMoveableAnimationComponent>())
+	auto componentPool = mEntityManager->getComponentPool<GMoveableAnimationComponent>();
+	if (!componentPool)
+		return;
+	for (auto pair : *componentPool)
 	{
 		Entity entity = pair->first;
 		GMoveableAnimationComponent* moveable = pair->second;

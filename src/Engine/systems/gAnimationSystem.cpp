@@ -14,7 +14,7 @@ GAnimationSystem::~GAnimationSystem()
 void GAnimationSystem::update(int dt)
 {
 
-	for (auto pair : mEntityManager->getComponentPool<GAnimationComponent>())
+	for (auto pair : *mEntityManager->getComponentPool<GAnimationComponent>())
 	{
 		Entity entity = pair->first;
 		GAnimationComponent* animation = pair->second;

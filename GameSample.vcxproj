@@ -27,7 +27,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -81,7 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_HAS_CXX17;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src/Engine/systems/mechanics;src/Engine/entity/help;src/Engine/utils;src/thirdparty/sigslot;src/Engine/systems;src/Engine/components/mechanics;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -239,6 +239,7 @@
     <ClInclude Include="src\Engine\systems\gRenderSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystem.h" />
     <ClInclude Include="src\Engine\systems\gSystemManager.h" />
+    <ClInclude Include="src\Engine\utils\GExeptions.h" />
     <ClInclude Include="src\Engine\utils\Types.h" />
     <ClInclude Include="src\Engine\utils\Utils.h" />
     <ClInclude Include="src\Engine\GGameWindow.h" />
