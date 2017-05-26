@@ -1,9 +1,9 @@
 #include "gUserInputSystem.h"
 
 
-GUserInputSystem::GUserInputSystem()
+GUserInputSystem::GUserInputSystem(std::shared_ptr<GEntityManager> manager) :
+	GSystem<GUserInputSystem>(manager)
 {
-	mEntityManager = GEntityManager::instance();
 }
 
 GUserInputSystem::~GUserInputSystem()
@@ -12,128 +12,97 @@ GUserInputSystem::~GUserInputSystem()
 
 void GUserInputSystem::OnMouseDown(GCursor point)
 {
-	auto componentPool = mEntityManager->getComponentPool<GMouseDownEventComponent>();
-	if (!componentPool)
-		return;
-	for (auto pair : *componentPool)
+	mEntityManager->each<GMouseDownEventComponent>([&](Entity entity, GMouseDownEventComponent& mouseDown)
 	{
-		Entity entity = pair->first;
-		GMouseDownEventComponent* mouseDown = pair->second;
-
-		if (!mouseDown)
-			continue;
-
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
-			mouseDown->signal_MouseDown.emit();
-			mouseDown->signal_MouseDownOnEntity.emit(entity);
-			mouseDown->signal_MouseDownNewSprite.emit(entity, mouseDown->mSpriteDown);
+			mouseDown.signal_MouseDown.emit();
+			mouseDown.signal_MouseDownOnEntity.emit(entity);
+			mouseDown.signal_MouseDownNewSprite.emit(entity, mouseDown.mSpriteDown);
 		}
-	}
+	});
 }
 
 void GUserInputSystem::OnMouseUp(GCursor point)
 {
-	auto componentPool = mEntityManager->getComponentPool<GMouseUpEventComponent>();
-	if (!componentPool)
-		return;
-	for (auto pair : *componentPool)
+	mEntityManager->each<GMouseUpEventComponent>([&](Entity entity, GMouseUpEventComponent& upDown)
 	{
-		Entity entity = pair->first;
-		GMouseUpEventComponent* upDown = pair->second;
-
-		if (!upDown)
-			continue;
-
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
-			upDown->signal_MouseUp.emit();
-			upDown->signal_MouseUpOnEntity.emit(entity);
-			upDown->signal_MouseUpNewSprite.emit(entity, upDown->mSpriteUp);
+			upDown.signal_MouseUp.emit();
+			upDown.signal_MouseUpOnEntity.emit(entity);
+			upDown.signal_MouseUpNewSprite.emit(entity, upDown.mSpriteUp);
 		}
-	}
+	});
 }
 
 void GUserInputSystem::OnMouseMove(GCursor point)
 {
-	auto componentPool = mEntityManager->getComponentPool<GMouseMoveEventComponent>();
-	if (!componentPool)
-		return;
-	for (auto pair : *componentPool)
+	mEntityManager->each<GMouseMoveEventComponent>([&](Entity entity, GMouseMoveEventComponent& mouseMove)
 	{
-		Entity entity = pair->first;
-		GMouseMoveEventComponent* moveMove = pair->second;
-
-		if (!moveMove)
-			continue;
-
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
 			if (point.mWasPressed)
 			{
-				moveMove->signal_PressedMouseMovedIn.emit(point.x, point.y);
+				mouseMove.signal_PressedMouseMovedIn.emit(point.x, point.y);
 			}
-			moveMove->signal_MouseMovedInEntity.emit(entity, moveMove->mSpriteMoveIn);
-			moveMove->mMovedIn = true;
+			mouseMove.signal_MouseMovedInEntity.emit(entity, mouseMove.mSpriteMoveIn);
+			mouseMove.mMovedIn = true;
 		}
 		else
 		{
-			if (moveMove->mMovedIn)
+			if (mouseMove.mMovedIn)
 			{
 				if (point.mWasPressed)
 				{
-					moveMove->signal_PressedMouseMovedOut.emit(point.x, point.y);
+					mouseMove.signal_PressedMouseMovedOut.emit(point.x, point.y);
 				}
 				//moveMove->signal_MouseMovedOutEntity.emit(entity, moveMove->mSpriteMoveOut);
 			}
 		}
-	}
+	});
 }
 
 void GUserInputSystem::OnKeyUp(GKey key)
 {
-	for (auto pair : *mEntityManager->getComponentPool<GKeyUpEventComponent>())
+	mEntityManager->each<GKeyUpEventComponent>([&](Entity entity, GKeyUpEventComponent& keyUp)
 	{
-		Entity entity = pair->first;
-		GKeyUpEventComponent* keyUp = pair->second;
 		switch (key)
 		{
 		case KEY_LEFT:
-			keyUp->signal_KeyLeft();
+			keyUp.signal_KeyLeft();
 			break;
 		case KEY_UP:
-			keyUp->signal_KeyUp();
+			keyUp.signal_KeyUp();
 			break;
 		case KEY_RIGHT:
-			keyUp->signal_KeyRight();
+			keyUp.signal_KeyRight();
 			break;
 		case KEY_DOWN:
-			keyUp->signal_KeyDown();
+			keyUp.signal_KeyDown();
 			break;
 		}
-	}
+	});
 }
 
 void GUserInputSystem::OnKeyDown(GKey key)
 {
-	for (auto pair : *mEntityManager->getComponentPool<GKeyDownEventComponent>())
+	mEntityManager->each<GKeyDownEventComponent>([&](Entity entity, GKeyDownEventComponent& keyDown)
 	{
-		Entity entity = pair->first;
-		GKeyDownEventComponent* keyDown = pair->second;
 		switch (key)
 		{
 		case KEY_LEFT:
-			keyDown->signal_KeyLeft();
+			keyDown.signal_KeyLeft();
 			break;
 		case KEY_UP:
-			keyDown->signal_KeyUp();
+			keyDown.signal_KeyUp();
 			break;
 		case KEY_RIGHT:
-			keyDown->signal_KeyRight();
+			keyDown.signal_KeyRight();
 			break;
 		case KEY_DOWN:
-			keyDown->signal_KeyDown();
+			keyDown.signal_KeyDown();
 			break;
 		}
-	}
+	});
 }

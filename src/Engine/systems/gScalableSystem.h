@@ -8,12 +8,10 @@
 class GScalableSystem : public GSystem<GScalableSystem>
 {
 public:
-	GScalableSystem();
+	GScalableSystem(std::shared_ptr<GEntityManager> manager);
 	~GScalableSystem();
 
 	virtual void update(int dt);
-private:	
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GSCALABLE_SYSTEM_H

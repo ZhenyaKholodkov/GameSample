@@ -17,6 +17,8 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 GGameWindow::GGameWindow() :
 	mPeriod(10)
 {
+	mEntityManager.reset(new GEntityManager());
+	mSystemManager.reset(new GSystemManager());
 }
 
 GGameWindow::~GGameWindow()

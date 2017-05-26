@@ -216,6 +216,7 @@
     <ClInclude Include="src\Engine\components\gScalableComponent.h" />
     <ClInclude Include="src\Engine\components\gSizeComponent.h" />
     <ClInclude Include="src\Engine\entity\gEntityManager.h" />
+    <ClInclude Include="src\Engine\entity\help\gComponentMask.h" />
     <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />

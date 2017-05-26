@@ -8,12 +8,10 @@
 class GAnimationSystem : public GSystem<GAnimationSystem>
 {
 public:
-	GAnimationSystem();
+	GAnimationSystem(std::shared_ptr<GEntityManager> manager);
 	virtual ~GAnimationSystem();
 
 	virtual void update(int dt);
-private:
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GANIMATION_SYSTEM_H

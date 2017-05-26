@@ -1,10 +1,10 @@
 #include "gSystemManager.h"
 
-GSystemManager* GSystemManager::instance()
+/*GSystemManager* GSystemManager::instance()
 {
 	static GSystemManager instance;
 	return &instance;
-}
+}*/
 
 GSystemManager::GSystemManager()
 {
@@ -13,10 +13,6 @@ GSystemManager::GSystemManager()
 	{
 		system = nullptr;
 	}
-}
-
-GSystemManager::~GSystemManager()
-{
 }
 
 uint32 GSystemManager::getSystemCount() const

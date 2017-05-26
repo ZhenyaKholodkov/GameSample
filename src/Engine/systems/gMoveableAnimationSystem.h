@@ -9,12 +9,10 @@
 class GMoveableAnimationSystem : public GSystem<GMoveableAnimationSystem>
 {
 public:
-	GMoveableAnimationSystem();
+	GMoveableAnimationSystem(std::shared_ptr<GEntityManager> manager);
 	~GMoveableAnimationSystem();
 
 	virtual void update(int dt);
-private:	
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GMOVEABLEANIMATIONSYSTEM_H

@@ -34,8 +34,6 @@ private:
 	void CreateCoin(float x, float y);
 private:
 	bool            isGameOver;
-	GSystemManager* mSystemManager;
-	GEntityManager* mEntityManager;
 };
 
 #endif

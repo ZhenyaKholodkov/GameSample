@@ -9,7 +9,7 @@
 class GUserInputSystem : public GSystem<GUserInputSystem>
 {
 public:
-	GUserInputSystem();
+	GUserInputSystem(std::shared_ptr<GEntityManager> manager);
 	virtual ~GUserInputSystem();
 
 	virtual void update(int dt) {};
@@ -19,9 +19,6 @@ public:
 	void OnMouseMove(GCursor point);
 	void OnKeyUp(GKey key);
 	void OnKeyDown(GKey key);
-
-private:
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GUSERINPUTSYSTEMSYSTEM_SYSTEM_H

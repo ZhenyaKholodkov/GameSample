@@ -9,6 +9,7 @@
 using namespace std;
 
 #define MAX_ENTITY_COUNT 300
+#define INVALID_ENTITY (MAX_ENTITY_COUNT + 1)
 
 #define BIT(x) (1 << (x))   
 #define SAFE_DELETE(x) { if(x){ delete x; x = nullptr; }}
@@ -31,7 +32,7 @@ typedef unsigned int     uint32;
 typedef unsigned __int64 uint64;
 typedef unsigned long    ulong32;
 
-typedef int Entity;
+typedef size_t Entity;
 
 template <class T> inline T    Min(const T &x, const T &y) { return x<y ? x : y; }
 template <class T> inline T    Max(const T &x, const T &y) { return x>y ? x : y; }

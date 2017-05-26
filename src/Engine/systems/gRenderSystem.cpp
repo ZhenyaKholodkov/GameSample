@@ -1,10 +1,10 @@
 #include "GRenderSystem.h"
 
 
-GRenderSystem::GRenderSystem() :
+GRenderSystem::GRenderSystem(std::shared_ptr<GEntityManager> manager) :
+	GSystem<GRenderSystem>(manager),
 	mBackgroundColor(0x000000)
 {
-	mEntityManager = GEntityManager::instance();
 	mRenderer = GRenderManager::Instance();
 }
 
@@ -17,26 +17,23 @@ void GRenderSystem::update(int dt)
 	mRenderer->setClearColor(mBackgroundColor);
 	mRenderer->startFrame();
 
-	for(auto pair : *mEntityManager->getComponentPool<GRenderableComponent>())
+	mEntityManager->each<GRenderableComponent, GLocationComponent>([this](Entity entity, GRenderableComponent& renderable, GLocationComponent& location)
 	{
-		Entity entity = pair->first;
-		GRenderableComponent* renderable = pair->second;
-		if (!renderable->isVisible())
-			continue;
+		if (!renderable.isVisible())
+			return;
 
-		GLocationComponent* location = mEntityManager->getComponent<GLocationComponent>(entity);
-		GSprite* sprite = renderable->GetSprite();
+		GSprite* sprite = renderable.GetSprite();
 		if (!sprite)
-			continue;
+			return;
 
 		mRenderer->save();
-		mRenderer->translate(location->getX(), location->getY());
-		mRenderer->scale(renderable->getXScale(), renderable->getYScale());
+		mRenderer->translate(location.getX(), location.getY());
+		mRenderer->scale(renderable.getXScale(), renderable.getYScale());
 
 		mRenderer->drawSprite(sprite);
 
 		mRenderer->restore();
-	}
+	});
 
 	mRenderer->endFrame();
 }

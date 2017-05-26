@@ -3,6 +3,9 @@
 
 #include "Types.h"
 #include "GDefines.h"
+
+class GPoolPairIterator;
+
 class GBasePool                 // base class for pool. Contains the data and method for reserving new chunks of memory and getting the blocks of memory.
 {
 public:
@@ -18,16 +21,12 @@ public:
 		}
 	}
 
-	virtual void destroy(Entity entity) = 0;
+	virtual uint32 create() = 0;
+	virtual void*  getComponent(uint32 index) const = 0;
+	virtual void   destroy(uint32 index) = 0;
 	
-	size_t size() { return mSize; }
-	size_t capacity() { return mCapacity; }
-	 
-	void* get(uint32 index) const
-	{
-		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
-	}
-
+	size_t size()     const { return mSize; }
+	size_t capacity() const { return mCapacity; }
 protected:
 	void init(size_t chunkSize, size_t dataSize)
 	{
@@ -47,6 +46,11 @@ protected:
 		}
 	}
 
+	void* get(uint32 index) const
+	{
+		return (mData[index / mChunkSize] + (index % mChunkSize) * mBlockSize);
+	}
+
 protected:
 	std::size_t mChunkSize;
 	std::size_t mBlockSize;
@@ -56,7 +60,7 @@ protected:
 	std::vector<char*> mData;
 };
 
-template<typename C>
+template<typename C, typename... Args>
 class GComponentPool : public GBasePool      // class for storing components
 {
 private:
@@ -64,13 +68,12 @@ private:
 	{
 		bool   mInUse;         // is it used(active) 
 		uint32 mNextFree;      // next free block. If the block is used, mNextFree point to himself
-		Entity mEntity;        // entity, which is the owner of the component
 		C      mComponent;     // component
 	};
 
 	const int BLOCK_SIZE = sizeof(Block);
 public:
-	class GPoolPairIterator : public std::iterator<std::forward_iterator_tag, std::pair<Entity, C*>>
+	/*class GPoolPairIterator : public std::iterator<std::forward_iterator_tag, std::pair<Entity, C*>>
 	{
 	private:
 		GBasePool* mPool;
@@ -87,12 +90,12 @@ public:
 			mPool = pool;
 			mIndex = index;
 		}
-		/*GPoolPairIterator& operator=(const GPoolIterator& iter)
+		GPoolPairIterator& operator=(const GPoolIterator& iter)
 		{
 			mPool = iter.mPool;
 			mIndex = iter.mIndex;
 			return *this;
-		}*/
+		}
 		ValuePair* operator*() const
 		{
 			if (!mPool)
@@ -125,40 +128,35 @@ public:
 			return mIndex != iter.mIndex;
 		}
 
-	};
+	};*/
 
 	GComponentPool(size_t chunkSize = 5) :
 		GBasePool()
 	{
 		init(chunkSize, sizeof(Block));
-		mIndexes.resize(MAX_ENTITY_COUNT);
-		for (uint32 i = 0; i < MAX_ENTITY_COUNT; ++i)
-		{
-			mIndexes[i] = -1;
-		}
 		mLastFree = 0;
 	}
 	~GComponentPool() 
 	{
-		for (auto iter : (*this))
+		for (int i = 0; i < mSize; ++i)
 		{
-			iter->second->~C();
+			destroy(i);
 		}
 	}
 
-	GPoolPairIterator begin() const
+	/*virtual GPoolPairIterator begin() const
 	{
 		GPoolPairIterator iter(const_cast<GComponentPool<C>*>(this), 0);
 		return iter;
 	}
 
-	GPoolPairIterator end() const
+	virtual GPoolPairIterator end() const
 	{
 		GPoolPairIterator iter(const_cast<GComponentPool<C>*>(this), mSize);
 		return iter;
-	}
+	}*/
 
-	C* getComponent(Entity entity) const
+	/*C* getComponent(Entity entity) const
 	{
 		if (entity >= mIndexes.size())
 			return nullptr;
@@ -168,15 +166,41 @@ public:
 
 		auto ptrToBlock = static_cast<Block*>(get(index));
 		return &(ptrToBlock->mComponent);
+	}*/
+
+	virtual void* getComponent(uint32 index) const
+	{
+		if (index >= mSize)
+			return nullptr;
+		auto ptrToBlock = static_cast<Block*>(get(index));
+		return &(ptrToBlock->mComponent);
 	}
 
-	Entity getEntity(uint32 index) const
+	/*Entity getEntity(uint32 index) const
 	{
 		auto ptrToBlock = static_cast<const Block*>(get(index));
 		return ptrToBlock->mEntity;
+	}*/
+
+	virtual uint32 create()
+	{
+		if (mSize == mCapacity)
+		{
+			reserve(mChunkSize);
+			initBlocks();
+			mLastFree = mSize;
+		}
+		size_t index = mLastFree;
+		auto ptrToBlock = static_cast<Block*>(get(index));
+		mLastFree = ptrToBlock->mNextFree != index ? ptrToBlock->mNextFree : -1;
+		ptrToBlock->mNextFree = index;
+		ptrToBlock->mInUse = true;
+		mSize++;
+
+		return index;
 	}
 
-	template<typename... Args>
+	/*template<typename... Args>
 	C* create(Entity entity, Args&& ... args)
 	{
 		size_t s = sizeof(Block);
@@ -207,27 +231,21 @@ public:
 
 		new (component) C(args...);
 		return &(ptrToBlock->mComponent);
-	}
+	}*/
 	
-	virtual void destroy(Entity entity)
+	virtual void   destroy(uint32 index)
 	{
-		uint32 index = mIndexes[entity];
-
 		auto ptrDestroy = static_cast<Block*>(get(index));
-		ptrDestroy->mNextFree = mLastFree;
-		mLastFree = index;
-		ptrDestroy->mInUse = false;
+		if (ptrDestroy->mInUse)
+		{
+			ptrDestroy->mNextFree = mLastFree;
+			mLastFree = index;
+			ptrDestroy->mInUse = false;
 
-		ptrDestroy->mComponent.~C();
-		mIndexes[entity] = -1;
-		--mSize;
+			ptrDestroy->mComponent.~C();
+			--mSize;
+		}
 	}
-
-	bool doesContainComponent(Entity entity) const
-	{
-		return mIndexes[entity] != -1;
-	}
-
 private:
 	void initBlocks()
 	{
@@ -241,7 +259,7 @@ private:
 
 private:
 	int              mLastFree;      // last free entity. If it -1 , chunks are over and we need to resorve the new one
-	std::vector<int> mIndexes;       // indexes of components, which are owned by entities. 
+	//std::vector<int> mIndexes;       // indexes of components, which are owned by entities. 
 	                                 // for example, the entity with identifier 3 has component with 4 index in the pool. 
 	                                 // then mIndexes[3] == 4
 };

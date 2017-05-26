@@ -9,12 +9,10 @@
 class GMoveableSystem : public GSystem<GMoveableSystem>
 {
 public:
-	GMoveableSystem();
+	GMoveableSystem(std::shared_ptr<GEntityManager> manager);
 	~GMoveableSystem();
 
 	virtual void update(int dt);
-private:	
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GMOVEABLE_SYSTEM_H

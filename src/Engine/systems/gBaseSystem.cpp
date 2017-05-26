@@ -2,7 +2,8 @@
 
 uint32 GBaseSystem::s_system_counter = 0;
 
-GBaseSystem::GBaseSystem()
+GBaseSystem::GBaseSystem(std::shared_ptr<GEntityManager> manager) :
+	mEntityManager(manager)
 {
 }
 

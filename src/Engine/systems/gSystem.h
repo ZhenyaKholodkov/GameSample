@@ -8,7 +8,7 @@ template<class System>
 class GSystem : public GBaseSystem
 {
 public:
-	GSystem() {};
+	GSystem(std::shared_ptr<GEntityManager> manager) : GBaseSystem(manager) {};
 	virtual ~GSystem() {};
 
 	virtual void update(int dt) = 0;

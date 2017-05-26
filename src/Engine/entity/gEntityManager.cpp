@@ -1,10 +1,12 @@
 #include "gEntityManager.h"
 
+#include <algorithm>
+/*
 GEntityManager* GEntityManager::instance()
 {
 	static GEntityManager instance;
 	return &instance;
-}
+}*/
 
 GEntityManager::GEntityManager()
 {
@@ -22,22 +24,32 @@ GEntityManager::~GEntityManager()
 
 Entity GEntityManager::createEntity()
 {
-	Entity newEntity = mAvailableEntities.front();
+	assert(mAvailableEntities.size() != 0);
+
+	Entity newEntity = mAvailableEntities.top();
 	mAvailableEntities.pop();
+
+	if (mComponentIndexes.size() <= newEntity)
+	{
+		mComponentIndexes.push_back(std::vector<size_t>(getComponentCount(), GBaseComponent::s_invalid_component_index()));
+	}
 
 	return newEntity;
 }
 
 void GEntityManager::destroyEntity(Entity entity)
 {
-	if (entity < 0)
+	if (entity == INVALID_ENTITY)
 		return;
 
 	mAvailableEntities.push(entity);
-	/*for (uint32 index = 0; index < getComponentCount(); ++index)
+	std::fill(mComponentIndexes[entity].begin(), mComponentIndexes[entity].end(), GBaseComponent::s_invalid_component_index());
+
+	for (uint32 index = 0; index < getComponentCount(); ++index)
 	{
-		mComponentPools[index].destroy(entity);
-	}*/
+		mComponentPools[index]->destroy(mComponentIndexes[entity][index]);
+	}
+	GEntityManager::Iterator(shared_from_this(), ComponentMask(2), 0);
 }
 
 uint32 GEntityManager::getComponentCount()

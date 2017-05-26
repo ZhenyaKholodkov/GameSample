@@ -69,7 +69,9 @@ protected:
 	HWND   mMainHWND;            //!< the handle to a window       
 	HBRUSH mWindowBrush;
 	HGLRC  mHGLRC;		         //!<  the handle to an OpenGL rendering context.	                                  
-															           
+					
+	std::shared_ptr<GEntityManager> mEntityManager;
+	std::shared_ptr<GSystemManager> mSystemManager;
 
 	int32  mLastTime;
 	bool   mCurrentMousePressed;

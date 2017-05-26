@@ -8,7 +8,7 @@
 class GCollisionSystem : public GSystem<GCollisionSystem>, public sigslot::has_slots<>
 {
 public:
-	GCollisionSystem();
+	GCollisionSystem(std::shared_ptr<GEntityManager> manager);
 	virtual ~GCollisionSystem();
 
 	virtual void update(int dt);
@@ -21,8 +21,6 @@ public:/*slots*/
 
 private:
 	void checkCollision(Entity checkEntity);
-private:
-	const GEntityManager* mEntityManager;
 };
 
 #endif //GCOLLISION_SYSTEM_H

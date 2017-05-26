@@ -15,11 +15,12 @@
 
 class GSystemManager
 {
+	friend class GGameWindow;
 public:
-	static GSystemManager* instance();
+	//static GSystemManager* instance();
 
 	template<typename S>
-	void registerSystem();
+	void registerSystem(std::shared_ptr<GEntityManager> manager);
 
 	template<typename S>
 	std::shared_ptr<GBaseSystem>  getSystem() const;
@@ -28,7 +29,6 @@ public:
 
 private:
 	GSystemManager();
-	~GSystemManager();
 
 	uint32 getSystemCount() const;
 private:
@@ -36,10 +36,10 @@ private:
 };
 
 template<typename S>
-void GSystemManager::registerSystem()
+void GSystemManager::registerSystem(std::shared_ptr<GEntityManager> manager)
 {
 	uint32 index = GSystem<S>::getSystemId();
-	mSystems[index] = std::shared_ptr<GBaseSystem>(new S());
+	mSystems[index] = std::shared_ptr<GBaseSystem>(new S(manager));
 }
 
 template<typename S>

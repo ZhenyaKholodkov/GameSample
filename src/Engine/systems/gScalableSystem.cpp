@@ -1,9 +1,9 @@
 #include "gScalableSystem.h"
 
 
-GScalableSystem::GScalableSystem()
+GScalableSystem::GScalableSystem(std::shared_ptr<GEntityManager> manager) :
+	GSystem<GScalableSystem>(manager)
 {
-	mEntityManager = GEntityManager::instance();
 }
 
 GScalableSystem::~GScalableSystem()
@@ -13,29 +13,26 @@ GScalableSystem::~GScalableSystem()
 
 void GScalableSystem::update(int dt)
 {
-	for (auto pair : *mEntityManager->getComponentPool<GScalableComponent>())
+	mEntityManager->each<GScalableComponent>([&](Entity entity, GScalableComponent& scalable)
 	{
-		Entity entity = pair->first;
-		GScalableComponent* scalable = pair->second;
-				
-		if (scalable->mState == GScalableComponent::STATE_WAIT)
-			continue;
+		if (scalable.mState == GScalableComponent::STATE_WAIT)
+			return;
 
-		if (scalable->mCurrentTime == 0)
+		if (scalable.mCurrentTime == 0)
 		{
-			scalable->signal_ScaleChangingBegin();
+			scalable.signal_ScaleChangingBegin();
 		}
 
-		scalable->mCurrentTime += dt;
-		if (scalable->mTime > scalable->mCurrentTime)
+		scalable.mCurrentTime += dt;
+		if (scalable.mTime > scalable.mCurrentTime)
 		{
-			scalable->signal_ScaleChanged(scalable->getCurrentXScale(), scalable->getCurrentYScale());
+			scalable.signal_ScaleChanged(scalable.getCurrentXScale(), scalable.getCurrentYScale());
 		}
 		else
 		{
-			scalable->signal_ScaleChanged(scalable->mEndXScale, scalable->mEndYScale);
-			scalable->signal_ScaleChangingFinished();
-			scalable->SetState(GScalableComponent::STATE_WAIT);
+			scalable.signal_ScaleChanged(scalable.mEndXScale, scalable.mEndYScale);
+			scalable.signal_ScaleChangingFinished();
+			scalable.SetState(GScalableComponent::STATE_WAIT);
 		}
-	}
+	});
 }

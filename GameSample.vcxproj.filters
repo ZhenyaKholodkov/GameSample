@@ -465,6 +465,7 @@
     <ClInclude Include="src\Engine\utils\Utils.h" />
     <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\utils\GExeptions.h" />
+    <ClInclude Include="src\Engine\entity\help\gComponentMask.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

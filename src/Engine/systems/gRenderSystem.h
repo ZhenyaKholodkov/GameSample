@@ -10,7 +10,7 @@
 class GRenderSystem : public GSystem<GRenderSystem>
 {
 public:
-	GRenderSystem();
+	GRenderSystem(std::shared_ptr<GEntityManager> manager);
 	~GRenderSystem();
 
 	virtual void update(int dt);
@@ -18,7 +18,6 @@ private:
 	unsigned int mBackgroundColor;
 
 	GRenderManager* mRenderer;
-	GEntityManager* mEntityManager;
 };
 
 #endif //GRENDER_SYSTEM_H

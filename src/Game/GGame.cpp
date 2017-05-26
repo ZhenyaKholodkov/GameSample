@@ -9,8 +9,6 @@ GGame::GGame():
 	GGameWindow(),
 	isGameOver(false)
 {
-	mSystemManager = GSystemManager::instance();
-	mEntityManager = GEntityManager::instance();
 }
 
 GGame::~GGame()
@@ -24,13 +22,13 @@ bool GGame::Create()
 	{
 		return false;
 	}
-	mSystemManager->registerSystem<GAnimationSystem>();
-	mSystemManager->registerSystem<GUserInputSystem>();
-	mSystemManager->registerSystem<GMoveableAnimationSystem>();
-	mSystemManager->registerSystem<GMoveableSystem>();
-	mSystemManager->registerSystem<GScalableSystem>();
-	mSystemManager->registerSystem<GCollisionSystem>();
-	mSystemManager->registerSystem<GRenderSystem>();
+	mSystemManager->registerSystem<GAnimationSystem>(mEntityManager);
+	mSystemManager->registerSystem<GUserInputSystem>(mEntityManager);
+	mSystemManager->registerSystem<GMoveableAnimationSystem>(mEntityManager);
+	mSystemManager->registerSystem<GMoveableSystem>(mEntityManager);
+	mSystemManager->registerSystem<GScalableSystem>(mEntityManager);
+	mSystemManager->registerSystem<GCollisionSystem>(mEntityManager);
+	mSystemManager->registerSystem<GRenderSystem>(mEntityManager);
 
 	CreateGame();
 

@@ -2,9 +2,9 @@
 
 #include "gAnimationComponent.h"
 
-GAnimationSystem::GAnimationSystem()
+GAnimationSystem::GAnimationSystem(std::shared_ptr<GEntityManager> manager) :
+	GSystem<GAnimationSystem>(manager)
 {
-	mEntityManager = GEntityManager::instance();
 }
 
 GAnimationSystem::~GAnimationSystem()
@@ -13,42 +13,34 @@ GAnimationSystem::~GAnimationSystem()
 
 void GAnimationSystem::update(int dt)
 {
-
-	for (auto pair : *mEntityManager->getComponentPool<GAnimationComponent>())
+	mEntityManager->each<GAnimationComponent, GRenderableComponent>([&](Entity entity, GAnimationComponent& animation, GRenderableComponent& renderable)
 	{
-		Entity entity = pair->first;
-		GAnimationComponent* animation = pair->second;
+		if (animation.mState == GAnimationComponent::STATE_WAIT)
+			return;
 
-		if (!animation || !mEntityManager->doesHaveComponent<GRenderableComponent>(entity))
-			continue;
-
-		if (animation->mState == GAnimationComponent::STATE_WAIT)
-			continue;
-
-		animation->mCurrentFrameTime += dt;
-		if (animation->mCurrentFrameTime >= animation->mFrameTime)
+		animation.mCurrentFrameTime += dt;
+		if (animation.mCurrentFrameTime >= animation.mFrameTime)
 		{
-			if (animation->mCurrentFrame == (animation->mFrames.size() - 1))
+			if (animation.mCurrentFrame == (animation.mFrames.size() - 1))
 			{
-				if (animation->mIsLooped)
+				if (animation.mIsLooped)
 				{
-					animation->mCurrentFrame = 0;
+					animation.mCurrentFrame = 0;
 				}
 				else
 				{
-					animation->mCurrentFrame = 0;
-					animation->mState = GAnimationComponent::STATE_WAIT;
-					animation->signal_AnimationFinished();
+					animation.mCurrentFrame = 0;
+					animation.mState = GAnimationComponent::STATE_WAIT;
+					animation.signal_AnimationFinished();
 				}
 			}
 			else
 			{
-				animation->mCurrentFrame++;
+				animation.mCurrentFrame++;
 			}
 
-			GRenderableComponent* renderable = mEntityManager->getComponent<GRenderableComponent>(entity);
-			renderable->SetSprite(animation->mFrames[animation->mCurrentFrame]);
-			animation->mCurrentFrameTime = 0;
+			renderable.SetSprite(animation.mFrames[animation.mCurrentFrame]);
+			animation.mCurrentFrameTime = 0;
 		}
-	}
+	});
 }
