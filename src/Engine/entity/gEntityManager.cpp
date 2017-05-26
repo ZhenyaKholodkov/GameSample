@@ -13,6 +13,8 @@ GEntityManager::GEntityManager()
 	for (uint32 index = 0; index < MAX_ENTITY_COUNT; ++index)
 	{
 		mAvailableEntities.push(index);
+		mComponentIndexes.push_back(std::vector<size_t>(getComponentCount(), GBaseComponent::s_invalid_component_index()));
+		mComponentMasks.push_back(ComponentMask());
 	}
 
 	mComponentPools.resize(getComponentCount());
@@ -29,10 +31,10 @@ Entity GEntityManager::createEntity()
 	Entity newEntity = mAvailableEntities.top();
 	mAvailableEntities.pop();
 
-	if (mComponentIndexes.size() <= newEntity)
+	/*if (mComponentIndexes.size() <= newEntity)
 	{
 		mComponentIndexes.push_back(std::vector<size_t>(getComponentCount(), GBaseComponent::s_invalid_component_index()));
-	}
+	}*/
 
 	return newEntity;
 }
@@ -43,6 +45,7 @@ void GEntityManager::destroyEntity(Entity entity)
 		return;
 
 	mAvailableEntities.push(entity);
+	mComponentMasks[entity].reset();
 	std::fill(mComponentIndexes[entity].begin(), mComponentIndexes[entity].end(), GBaseComponent::s_invalid_component_index());
 
 	for (uint32 index = 0; index < getComponentCount(); ++index)

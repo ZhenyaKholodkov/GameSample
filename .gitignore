@@ -47,3 +47,16 @@ Temporary Items
 .apdisk
 *.obj
 *.obj
+build_GameSample/Debug/vc141.pdb
+.vs/GameSample/v15/.suo
+*.opendb
+*.ipch
+.vs/GameSample/v15/Browse.VC.db
+*.tlog
+data/GameSample.exe
+.vs/
+build_GameSample/
+x64/
+data/GameSample.iobj
+data/GameSample.ipdb
+*.pdb

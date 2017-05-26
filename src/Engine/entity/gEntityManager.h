@@ -64,7 +64,7 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 		private:
 			Iterator(std::shared_ptr<const GEntityManager> manager, ComponentMask mask, uint32 index) :mManager(manager), mMask(mask), mCapacity(manager->mComponentIndexes.size()), mCurrentEntity(index)
 			{
-				if (mManager->mComponentMasks.size() && predicate())
+				if (predicate())
 				{
 					nextExistedEntity();
 				}
@@ -80,7 +80,7 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 				if (mCurrentEntity < mCapacity)
 				{
 					++mCurrentEntity;
-					if (mManager->mComponentMasks.size() && predicate())
+					if (predicate())
 					{
 						nextExistedEntity();
 					}
@@ -89,7 +89,7 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 
 			inline bool predicate()
 			{
-				return (mCurrentEntity != INVALID_ENTITY && (mManager->getMaskFor(mCurrentEntity) & mMask));
+				return mCurrentEntity < mCapacity && (!mManager->mComponentMasks.size() || mCurrentEntity == INVALID_ENTITY || !(mManager->getMaskFor(mCurrentEntity).contains(mMask)));
 			}
 		private:
 			std::shared_ptr<const GEntityManager> mManager;
@@ -155,7 +155,7 @@ public:
 	void each(typename GEntityManager::identity<std::function<void(Entity entity, Components&...)>>::type f);
 
 	template<typename... Components>
-	ComponentMask getComponentsMask() const;
+	ComponentMask getComponentMasks() const;
 	/*template<typename C1, typename C2, typename... Components>
 	ComponentMask getComponentMask() const;*/
 	template<typename C>
@@ -191,7 +191,7 @@ ComponentMask GEntityManager::getComponentMask() const
 }*/
 
 template<typename... Components>
-ComponentMask GEntityManager::getComponentsMask() const
+ComponentMask GEntityManager::getComponentMasks() const
 {
 	std::vector<ComponentMask> masks = {getComponentMask<Components>()...};
 	ComponentMask mask;
@@ -206,13 +206,14 @@ template<typename C>
 ComponentMask GEntityManager::getComponentMask() const
 {
 	uint32 index = GComponent<C>::getComponentId();
-	return ComponentMask(index);
+	ComponentMask mask(index);
+	return mask;
 }
 
 template<typename... Components>
 GEntityManager::View<Components...> GEntityManager::getEntitiesWithComponents() const
 {
-	return View<Components...>(shared_from_this(), getComponentsMask<Components...>());
+	return View<Components...>(shared_from_this(), getComponentMasks<Components...>());
 }
 
 template <typename ... Components>
@@ -239,8 +240,10 @@ C*   GEntityManager::addComponentsToEntity(Entity entity, Args&& ... args)
 	}
 
 	int component_index = mComponentPools[index]->create();
+	mComponentIndexes[entity][index] = component_index;
 	C* component = static_cast<C*>(mComponentPools[index]->getComponent(component_index));
 	new (component) C(std::forward<Args>(args)...);
+	mComponentMasks[entity] += getComponentMask<C>();
 	return component;
 }
 
@@ -259,7 +262,7 @@ template<typename C>
 bool GEntityManager::doesHaveComponent(Entity entity) const
 {
 	uint32 id = GComponent<C>::getComponentId();
-	return mComponentMasks[entity] & id;
+	return mComponentMasks[entity].contains(id);
 }
 /*
 template<typename C>
