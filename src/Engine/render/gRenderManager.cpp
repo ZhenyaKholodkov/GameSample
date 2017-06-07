@@ -53,7 +53,7 @@ void GRenderManager::init( int w, int h )
 
 	glLoadMatrixf((GLfloat*)matrix);
 
-	glOrtho(0, (float)mWidth, 0, (float)mHeight, 1, -1);
+	glOrtho(0, (float)mWidth, 0, (float)mHeight, 2000, -50000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glShadeModel(GL_SMOOTH);

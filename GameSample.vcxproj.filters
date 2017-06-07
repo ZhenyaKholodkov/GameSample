@@ -242,6 +242,8 @@
     <ClCompile Include="src\Engine\utils\Utils.cpp" />
     <ClCompile Include="src\Game\main.cpp" />
     <ClCompile Include="src\Engine\GGameWindow.cpp" />
+    <ClCompile Include="src\Game\gMainScene.cpp" />
+    <ClCompile Include="src\Engine\systems\gRotableSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GGame.h">
@@ -460,12 +462,15 @@
     <ClInclude Include="src\Engine\systems\gCollisionSystem.h">
       <Filter>src\Engine\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\utils\GDefines.h" />
     <ClInclude Include="src\Engine\utils\Types.h" />
     <ClInclude Include="src\Engine\utils\Utils.h" />
     <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\utils\GExeptions.h" />
     <ClInclude Include="src\Engine\entity\help\gComponentMask.h" />
+    <ClInclude Include="src\Game\gMainScene.h" />
+    <ClInclude Include="src\Game\GDefines.h" />
+    <ClInclude Include="src\Engine\components\gRotableComponent.h" />
+    <ClInclude Include="src\Engine\systems\gRotableSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

@@ -6,7 +6,7 @@
 #include "g2048MechanicComponent.h"
 #include "gScalableComponent.h"
 
-class G2048MechanicSystem : public GSystem<G2048MechanicSystem>, public sigslot::has_slots<>
+class G2048MechanicSystem : public GSystem<G2048MechanicSystem>
 {
 public:
 	G2048MechanicSystem();
@@ -23,8 +23,6 @@ public:
 	virtual void update(int dt);
 
 public:/*signals*/
-	sigslot::signal0<> signal_GameLost;
-	sigslot::signal0<> signal_GameWon;
 
 public:/*slots*/
 	void slot_MoveLeft();

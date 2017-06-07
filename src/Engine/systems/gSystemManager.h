@@ -12,6 +12,7 @@
 #include "gCollisionSystem.h"
 #include "g2048MechanicSystem.h"
 #include "gAnimationSystem.h"
+#include "gRotableSystem.h"
 
 class GSystemManager
 {

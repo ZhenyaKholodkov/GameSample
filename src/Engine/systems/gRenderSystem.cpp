@@ -17,6 +17,9 @@ void GRenderSystem::update(int dt)
 	mRenderer->setClearColor(mBackgroundColor);
 	mRenderer->startFrame();
 
+	mRenderer->save();
+	mRenderer->scale(0.75f, 0.75f);
+
 	mEntityManager->each<GRenderableComponent, GLocationComponent>([this](Entity entity, GRenderableComponent& renderable, GLocationComponent& location)
 	{
 		if (!renderable.isVisible())
@@ -27,13 +30,15 @@ void GRenderSystem::update(int dt)
 			return;
 
 		mRenderer->save();
-		mRenderer->translate(location.getX(), location.getY());
+		mRenderer->translate(location.getX() / 0.75f, location.getY() / 0.75f);
+		mRenderer->rotate(renderable.getAngle());
 		mRenderer->scale(renderable.getXScale(), renderable.getYScale());
 
 		mRenderer->drawSprite(sprite);
 
 		mRenderer->restore();
 	});
+	mRenderer->restore();
 
 	mRenderer->endFrame();
 }

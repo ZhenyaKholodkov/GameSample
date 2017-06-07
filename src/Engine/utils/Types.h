@@ -8,6 +8,7 @@
 
 using namespace std;
 
+#define DEGREE_TO_RAD 0.0174532925199f 
 #define MAX_ENTITY_COUNT 300
 #define INVALID_ENTITY (MAX_ENTITY_COUNT + 1)
 

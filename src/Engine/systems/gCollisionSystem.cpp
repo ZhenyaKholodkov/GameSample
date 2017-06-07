@@ -12,8 +12,6 @@ GCollisionSystem::~GCollisionSystem()
 
 void GCollisionSystem::checkCollision(Entity checkEntity)
 {
-	if (!mEntityManager->doesHaveComponent<GCollisionComponent>(checkEntity))
-		return;
 	GCollisionComponent* checkCollision = mEntityManager->getComponent<GCollisionComponent>(checkEntity);
 	GLocationComponent* checkLocation = mEntityManager->getComponent<GLocationComponent>(checkEntity);
 
@@ -45,4 +43,10 @@ void GCollisionSystem::checkCollision(Entity checkEntity)
 
 void GCollisionSystem::update(int dt)
 {
+	mEntityManager->each<GCollisionComponent>(
+		[&](Entity entity, GCollisionComponent& collision)
+	{
+		if (collision.mNeedCheck)
+			checkCollision(entity);
+	});
 }

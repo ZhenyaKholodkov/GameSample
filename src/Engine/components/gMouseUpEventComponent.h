@@ -9,14 +9,19 @@ class GMouseUpEventComponent : public GComponent<GMouseUpEventComponent>
 	friend class GUserInputSystem;
 public:
 	GMouseUpEventComponent(GSprite* spriteUp) : mSpriteUp(spriteUp) {};
-	virtual ~GMouseUpEventComponent() {};
+	virtual ~GMouseUpEventComponent() 
+	{
+		signal_MouseUp.disconnect_all_slots();
+		signal_MouseUpOnEntity.disconnect_all_slots();
+		signal_MouseUpNewSprite.disconnect_all_slots();
+	};
 
 	void SetSpriteUp(GSprite* sprite) { mSpriteUp = sprite; }
 
 public: /*signals*/
-	sigslot::signal0<>                 signal_MouseUp;
-	sigslot::signal1<Entity>           signal_MouseUpOnEntity;
-	sigslot::signal2<Entity, GSprite*> signal_MouseUpNewSprite;
+	boost::signals2::signal<void()>                 signal_MouseUp;
+	boost::signals2::signal<void(Entity)>           signal_MouseUpOnEntity;
+	boost::signals2::signal<void(GSprite*)>         signal_MouseUpNewSprite;
 
 private:
 	GSprite* mSpriteUp;

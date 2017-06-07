@@ -11,6 +11,7 @@
 #include <functional>
 #include <utility>
 #include <new>
+#include <queue>
 
 #include "Types.h"
 #include "GDefines.h"
@@ -33,6 +34,7 @@
 #include "gCounterComponent.h"
 #include "gKeyUpEventComponent.h"
 #include "gKeyDownEventComponent.h"
+#include "gRotableComponent.h"
 
 
 class GEntityManager : public std::enable_shared_from_this<GEntityManager>
@@ -107,7 +109,7 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 			View(View& view) : mManager(view.mManager), mMask(view.mMask) {}
 
 			GEntityManager::Iterator begin() const { return GEntityManager::Iterator(mManager, mMask, 0); }
-			GEntityManager::Iterator end()   const { const GEntityManager::Iterator iter(mManager, mMask, (mManager->mComponentIndexes.size() - 1)); return iter; }
+			GEntityManager::Iterator end()   const { const GEntityManager::Iterator iter(mManager, mMask, (mManager->mComponentIndexes.size())); return iter; }
 
 			void each(typename identity<std::function<void(Entity entity, Components&...)>>::type f)
 			{
@@ -136,6 +138,8 @@ private:
 public:
 	~GEntityManager();
 public:
+	Entity createPlainEntity(GSprite* sprite, float xPos, float yPos);
+
 	template<typename C, typename... Args>
 	C* addComponentsToEntity(Entity entity, Args&& ... args);           //Creates Component C for entity. If it is first component of that type, The ComponentPool will be created.
 
@@ -176,7 +180,7 @@ private:
 	uint32 getComponentCount();
 private:
 	const uint32 DEFUALT_POOL_SIZE = 10;
-	std::stack<Entity>           mAvailableEntities;   // the queue of available entities 
+	std::queue<Entity>           mAvailableEntities;   // the queue of available entities 
 
 	std::vector<std::shared_ptr<GBasePool>>  mComponentPools;       // pools of components. Each Component class has the static identifier that determines the index in this vector for the component pool.
 	std::vector<std::vector<size_t>> mComponentIndexes;

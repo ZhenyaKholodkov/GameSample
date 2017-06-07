@@ -138,7 +138,7 @@ public:
 	}
 	~GComponentPool() 
 	{
-		for (int i = 0; i < mSize; ++i)
+		for (int i = 0; i < mCapacity; ++i)
 		{
 			destroy(i);
 		}
@@ -170,7 +170,7 @@ public:
 
 	virtual void* getComponent(uint32 index) const
 	{
-		if (index >= mSize)
+		if (index >= mCapacity)
 			return nullptr;
 		auto ptrToBlock = static_cast<Block*>(get(index));
 		return &(ptrToBlock->mComponent);

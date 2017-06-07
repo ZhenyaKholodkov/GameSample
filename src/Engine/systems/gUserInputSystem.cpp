@@ -16,9 +16,9 @@ void GUserInputSystem::OnMouseDown(GCursor point)
 	{
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
-			mouseDown.signal_MouseDown.emit();
-			mouseDown.signal_MouseDownOnEntity.emit(entity);
-			mouseDown.signal_MouseDownNewSprite.emit(entity, mouseDown.mSpriteDown);
+			mouseDown.signal_MouseDown();
+			mouseDown.signal_MouseDownOnEntity(entity);
+			mouseDown.signal_MouseDownNewSprite(mouseDown.mSpriteDown);
 		}
 	});
 }
@@ -29,9 +29,9 @@ void GUserInputSystem::OnMouseUp(GCursor point)
 	{
 		if (mEntityManager->isInsideEntity(entity, point))
 		{
-			upDown.signal_MouseUp.emit();
-			upDown.signal_MouseUpOnEntity.emit(entity);
-			upDown.signal_MouseUpNewSprite.emit(entity, upDown.mSpriteUp);
+			upDown.signal_MouseUp();
+			upDown.signal_MouseUpOnEntity(entity);
+			upDown.signal_MouseUpNewSprite(upDown.mSpriteUp);
 		}
 	});
 }
@@ -44,9 +44,9 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 		{
 			if (point.mWasPressed)
 			{
-				mouseMove.signal_PressedMouseMovedIn.emit(point.x, point.y);
+				mouseMove.signal_PressedMouseMovedIn(point.x, point.y);
 			}
-			mouseMove.signal_MouseMovedInEntity.emit(entity, mouseMove.mSpriteMoveIn);
+			mouseMove.signal_MouseMovedInEntity(mouseMove.mSpriteMoveIn);
 			mouseMove.mMovedIn = true;
 		}
 		else
@@ -55,9 +55,9 @@ void GUserInputSystem::OnMouseMove(GCursor point)
 			{
 				if (point.mWasPressed)
 				{
-					mouseMove.signal_PressedMouseMovedOut.emit(point.x, point.y);
+					mouseMove.signal_PressedMouseMovedOut(point.x, point.y);
 				}
-				//moveMove->signal_MouseMovedOutEntity.emit(entity, moveMove->mSpriteMoveOut);
+				mouseMove.signal_MouseMovedOutEntity(mouseMove.mSpriteMoveOut);
 			}
 		}
 	});

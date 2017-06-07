@@ -33,7 +33,7 @@ void GMoveableSystem::update(int dt)
 			moveable.signal_LocationChanged(0.0f, -moveable.mDY);
 			break;
 		}
-		moveable.signal_Moved(entity);
+		moveable.signal_Moved();
 		//moveable.mState = GMoveableComponent::STATE_STOP;
 	});
 }

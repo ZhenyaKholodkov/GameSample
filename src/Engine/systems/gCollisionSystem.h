@@ -5,20 +5,13 @@
 #include "gEntityManager.h"
 #include "Utils.h"
 
-class GCollisionSystem : public GSystem<GCollisionSystem>, public sigslot::has_slots<>
+class GCollisionSystem : public GSystem<GCollisionSystem>
 {
 public:
 	GCollisionSystem(std::shared_ptr<GEntityManager> manager);
 	virtual ~GCollisionSystem();
 
 	virtual void update(int dt);
-
-public:/*slots*/
-	void slot_CheckCollision(Entity checkEntity)
-	{
-		checkCollision(checkEntity);
-	}
-
 private:
 	void checkCollision(Entity checkEntity);
 };

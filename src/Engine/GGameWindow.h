@@ -37,10 +37,19 @@ public:
 private:
 	void show();
 	GKey convertToGKey(uint32 key) const;
+															
+	int32  onWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	HGLRC getOpenGlContext() const { return mHGLRC; }
+
+	bool createGLContext();
+	void destroyGLContext() const;
+	void updateContext() const;
+protected:
 
 	virtual int  onCreate() { return 1; }
-	virtual void onClose() {};           
-	virtual void onTimer(int) {};        
+	virtual void onClose();
+	virtual void onTimer(int);
 
 	virtual void onMouseMove(GCursor cursor) {};
 	virtual void onLMouseDown(GCursor cursor) {};
@@ -50,26 +59,17 @@ private:
 	virtual void onMouseWheelDown(GCursor cursor) {};
 	virtual void onMouseWheelUp(GCursor cursor) {};
 
-	virtual void onKeyUp(GKey key) {};			
+	virtual void onKeyUp(GKey key) {};
 	virtual void onKeyDown(GKey key) {};
-															
-	int32  onWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	HGLRC getOpenGlContext() const { return mHGLRC; }
-
-protected:
-	bool createGLContext();
-	void destroyGLContext() const;
-	void updateContext() const;
-
-protected:          
+private:          
 	int32  mPeriod;
 	int32  mWndMode;             //!< the window mode                                   
 
 	HWND   mMainHWND;            //!< the handle to a window       
 	HBRUSH mWindowBrush;
 	HGLRC  mHGLRC;		         //!<  the handle to an OpenGL rendering context.	                                  
-					
+protected:
 	std::shared_ptr<GEntityManager> mEntityManager;
 	std::shared_ptr<GSystemManager> mSystemManager;
 

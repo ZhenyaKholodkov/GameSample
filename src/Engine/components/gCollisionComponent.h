@@ -11,17 +11,23 @@ public:
 	{
 		mRadius.x = (float)xRadius;
 		mRadius.y = (float)yRadius;
+		mNeedCheck = false;
 	};
 	virtual ~GCollisionComponent() 
 	{
-		signal_Collisioned.disconnect_all();
+		signal_Collisioned.disconnect_all_slots();
 	};
-	
+
+private:
+	void checkCollision() { mNeedCheck = true; }
+public: /*slots*/
+	const boost::signals2::signal<void()>::slot_type slot_CheckCollision = boost::bind(&::GCollisionComponent::checkCollision, this);
 public:/*signals*/
-	sigslot::signal0<> signal_Collisioned;
+	boost::signals2::signal<void()> signal_Collisioned;
 
 private: 
 	GVector2 mRadius;
+	bool     mNeedCheck;
 
 	std::list<uint32> mCellIndexes;
 };

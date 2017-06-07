@@ -2,8 +2,9 @@
 #define GSCALABLECOMPONENT_H
 
 #include "gComponent.h"
+#include "boost/signals2.hpp"
 
-class GScalableComponent : public GComponent<GScalableComponent>, public sigslot::has_slots<>
+class GScalableComponent : public GComponent<GScalableComponent>
 {
 	friend class GScalableSystem;
 public:
@@ -19,7 +20,12 @@ public:
 	{
 		recalcDxDy();
 	};
-	virtual ~GScalableComponent() {};
+	virtual ~GScalableComponent() 
+	{
+		signal_ScaleChanged.~signal();
+		signal_ScaleChangingBegin.~signal();
+		signal_ScaleChangingFinished.~signal();
+	};
 
 	float getCurrentXScale()
 	{
@@ -39,14 +45,12 @@ public:
 	void SetState(uint32 state) { mState = state; }
 
 public:/*slots*/
-	void slot_Scale()
-	{
-		SetState(GScalableComponent::STATE_SCALE);
-	}
+	const boost::signals2::signal<void()>::slot_type slot_Scale = boost::bind(&GScalableComponent::SetState, this, GScalableComponent::STATE_SCALE);
 public: /*signals*/
-	sigslot::signal2<float, float>  signal_ScaleChanged;
-	sigslot::signal0<>        signal_ScaleChangingBegin;
-	sigslot::signal0<>        signal_ScaleChangingFinished;
+	boost::signals2::signal<void(float, float)>  signal_ScaleChanged;
+	boost::signals2::signal<void()>              signal_ScaleChangingBegin;
+	boost::signals2::signal<void()>              signal_ScaleChangingFinished;
+
 
 private:
 	void recalcDxDy()

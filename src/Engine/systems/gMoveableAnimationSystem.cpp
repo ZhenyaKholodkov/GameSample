@@ -22,13 +22,24 @@ void GMoveableAnimationSystem::update(int dt)
 		if (moveable.mMovingTime > moveable.mCurrentTime)
 		{
 			moveable.signal_LocationChanged(moveable.getCurrentX(), moveable.getCurrentY());
+			location.setX(moveable.getCurrentX());
+			location.setY(moveable.getCurrentY());
 		}
 		else
 		{
 			moveable.signal_LocationChanged(moveable.GetXDestination(), moveable.GetYDestination());
+			location.setX(moveable.GetXDestination());
+			location.setY(moveable.GetYDestination());
 			moveable.signal_MovingFinished(entity);
-			moveable.signal_MovingFinishedWithData(entity, moveable.signal_Data);
-			moveable.SetState(GMoveableAnimationComponent::STATE_WAIT);
+			moveable.signal_MovingFinishedWithData(entity);
+			if(moveable.mRepeat)
+			{ 
+				moveable.reset();
+			}
+			else
+			{
+				moveable.setState(GMoveableAnimationComponent::STATE_WAIT);
+			}
 		}
 	});
 }

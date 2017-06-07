@@ -71,6 +71,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>data\</OutDir>
     <IntDir>build_$(ProjectName)\$(Configuration)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(BOOST_INCLUDE);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Boost\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>data\</OutDir>
@@ -81,12 +83,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_HAS_CXX17;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src/Engine/systems/mechanics;src/Engine/entity/help;src/Engine/utils;src/thirdparty/sigslot;src/Engine/systems;src/Engine/components/mechanics;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BOOST_TEST_DETECT_MEMORY_LEAK;_HAS_CXX17;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src/Engine/systems/mechanics;src/Engine/entity/help;src/Engine/utils;src/thirdparty/sigslot;src/Engine/systems;src/Engine/components/mechanics;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;$(BOOST_INCLUDE);src\thirdparty\boost\include;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>src\thirdparty\zlib\LIB;src\thirdparty\libpng\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BOOST_LIBS);src\thirdparty\boost\libs;src\thirdparty\zlib\LIB;src\thirdparty\libpng\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
@@ -152,6 +154,7 @@
     <ClCompile Include="src\Engine\systems\gCollisionSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gMoveableAnimationSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gMoveableSystem.cpp" />
+    <ClCompile Include="src\Engine\systems\gRotableSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gScalableSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
@@ -160,6 +163,7 @@
     <ClCompile Include="src\Engine\utils\Utils.cpp" />
     <ClCompile Include="src\Engine\GGameWindow.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
+    <ClCompile Include="src\Game\gMainScene.cpp" />
     <ClCompile Include="src\Game\main.cpp" />
     <ClCompile Include="src\thirdparty\libpng\png.c" />
     <ClCompile Include="src\thirdparty\libpng\pngerror.c" />
@@ -213,6 +217,7 @@
     <ClInclude Include="src\Engine\components\gMoveableComponent.h" />
     <ClInclude Include="src\Engine\components\gParentComponent.h" />
     <ClInclude Include="src\Engine\components\gRenderableComponent.h" />
+    <ClInclude Include="src\Engine\components\gRotableComponent.h" />
     <ClInclude Include="src\Engine\components\gScalableComponent.h" />
     <ClInclude Include="src\Engine\components\gSizeComponent.h" />
     <ClInclude Include="src\Engine\entity\gEntityManager.h" />
@@ -220,7 +225,8 @@
     <ClInclude Include="src\Engine\io\gIOFile.h" />
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
-    <ClInclude Include="src\Engine\utils\GDefines.h" />
+    <ClInclude Include="src\Engine\systems\gRotableSystem.h" />
+    <ClInclude Include="src\Game\GDefines.h" />
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h" />
     <ClInclude Include="src\Engine\graphics\gTextureManager.h" />
     <ClInclude Include="src\Engine\graphics\gTextureObject.h" />
@@ -246,6 +252,7 @@
     <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\entity\help\gPool.h" />
     <ClInclude Include="src\Game\GGame.h" />
+    <ClInclude Include="src\Game\gMainScene.h" />
     <ClInclude Include="src\thirdparty\libpng\config.h" />
     <ClInclude Include="src\thirdparty\libpng\png.h" />
     <ClInclude Include="src\thirdparty\libpng\pngconf.h" />

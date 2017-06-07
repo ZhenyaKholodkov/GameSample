@@ -52,8 +52,8 @@ int32 GGameWindow::createWindow(char *caption, char *name, int32 width, int32 he
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW | WS_POPUP | CS_DBLCLKS;
 
 	//no resize
-	//dwStyle &= ~WS_SIZEBOX;
-	//dwStyle &= ~WS_MAXIMIZEBOX;
+	/*dwStyle &= ~WS_SIZEBOX;
+	dwStyle &= ~WS_MAXIMIZEBOX;*/
 
 	RECT rc = { 0, 0, width, height };
 	AdjustWindowRect(&rc, dwStyle, FALSE);
@@ -268,4 +268,14 @@ GKey GGameWindow::convertToGKey(uint32 key) const
 		break;
 	}
 	return KEY_NONE;
+}
+
+void GGameWindow::onClose()
+{
+	destroyGLContext();
+}
+
+void GGameWindow::onTimer(int32 dt)
+{
+	mSystemManager->update(dt);
 }

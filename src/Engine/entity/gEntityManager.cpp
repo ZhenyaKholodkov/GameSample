@@ -28,7 +28,7 @@ Entity GEntityManager::createEntity()
 {
 	assert(mAvailableEntities.size() != 0);
 
-	Entity newEntity = mAvailableEntities.top();
+	Entity newEntity = mAvailableEntities.front();
 	mAvailableEntities.pop();
 
 	/*if (mComponentIndexes.size() <= newEntity)
@@ -55,6 +55,15 @@ void GEntityManager::destroyEntity(Entity entity)
 	GEntityManager::Iterator(shared_from_this(), ComponentMask(2), 0);
 }
 
+Entity GEntityManager::createPlainEntity(GSprite* sprite, float xPos, float yPos)
+{
+	Entity entity = createEntity();
+	addComponentsToEntity<GLocationComponent>(entity, xPos, yPos);
+	addComponentsToEntity<GRenderableComponent>(entity, sprite);
+	return entity;
+
+}
+
 uint32 GEntityManager::getComponentCount()
 {
 	return GBaseComponent::s_component_counter;
@@ -77,11 +86,12 @@ bool GEntityManager::isInsideEntity(Entity entity, GCursor point) const
 void GEntityManager::getLocalPoint(Entity entity, GCursor& point, GCursor& localPoint) const
 {
 	auto location = getComponent<GLocationComponent>(entity);
+	auto renderable = getComponent<GRenderableComponent>(entity);
 
-	float ang = 0;                         
+	float ang = renderable->getAngle() * DEGREE_TO_RAD;
 	float c = cosf(ang), s = sinf(ang);
-	localPoint.x = ( c*(point.x - location->getX()) + s*(point.y - location->getY()));
-	localPoint.y = (-s*(point.x - location->getX()) + c*(point.y - location->getY()));
+	localPoint.x = ( c*(point.x - location->getX()) + s*(point.y - location->getY())) / renderable->getXScale();
+	localPoint.y = (-s*(point.x - location->getX()) + c*(point.y - location->getY())) / renderable->getXScale();
 }
 
 void GEntityManager::removeParent(Entity child)
@@ -130,13 +140,13 @@ void GEntityManager::setChildParentRelations(Entity parent, Entity child)
 	float newY = childLocation->getY() + parentLocation->getY();
 	childLocation->setXY(newX, newY);
 	childLocation->setDefaultXY(newX, newY);
-	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation, &GLocationComponent::slot_LocationChangedWithDxDy);
+	parentLocation->signal_LocationChangedWithDxDy.connect(childLocation->slot_LocationChangedWithDxDy);
 
 	auto parentRenderable = getComponent<GRenderableComponent>(parent);
 	auto childRenderable = getComponent<GRenderableComponent>(child);
 	if (parentRenderable && childRenderable)
 	{
-		parentRenderable->signal_ScaleChanged.connect(childRenderable, &GRenderableComponent::slot_ChangeScale);
-		parentRenderable->signal_VisibilityChanged.connect(childRenderable, &GRenderableComponent::slot_VisibilityChanged);
+		parentRenderable->signal_ScaleChanged.connect(childRenderable->slot_ChangeScale);
+		parentRenderable->signal_VisibilityChanged.connect(childRenderable->slot_VisibilityChanged);
 	}
 }

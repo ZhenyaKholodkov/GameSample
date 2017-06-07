@@ -2,7 +2,9 @@
 #define GBASECOMPONENT_H
 
 #include "Types.h"
-#include "sigslot.h"
+#include "boost/signals2.hpp"
+#include "boost/bind.hpp"
+#include "boost/function.hpp"
 
 class GBaseComponent
 {

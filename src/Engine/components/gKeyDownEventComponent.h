@@ -9,14 +9,20 @@ class GKeyDownEventComponent : public GComponent<GKeyDownEventComponent>
 	friend class GUserInputSystem;
 public:
 	GKeyDownEventComponent() {};
-	virtual ~GKeyDownEventComponent() {};
+	virtual ~GKeyDownEventComponent() 
+	{
+		signal_KeyLeft.disconnect_all_slots();
+		signal_KeyRight.disconnect_all_slots();
+		signal_KeyUp.disconnect_all_slots();
+		signal_KeyDown.disconnect_all_slots();
+	};
 
 
 public: /*signals*/
-	sigslot::signal0<>  signal_KeyLeft;
-	sigslot::signal0<>  signal_KeyRight;
-	sigslot::signal0<>  signal_KeyUp;
-	sigslot::signal0<>  signal_KeyDown;
+	boost::signals2::signal<void()>  signal_KeyLeft;
+	boost::signals2::signal<void()>  signal_KeyRight;
+	boost::signals2::signal<void()>  signal_KeyUp;
+	boost::signals2::signal<void()>  signal_KeyDown;
 
 
 private:

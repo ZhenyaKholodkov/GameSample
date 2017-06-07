@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:53ab3848573c7cf7fb1d833e0b16b00b:ac5eca5f5c797eb14c4803954597cd94:42c3b3a38b6fd6860ed1e5956fdfb63d$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlases>
+<TextureAtlas imagePath="texture.png" width="1644" height="1547">
+    <sprite n="background3.png" x="1004" y="587" w="640" h="960" pX="0.5" pY="0.5"/>
+    <sprite n="bag.png" x="507" y="0" w="129" h="51" pX="0.5" pY="0.5"/>
+    <sprite n="bird.png" x="72" y="0" w="71" h="40" pX="0.5" pY="0.5"/>
+    <sprite n="bird2.png" x="217" y="0" w="71" h="48" pX="0.5" pY="0.5"/>
+    <sprite n="bird3.png" x="437" y="0" w="70" h="50" pX="0.5" pY="0.5"/>
+    <sprite n="bird4.png" x="288" y="0" w="74" h="49" pX="0.5" pY="0.5"/>
+    <sprite n="bird5.png" x="362" y="0" w="75" h="49" pX="0.5" pY="0.5"/>
+    <sprite n="bird6.png" x="0" y="0" w="72" h="38" pX="0.5" pY="0.5"/>
+    <sprite n="bird7.png" x="143" y="0" w="74" h="46" pX="0.5" pY="0.5"/>
+    <sprite n="blue_button_start_down.png" x="180" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="blue_button_start_move.png" x="360" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="blue_button_start_normal.png" x="540" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="blue_button_start_up.png" x="720" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button-mainmenu_down.png" x="900" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button-mainmenu_move.png" x="1360" y="113" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button-mainmenu_normal.png" x="0" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button-mainmenu_up.png" x="1080" y="293" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button_pause.png" x="689" y="0" w="80" h="80" pX="0.5" pY="0.5"/>
+    <sprite n="button_pause_down.png" x="929" y="0" w="80" h="80" pX="0.5" pY="0.5"/>
+    <sprite n="button_pause_move.png" x="769" y="0" w="80" h="80" pX="0.5" pY="0.5"/>
+    <sprite n="button_pause_up.png" x="849" y="0" w="80" h="80" pX="0.5" pY="0.5"/>
+    <sprite n="button_replay_down.png" x="1000" y="113" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button_replay_move.png" x="820" y="113" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button_replay_normal.png" x="640" y="113" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="button_replay_up.png" x="1180" y="113" w="180" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="cloud.png" x="1010" y="0" w="229" h="113" pX="0.5" pY="0.5"/>
+    <sprite n="coin.png" x="636" y="0" w="53" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="grass.png" x="0" y="113" w="640" h="180" pX="0.5" pY="0.5"/>
+    <sprite n="mill_color.png" x="1260" y="293" w="232" h="294" pX="0.5" pY="0.5"/>
+    <sprite n="mill_part2.png" x="0" y="587" w="413" h="419" pX="0.5" pY="0.5"/>
+    <sprite n="window.png" x="413" y="587" w="591" h="485" pX="0.5" pY="0.5"/>
+</TextureAtlas>
+</TextureAtlases>

@@ -3,18 +3,29 @@
 
 #include "gComponent.h"
 
-class GMoveableAnimationComponent : public GComponent<GMoveableAnimationComponent>, public sigslot::has_slots<>
+class GMoveableAnimationComponent : public GComponent<GMoveableAnimationComponent>
 {
 	friend class GMoveableAnimationSystem;
 public:
-	GMoveableAnimationComponent() : signal_Data(nullptr), mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
-	GMoveableAnimationComponent(float begX, float begY, float xDest, float yDest, int time) :
-		signal_Data(nullptr), mBeginX(begX), mBeginY(begY), mXDestination(xDest),
-		mYDestination(yDest), mMovingTime(time), mCurrentTime(0), mState(STATE_WAIT)
+	enum
+	{
+		STATE_WAIT = BIT(1),
+		STATE_MOVE = BIT(2)
+	};
+
+	GMoveableAnimationComponent() : mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
+	GMoveableAnimationComponent(float begX, float begY, float xDest, float yDest, int time, bool repeat = false) :
+		mBeginX(begX), mBeginY(begY), mXDestination(xDest),
+		mYDestination(yDest), mMovingTime(time), mCurrentTime(0), mRepeat(repeat), mState(STATE_WAIT)
 	{
 		recalcDxDy();
 	};
-	virtual ~GMoveableAnimationComponent() {};
+	virtual ~GMoveableAnimationComponent() 
+	{
+		signal_LocationChanged.disconnect_all_slots();
+		signal_MovingFinished.disconnect_all_slots();
+		signal_MovingFinishedWithData.disconnect_all_slots();
+	};
 
 	float getCurrentX()
 	{
@@ -38,42 +49,25 @@ public:
 	int   GetMvingTimne() { return mMovingTime; }
 	void  SetMovingTime(int time) { mMovingTime = time; }
 
-	void Reset() { mCurrentTime = 0; }
+	void reset() { mCurrentTime = 0; }
+	void setState(uint32 state) { mState = state; }
 
 
 public:/*slots*/
-	void slot_Move()
-	{
-		Reset();
-		SetState(GMoveableAnimationComponent::STATE_MOVE);
-	}
-
-	void slot_MoveDx()
-	{
-
-	}
+	const boost::signals2::signal<void()>::slot_type slot_Move = boost::bind(&GMoveableAnimationComponent::setState, this, GMoveableAnimationComponent::STATE_MOVE);
 
 public: /*signals*/
-	sigslot::signal2<float, float>     signal_LocationChanged;
-	sigslot::signal1<Entity>           signal_MovingFinished;
-	sigslot::signal2<Entity, void*>    signal_MovingFinishedWithData;
-
-	void* signal_Data;
+	boost::signals2::signal<void(float, float)>     signal_LocationChanged;
+	boost::signals2::signal<void(Entity)>           signal_MovingFinished;
+	boost::signals2::signal<void(Entity)>           signal_MovingFinishedWithData;
 
 private:
-	void SetState(uint32 state) { mState = state; }
-
 	void recalcDxDy()
 	{
 		mDX = mXDestination - mBeginX;
 		mDY = mYDestination - mBeginY;
 	}
 private: 
-	enum
-	{
-		STATE_WAIT = BIT(1),
-		STATE_MOVE = BIT(2)
-	};
 	float mBeginX;
 	float mBeginY;
 
@@ -82,6 +76,8 @@ private:
 
 	int mMovingTime;
 	int mCurrentTime;
+
+	bool mRepeat;
 
 	uint32 mState;
 

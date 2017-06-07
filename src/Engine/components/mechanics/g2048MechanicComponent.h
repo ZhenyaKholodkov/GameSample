@@ -3,7 +3,7 @@
 
 #include "gComponent.h"
 
-class G2048MechanicComponent : public GComponent<G2048MechanicComponent>, public sigslot::has_slots<>
+class G2048MechanicComponent : public GComponent<G2048MechanicComponent>
 {
 	friend class G2048MechanicSystem;
 public:
