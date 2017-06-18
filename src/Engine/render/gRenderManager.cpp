@@ -1,14 +1,12 @@
 ﻿#include "gRenderManager.h"
 
-#include <windows.h>
-#include <gl\GL.h>
-#include <gl\GLU.h>
-
 #include "GSprite.h"
 #include "Utils.h"
-
+#include "FTGL/FTGLPixmapFont.h"
 
 #define GL_GENERATE_MIPMAP                0x8191
+
+FTGLPixmapFont font("resources/bboron.ttf");
 
 GRenderManager* GRenderManager::Instance()
 {
@@ -32,10 +30,11 @@ BATCHED_VERTEXES_SIZE(4092)
    int val = 0;
 }
 
-void GRenderManager::init( int w, int h )
+void GRenderManager::init(int w, int h)
 {
-    mWidth = w;
+	mWidth = w;
 	mHeight = h;
+
 
 	glViewport(0, 0, mWidth, mHeight);
 
@@ -45,15 +44,15 @@ void GRenderManager::init( int w, int h )
 
 	loadIdentityMatrix();
 
-	const GLfloat matrix[4][4] = {
+	/*const GLfloat matrix[4][4] = {
 		{ 1.0f,   0.0f, 0.0f, 0.0f },
-		{ 0.0f,   -1.0f, 0.0f, 0.0f },
+		{ 0.0f,   1.0f, 0.0f, 0.0f },
 		{ 0.0f,   0.0f, 1.0f, 0.0f },
 		{ 0.0f,   0.0f, 0.0f, 1.0f } };
 
-	glLoadMatrixf((GLfloat*)matrix);
+	glLoadMatrixf((GLfloat*)matrix);*/
 
-	glOrtho(0, (float)mWidth, 0, (float)mHeight, 2000, -50000);
+	glOrtho(0, (float)mWidth, (float)mHeight, 0, 2000, -50000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glShadeModel(GL_SMOOTH);
@@ -158,6 +157,22 @@ bool GRenderManager::visible() const
       return false;
 
    return true;
+}
+
+void GRenderManager::drawText(std::string text, GColor color, uint32 fontSize/* = 24*/)
+{
+	if (fabsf(mMatrix.m[0][0] * mMatrix.m[1][1] - mMatrix.m[0][1] * mMatrix.m[1][0]) < 0.9f)
+		return;
+
+	drawBatchedTris();
+	glPushMatrix(); 
+	font.FaceSize(fontSize);
+	glColor3f(color.r, color.g , color.b);
+	FTBBox box = font.BBox(text.c_str());
+	glRasterPos2i(mMatrix.t.x - (box.Upper().X() - box.Lower().X()) / 2, mMatrix.t.y - (box.Upper().Y() + box.Lower().Y()) / 2);
+	font.Render(text.c_str());
+	glPopMatrix();
+	glColor3f(1.0f, 1.0f, 1.0f);
 }
 
 void GRenderManager::drawSprite(GSprite* sprite)
@@ -310,7 +325,7 @@ void GRenderManager::drawBatchedTris()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, &mVertexData[vertexFirstIndex]);
-
+	
 	glDrawElements(GL_TRIANGLES, mBatchVertLastIndex, GL_UNSIGNED_SHORT, &mIndexesData[vertexFirstIndex]);
 
 	if (mCurrentTextureID >= 0)

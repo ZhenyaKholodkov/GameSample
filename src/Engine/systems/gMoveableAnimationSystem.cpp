@@ -13,6 +13,8 @@ GMoveableAnimationSystem::~GMoveableAnimationSystem()
 
 void GMoveableAnimationSystem::update(int dt)
 {
+	if (isStoped())
+		return;
 	mEntityManager->each<GMoveableAnimationComponent, GLocationComponent>([&](Entity entity, GMoveableAnimationComponent& moveable, GLocationComponent& location)
 	{
 		if (moveable.mState == GMoveableAnimationComponent::STATE_WAIT)
@@ -27,11 +29,8 @@ void GMoveableAnimationSystem::update(int dt)
 		}
 		else
 		{
-			moveable.signal_LocationChanged(moveable.GetXDestination(), moveable.GetYDestination());
 			location.setX(moveable.GetXDestination());
 			location.setY(moveable.GetYDestination());
-			moveable.signal_MovingFinished(entity);
-			moveable.signal_MovingFinishedWithData(entity);
 			if(moveable.mRepeat)
 			{ 
 				moveable.reset();
@@ -40,6 +39,12 @@ void GMoveableAnimationSystem::update(int dt)
 			{
 				moveable.setState(GMoveableAnimationComponent::STATE_WAIT);
 			}
+			moveable.signal_LocationChanged(moveable.GetXDestination(), moveable.GetYDestination());
+			moveable.signal_MovingFinished();
+			moveable.signal_MovingFinishedEntity(entity);
+			moveable.signal_MovingFinishedWithData(entity);
+			if (moveable.destroyAfterFinished())
+				mEntityManager->destroyEntity(entity);
 		}
 	});
 }

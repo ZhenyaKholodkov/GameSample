@@ -13,6 +13,8 @@ GAnimationSystem::~GAnimationSystem()
 
 void GAnimationSystem::update(int dt)
 {
+	if (isStoped())
+		return;
 	mEntityManager->each<GAnimationComponent, GRenderableComponent>([&](Entity entity, GAnimationComponent& animation, GRenderableComponent& renderable)
 	{
 		if (animation.mState == GAnimationComponent::STATE_WAIT)

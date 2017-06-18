@@ -9,9 +9,12 @@
 
 GGame::GGame():
 	GGameWindow(),
-	isGameOver(false)
+	isGameOver(false),
+	mIsPause(false),
+	mSwitchNextScreen(false)
 {
 	mMainScene = std::make_unique<GMainScene>(mEntityManager);
+	mGameScene = std::make_unique<GGameScene>(mEntityManager);
 }
 
 GGame::~GGame()
@@ -25,51 +28,76 @@ bool GGame::Create()
 	{
 		return false;
 	}
-	mSystemManager->registerSystem<GAnimationSystem>(mEntityManager);
 	mSystemManager->registerSystem<GUserInputSystem>(mEntityManager);
-	mSystemManager->registerSystem<GMoveableAnimationSystem>(mEntityManager);
-	mSystemManager->registerSystem<GMoveableSystem>(mEntityManager);
-	mSystemManager->registerSystem<GScalableSystem>(mEntityManager);
-	mSystemManager->registerSystem<GCollisionSystem>(mEntityManager);
 	mSystemManager->registerSystem<GRenderSystem>(mEntityManager);
-	mSystemManager->registerSystem<GRotableSystem>(mEntityManager);
+	auto animSystem = mSystemManager->registerSystem<GAnimationSystem>(mEntityManager);
+	auto moveAnimSystem = mSystemManager->registerSystem<GMoveableAnimationSystem>(mEntityManager);
+	auto moveSystem = mSystemManager->registerSystem<GMoveableSystem>(mEntityManager);
+	auto scaleSystem = mSystemManager->registerSystem<GScalableSystem>(mEntityManager);
+	auto collisionSystem = mSystemManager->registerSystem<GCollisionSystem>(mEntityManager);
+	auto rotSystem = mSystemManager->registerSystem<GRotableSystem>(mEntityManager);
+
+	signals_GamePause.connect(animSystem->slot_Stop);
+	signals_GamePause.connect(moveAnimSystem->slot_Stop);
+	signals_GamePause.connect(moveSystem->slot_Stop);
+	signals_GamePause.connect(collisionSystem->slot_Stop);
+	signals_GamePause.connect(rotSystem->slot_Stop);
+
+	signals_GameContinue.connect(animSystem->slot_Continue);
+	signals_GameContinue.connect(moveAnimSystem->slot_Continue);
+	signals_GameContinue.connect(moveSystem->slot_Continue);
+	signals_GameContinue.connect(collisionSystem->slot_Continue);
+	signals_GameContinue.connect(rotSystem->slot_Continue);
 
 	CreateGame();
 
 	return true;
 }
 
+void GGame::onTimer(int dt)
+{
+	GGameWindow::onTimer(dt);
+	if (mSwitchNextScreen)
+	{
+		if (mMainScene->isStarted())
+		{
+			mMainScene->unload();
+			mGameScene->start();
+		}
+		else if (mGameScene->isStarted())
+		{
+			mGameScene->unload();
+			mMainScene->start();
+		}
+		mSwitchNextScreen = false;
+	}
+
+	if (mGameScene->isStarted())
+	{
+		mGameScene->update(dt);
+	}
+}
+
 void GGame::CreateGame()
 {
-	// create entity for processing the keyboard keys
-	Entity controlsEntity = mEntityManager->createEntity();
-	GKeyUpEventComponent* keyUpComponent = mEntityManager->addComponentsToEntity<GKeyUpEventComponent>(controlsEntity);
-	GKeyDownEventComponent* keyDownComponent = mEntityManager->addComponentsToEntity<GKeyDownEventComponent>(controlsEntity);
+	mGameScene->signal_NextScreen.connect([this] {
+		mSwitchNextScreen = true;
+		mIsPause = false;
+		signals_GameContinue();
+	});
+	mGameScene->signal_Pause.connect([this] {
+		mIsPause = true;
+		signals_GamePause();
+	});
+	mGameScene->signal_Continue.connect([this] {
+		mIsPause = false;
+		signals_GameContinue();
+	});
 
-
+	mMainScene->signal_NextScreen.connect([this]{
+		mSwitchNextScreen = true;
+	});
 	mMainScene->start();
-	
-	// create plater entity
-	/*GSprite* spritePlayer = GResManager::Instance()->GetSprite("player.png");
-	Entity playerEntity = mEntityManager->createEntity();
-	GLocationComponent* playerLocation = mEntityManager->addComponentsToEntity<GLocationComponent>(playerEntity, 960.0f, 704.0f);
-	mEntityManager->addComponentsToEntity<GRenderableComponent>(playerEntity, spritePlayer);
-	GMoveableComponent* playerMoveable = mEntityManager->addComponentsToEntity<GMoveableComponent>(playerEntity, 5.0f, 5.0f);
-	GCollisionComponent* playerCollision = mEntityManager->addComponentsToEntity<GCollisionComponent>(playerEntity, spritePlayer->getWidth() / 2, spritePlayer->getHeight() / 2);
-	
-	playerCollision->signal_Collisioned.connect(playerLocation->slot_LocationRestoreToLast);
-	keyDownComponent->signal_KeyRight.connect(playerMoveable->slot_MoveDx);
-	keyDownComponent->signal_KeyLeft.connect(playerMoveable->slot_MoveDxRevert);
-	keyDownComponent->signal_KeyUp.connect(playerMoveable->slot_MoveDyRevert);
-	keyDownComponent->signal_KeyDown.connect(playerMoveable->slot_MoveDy);
-	keyUpComponent->signal_KeyRight.connect(playerMoveable->slot_Stop);
-	keyUpComponent->signal_KeyLeft.connect(playerMoveable->slot_Stop);
-	keyUpComponent->signal_KeyUp.connect(playerMoveable->slot_Stop);
-	keyUpComponent->signal_KeyDown.connect(playerMoveable->slot_Stop);
-	
-	playerMoveable->signal_Moved.connect(playerCollision->slot_CheckCollision);
-	
-	playerMoveable->signal_LocationChanged.connect(playerLocation->slot_LocationChangedWithDxDy);*/
 }
 
 bool GGame::LoadResources()

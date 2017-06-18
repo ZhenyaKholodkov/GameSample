@@ -35,6 +35,7 @@
 #include "gKeyUpEventComponent.h"
 #include "gKeyDownEventComponent.h"
 #include "gRotableComponent.h"
+#include "gScalableComponent.h"
 
 
 class GEntityManager : public std::enable_shared_from_this<GEntityManager>
@@ -44,6 +45,15 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 	public:
 		template <typename T> struct identity { typedef T type; };
 
+		/*class EntityHandler
+		{
+		public:
+			EntityHandler(Entity entity, std::shared_ptr<GEntityManager> manager) {}
+			~EntityHandler() {}
+		private:
+			Entity mEntity;
+			std::shared_ptr<GEntityManager> mEntityManager;
+		};*/
 
 		class Iterator : std::iterator<std::forward_iterator_tag, Entity>
 		{
@@ -123,22 +133,22 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 			ComponentMask mMask;
 		};
 public:
-	//static GEntityManager* instance();
 	Entity createEntity();                  // creates and return new Entity. 
 	void   destroyEntity(Entity entity);    // destoryes the entity with compnents.
+	void   destroyAllEntites();
 	
 	bool isInsideEntity(Entity entity, GCursor point) const;                   // check if the mouse cursor inside the entity
 	void getLocalPoint(Entity entity, GCursor& point, GCursor& localPoint) const; // localized point in entity coordinates
 
 	void setChildParentRelations(Entity parent, Entity child);          // sets child-parent relationships between entites. Creates the ChildComponent and ParentComponent behind the scene.
 	void removeParent(Entity child);                                    // removes parent for entity
-
 private:
 	GEntityManager();
 public:
 	~GEntityManager();
 public:
 	Entity createPlainEntity(GSprite* sprite, float xPos, float yPos);
+	Entity createButtonEntity(GSprite* normal, GSprite* move, GSprite* down, float xPos, float yPos);
 
 	template<typename C, typename... Args>
 	C* addComponentsToEntity(Entity entity, Args&& ... args);           //Creates Component C for entity. If it is first component of that type, The ComponentPool will be created.
@@ -160,22 +170,10 @@ public:
 
 	template<typename... Components>
 	ComponentMask getComponentMasks() const;
-	/*template<typename C1, typename C2, typename... Components>
-	ComponentMask getComponentMask() const;*/
 	template<typename C>
 	ComponentMask getComponentMask() const;
 
 	const ComponentMask& getMaskFor(Entity entity) const { return mComponentMasks[entity]; }
-	/*template<typename C>
-	typename GComponentPool<C>::GPoolIterator getBeginComponent() const;      // returns the iterator pointed on the first compnent in the pool
-	template<typename C>
-	typename GComponentPool<C>::GPoolIterator getEndComponent() const;        // returns the iterator pointed on the lst compnent in the pool
-
-	template<typename C>
-	typename GComponentPool<C>::GPoolPairIterator getBeginPairComponent() const;  // returns the iterator with pair of Entity-Component pointed on the first compnent in the pool
-	template<typename C>
-	typename GComponentPool<C>::GPoolPairIterator getEndPairComponent() const;    // returns the iterator with pair of Entity-Component pointed on the last compnent in the pool
-	*/
 private:
 	uint32 getComponentCount();
 private:
@@ -187,12 +185,6 @@ private:
 	std::vector<ComponentMask>       mComponentMasks;
 };
 
-
-/*template<typename C1, typename C2, typename... Components>
-ComponentMask GEntityManager::getComponentMask() const
-{
-	return getComponentMask<C1> | getComponentMask<C2, Components>();
-}*/
 
 template<typename... Components>
 ComponentMask GEntityManager::getComponentMasks() const
@@ -257,7 +249,7 @@ C* GEntityManager::getComponent (Entity entity) const
 	assert(entity != INVALID_ENTITY);
 
 	uint32 index = GComponent<C>::getComponentId();
-	if (!mComponentPools[index])
+	if (!doesHaveComponent<C>(entity) || !mComponentPools[index])
 		return nullptr;
 	return static_cast<C*>(mComponentPools[index]->getComponent(mComponentIndexes[entity][index]));
 }
@@ -268,37 +260,5 @@ bool GEntityManager::doesHaveComponent(Entity entity) const
 	uint32 id = GComponent<C>::getComponentId();
 	return mComponentMasks[entity].contains(id);
 }
-/*
-template<typename C>
-typename GComponentPool<C>::GPoolIterator GEntityManager::getBeginComponent() const
-{
-	typedef typename GComponentPool<C>::GPoolIterator GPoolIterator;
-	auto componentPool = getComponentPool<C>();
-	return !componentPool  ? GPoolPairIterator(nullptr, 0) : componentPool->begin();
-}
-
-template<typename C>
-typename GComponentPool<C>::GPoolIterator GEntityManager::getEndComponent() const
-{
-	typedef typename GComponentPool<C>::GPoolIterator GPoolIterator;
-	auto componentPool = getComponentPool<C>();
-	return !componentPool  ? GPoolPairIterator(nullptr, 0) : componentPool->end();
-}
-
-template<typename C>
-typename GComponentPool<C>::GPoolPairIterator GEntityManager::getBeginPairComponent() const
-{
-	typedef typename GComponentPool<C>::GPoolPairIterator GPoolPairIterator;
-	auto componentPool = getComponentPool<C>();
-	return !componentPool  ? GPoolPairIterator(nullptr, 0) : componentPool->begin();
-}
-
-template<typename C>
-typename GComponentPool<C>::GPoolPairIterator GEntityManager::getEndPairComponent() const
-{
-	typedef typename GComponentPool<C>::GPoolPairIterator GPoolPairIterator;
-	auto componentPool = getComponentPool<C>();
-	return !componentPool  ? GPoolPairIterator(nullptr, 0) : componentPool->end();
-}*/
 #endif
 

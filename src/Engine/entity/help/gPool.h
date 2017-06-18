@@ -235,6 +235,7 @@ public:
 	
 	virtual void   destroy(uint32 index)
 	{
+		assert(index <= mCapacity);
 		auto ptrDestroy = static_cast<Block*>(get(index));
 		if (ptrDestroy->mInUse)
 		{

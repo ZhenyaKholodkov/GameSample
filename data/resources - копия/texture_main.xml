@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:032e4b35c88186cb59cd626521d32655:4a6e61b62990071d7ae2098c990db181:9ebe2603d27037a2148c79debcbbc179$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlas imagePath="texture_main.png" width="678" height="780">
+    <sprite n="field.png" x="0" y="0" w="660" h="620" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_down.png" x="0" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_move.png" x="300" y="620" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="play_btn_up.png" x="0" y="680" w="300" h="60" pX="0.5" pY="0.5"/>
+    <sprite n="title.png" x="300" y="680" w="100" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="title_2.png" x="400" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_4.png" x="408" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_8.png" x="416" y="680" w="8" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_16.png" x="424" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_32.png" x="442" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_64.png" x="460" y="680" w="18" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_128.png" x="478" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_256.png" x="518" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_512.png" x="558" y="680" w="40" h="13" pX="0.5" pY="0.5"/>
+    <sprite n="title_1024.png" x="598" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
+    <sprite n="title_2048.png" x="638" y="680" w="40" h="14" pX="0.5" pY="0.5"/>
+</TextureAtlas>

@@ -36,17 +36,22 @@ void GCollisionSystem::checkCollision(Entity checkEntity)
 		else
 		{
 			checkCollision->signal_Collisioned();
-			collision.signal_Collisioned();
+			checkCollision->signal_CollisionedWith(entity);
+			checkCollision->signal_CollisionedWho(checkEntity);
+			if (checkCollision->mDestroyAfterCollision)
+				mEntityManager->destroyEntity(checkEntity);
 		}
 	});
 }
 
 void GCollisionSystem::update(int dt)
 {
+	if (isStoped())
+		return;
 	mEntityManager->each<GCollisionComponent>(
 		[&](Entity entity, GCollisionComponent& collision)
 	{
-		if (collision.mNeedCheck)
+	//	if (collision.mNeedCheck)
 			checkCollision(entity);
 	});
 }

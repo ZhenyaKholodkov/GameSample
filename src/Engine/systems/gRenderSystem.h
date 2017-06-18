@@ -15,6 +15,8 @@ public:
 
 	virtual void update(int dt);
 private:
+	void setParentParams(Entity parent);
+private:
 	unsigned int mBackgroundColor;
 
 	GRenderManager* mRenderer;

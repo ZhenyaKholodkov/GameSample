@@ -1,10 +1,15 @@
 ﻿#ifndef GRENDERMANAGER_H
 #define GRENDERMANAGER_H
 
+#include <memory>
 #include <vector>
 #include <stack>
 #include <stdio.h>
 #include "Types.h"
+#include <windows.h>
+#include <gl\GL.h>
+#include <gl\GLU.h>
+
 
 class GSprite;
 
@@ -25,7 +30,7 @@ public:
 	void	endFrame();
 	void	drawLine(GVector3 posLeft, GVector3 posRight, IGColor color);
 	void	drawSprite(GSprite* sprite);                 // calculates vertexes, texture coordanates and pushes it to array for rendering
-
+	void    drawText(std::string text, GColor color, uint32 fontSize = 24);
 	uint32  loadTexture(const unsigned char* bits, uint32 textureWidth, uint32 textureHegih); // loads texture to VRAM and returns the GL id.
 	void    unloadTexture(uint32 textureId);                                                  // unloads the texture with GL id from VRAM.
 
@@ -49,7 +54,7 @@ private:
 	std::stack<GMatrix>   mMatrixStack;
 						   
 	std::vector<GVector3> mVertexData;                 // vertexes for rendering
-	std::vector<GVector2> mTextCoordData;              // texture coordinates for rendering
+	std::vector<GVector2> mTextCoordData;              // texture coordinates for rendering		
 	std::vector<uint16>   mIndexesData;
 
 	float                 mClearColorR;
@@ -65,6 +70,8 @@ private:
 						  
 	int					  mWidth;
 	int					  mHeight;
+
+	/*text rendering */
 private:
 	void clear() const;
 	bool visible() const;

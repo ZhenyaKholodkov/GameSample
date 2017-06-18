@@ -10,8 +10,8 @@ class GRenderableComponent : public GComponent<GRenderableComponent>
 {
 public:
 	GRenderableComponent() : mSprite(nullptr), mCurrentXScale(0.0f), mCurrentYScale(0.0f), mIsVisible(true){};
-	GRenderableComponent(GSprite* sprite, float xScale = 1.0f, float yScale = 1.0f, float angle = 0.0f) :
-		mSprite(sprite), mCurrentXScale(xScale), mCurrentYScale(yScale), mAngle(angle), mIsVisible(true)
+	GRenderableComponent(GSprite* sprite, float xScale = 1.0f, float yScale = 1.0f, float angle = 0.0f, std::string text = "", GColor textColor = GColor(), uint32 fontSize=24) :
+		mSprite(sprite), mCurrentXScale(xScale), mCurrentYScale(yScale), mAngle(angle), mIsVisible(true), mText(text), mTextColor(textColor), mFontSize(fontSize)
 	{
 		mSprite = sprite;
 	};
@@ -26,9 +26,22 @@ public:
 	void SetSprite(GSprite* sprite) { mSprite = sprite; }
 
 	float getXScale() const { return mCurrentXScale; }
-	void  setXScale(float xScale) { mCurrentXScale = xScale; }
+	void  setXScale(float xScale) 
+	{
+		signal_ScaleChanged(xScale, mCurrentYScale);
+		mCurrentXScale = xScale; 
+	}
 	float getYScale() const { return mCurrentYScale; }
-	void  setYScale(float yScale) { mCurrentYScale = yScale; }
+	void  setYScale(float yScale) 
+	{
+		signal_ScaleChanged(mCurrentXScale, yScale);
+		mCurrentYScale = yScale; 
+	}
+	void  setXYScale(float xScale, float yScale)
+	{
+		mCurrentXScale = xScale; mCurrentYScale = yScale;
+		signal_ScaleChanged(mCurrentXScale, mCurrentYScale);
+	}
 
 	float getAngle() const { return mAngle; }
 	void  setAngle(float angle) { mAngle = angle; }
@@ -39,8 +52,8 @@ public:
 	bool IsPiontInsideWH(GCursor localPoint) const
 	{
 		if (!mSprite || ((localPoint.x < -mSprite->getPivotX()) || (localPoint.y < -mSprite->getPivotY()) ||
-			(localPoint.x >= mSprite->getWidth()) ||
-			(localPoint.y >= mSprite->getHeight())))
+			(localPoint.x >= mSprite->getWidth() - mSprite->getPivotX()) ||
+			(localPoint.y >= mSprite->getHeight() - mSprite->getPivotY())))
 		{
 			return false;
 		}
@@ -49,9 +62,17 @@ public:
 
 	void changeScale(float xScale, float yScale)
 	{
-		signal_ScaleChanged(xScale, yScale);
-		mCurrentXScale = xScale; mCurrentYScale = yScale;
+		setXYScale(xScale, yScale);
 	}
+
+	std::string getText() const { return mText; }
+	void setText(std::string text) { mText = text; }
+
+	uint32 getFontSize() const { return mFontSize; }
+	void setFontSize(uint32 size) { mFontSize = size; }
+
+	GColor getTextColor() const { return mTextColor; }
+	void setTextColor(GColor color) { mTextColor = color; }
 public:/*slots*/
 	 const boost::signals2::signal<void(GSprite*)>::slot_type         slot_ChangeSprite      = boost::bind(&GRenderableComponent::SetSprite, this, _1);
 	 const boost::signals2::signal<void(float, float)>::slot_type     slot_ChangeScale       = boost::bind(&GRenderableComponent::changeScale, this, _1, _2);
@@ -65,6 +86,9 @@ public:/*signals*/
 
 private:
 	GSprite* mSprite;
+	std::string mText; //here for now!
+	GColor mTextColor;
+	uint32 mFontSize;
 
 	float mCurrentXScale;
 	float mCurrentYScale;

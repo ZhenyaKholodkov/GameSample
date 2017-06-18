@@ -2,6 +2,9 @@
 #define GMOVEABLEANIMATIONCOMPONENT_H
 
 #include "gComponent.h"
+#include "gEasing.h"
+
+#include <math.h>
 
 class GMoveableAnimationComponent : public GComponent<GMoveableAnimationComponent>
 {
@@ -14,9 +17,9 @@ public:
 	};
 
 	GMoveableAnimationComponent() : mXDestination(0.0f), mYDestination(0.0f), mMovingTime(0), mCurrentTime(0), mState(STATE_WAIT), mDX(0.0f), mDY(0.0f) {};
-	GMoveableAnimationComponent(float begX, float begY, float xDest, float yDest, int time, bool repeat = false) :
-		mBeginX(begX), mBeginY(begY), mXDestination(xDest),
-		mYDestination(yDest), mMovingTime(time), mCurrentTime(0), mRepeat(repeat), mState(STATE_WAIT)
+	GMoveableAnimationComponent(float begX, float begY, float xDest, float yDest, int time, bool repeat = false, GEasings::EasingType easing = GEasings::EasingType::NONE, bool destroyAfterFinished = false) :
+		mBeginX(begX), mBeginY(begY), mXDestination(xDest), mYDestination(yDest), mMovingTime(time),
+		mCurrentTime(0), mRepeat(repeat), mState(STATE_WAIT), mEasing(easing), mDestroyAfterFinished(destroyAfterFinished)
 	{
 		recalcDxDy();
 	};
@@ -24,16 +27,17 @@ public:
 	{
 		signal_LocationChanged.disconnect_all_slots();
 		signal_MovingFinished.disconnect_all_slots();
+		signal_MovingFinishedEntity.disconnect_all_slots();
 		signal_MovingFinishedWithData.disconnect_all_slots();
 	};
 
 	float getCurrentX()
 	{
-		return mBeginX + mDX * mCurrentTime / mMovingTime;
+		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginX, mDX, mMovingTime);
 	}
 	float getCurrentY()
 	{
-		return mBeginY + mDY * mCurrentTime / mMovingTime;
+		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginY, mDY, mMovingTime);
 	}
 
 	float GetXDestination() { return mXDestination; }
@@ -51,17 +55,28 @@ public:
 
 	void reset() { mCurrentTime = 0; }
 	void setState(uint32 state) { mState = state; }
+	uint32 getState() const { return mState; }
 
-
+	bool destroyAfterFinished() const { return mDestroyAfterFinished; }
 public:/*slots*/
 	const boost::signals2::signal<void()>::slot_type slot_Move = boost::bind(&GMoveableAnimationComponent::setState, this, GMoveableAnimationComponent::STATE_MOVE);
+    const boost::signals2::signal<void(int)>::slot_type slot_ChangeVelocity = boost::bind(&GMoveableAnimationComponent::changeVelocity, this, _1);
 
 public: /*signals*/
 	boost::signals2::signal<void(float, float)>     signal_LocationChanged;
-	boost::signals2::signal<void(Entity)>           signal_MovingFinished;
+	boost::signals2::signal<void()>                 signal_MovingFinished;
+	boost::signals2::signal<void(Entity)>           signal_MovingFinishedEntity;
 	boost::signals2::signal<void(Entity)>           signal_MovingFinishedWithData;
 
 private:
+	void changeVelocity(int velocity)
+	{
+		int distance = sqrt(pow(mXDestination - mBeginX, 2) + pow(mYDestination - mBeginY, 2));
+		int time = distance * 1000 / velocity;
+		float difference = static_cast<float>(mCurrentTime) / static_cast<float>(mMovingTime);
+		mCurrentTime = time * difference;
+		mMovingTime = time; 
+	}
 	void recalcDxDy()
 	{
 		mDX = mXDestination - mBeginX;
@@ -78,11 +93,13 @@ private:
 	int mCurrentTime;
 
 	bool mRepeat;
+	bool mDestroyAfterFinished;    // destroy entity after finishing the moving
 
 	uint32 mState;
 
 	float mDX;
 	float mDY;
+	GEasings::EasingType mEasing;
 };
 
 #endif //GMOVEABLECOMPONENT_H

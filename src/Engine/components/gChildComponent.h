@@ -9,11 +9,12 @@ public:
 	GChildComponent() {};
 	virtual ~GChildComponent() {};
 
-	void setChild(Entity entity) { mChild = entity; }
-	Entity getChild() { return mChild; }
+	void addChild(Entity entity) { mChilds.push_back(entity); }
+	void getChilds(std::vector<Entity> &vector) { vector = mChilds;/* std::copy(mChilds.begin(), mChilds.end(), vector.begin());*/ }
+	void removeChild(Entity entity) { mChilds.erase(std::remove(mChilds.begin(), mChilds.end(), entity), mChilds.end()); }
 
 private: 
-	Entity mChild;
+	std::vector<Entity> mChilds;
 };
 
 #endif //GLOCATIONCOMPONENT_H

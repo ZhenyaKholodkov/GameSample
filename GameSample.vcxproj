@@ -84,11 +84,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BOOST_TEST_DETECT_MEMORY_LEAK;_HAS_CXX17;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src/Engine/systems/mechanics;src/Engine/entity/help;src/Engine/utils;src/thirdparty/sigslot;src/Engine/systems;src/Engine/components/mechanics;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;$(BOOST_INCLUDE);src\thirdparty\boost\include;src\thirdparty\libpng;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src/thirdparty/ftgl/include;src/Engine/systems/mechanics;src/Engine/entity/help;src/Engine/utils;src/thirdparty/glew/include;src/thirdparty/freetype/include;src/thirdparty/liboglft;src/thirdparty/libtextdraw;src/thirdparty/openGLText;src/thirdparty/sigslot;src/Engine/systems;src/Engine/components/mechanics;src/Engine/components;src/Engine/entity;src\Engine\graphics\gpngloader;src/Engine/render;src/Engine/resources;src/Engine/pngloader;src/Engine/io;src\thirdparty\zlib\INCLUDE;src/Engine/graphics;src\thirdparty\Tinyxml;src\thirdparty\zlib;$(BOOST_INCLUDE);src\thirdparty\boost\include;src\thirdparty\libpng;src/Game/GameScene;src/Game/;src/Engine/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(BOOST_LIBS);src\thirdparty\boost\libs;src\thirdparty\zlib\LIB;src\thirdparty\libpng\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ftgl.lib;glew32.lib;freetype28.lib;opengl32.lib;libdrawtext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>src\thirdparty\ftgl\lib;src\thirdparty\glew;$(BOOST_LIBS);src\thirdparty\libtextdraw\lib;src\thirdparty\boost\libs;src\thirdparty\freetype\lib;src\thirdparty\zlib\LIB;src\thirdparty\libpng\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
@@ -111,7 +111,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>src/Engine/utils;C:\Program Files %28x86%29\Visual Leak Detector\include;src/thirdparty/sigslot;src/thirdparty/libz;src/thirdparty/Tinyxml;src/thirdparty/libpng;src/thirdparty;src/Game;src/Engine/systems/mechanics;src/Engine/io;src/Engine/systems;src/Engine/render;src/Engine/graphics;src/Engine/resources;src/Engine/entity/help;src/Engine/entity;src/Engine/graphics/gpngloader;src/Engine/control;src/Engine/components/mechanics;src/Engine/components;src/Engine;$(SolutionDir)\src\thirdparty\zlib;$(SolutionDir)\src\thirdparty\zlib\INCLUDE;$(SolutionDir)\src\thirdparty\libpng\INCLUDE;$(SolutionDir)\src\thirdparty\libpng;$(SolutionDir)\src\Game;$(SolutionDir)\src\Engine\OpenGL\ext;$(SolutionDir)\src\Engine\OpenGL;$(SolutionDir)\src\Engine;$(SolutionDir)\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src/thirdparty/ftgl/inlcude;src/Engine/utils;C:\Program Files %28x86%29\Visual Leak Detector\include;src/thirdparty/sigslot;src/thirdparty/libz;src/thirdparty/Tinyxml;src/thirdparty/libpng;src/thirdparty;src/Game;src/Engine/systems/mechanics;src/Engine/io;src/Engine/systems;src/Engine/render;src/Engine/graphics;src/Engine/resources;src/Engine/entity/help;src/Engine/entity;src/Engine/graphics/gpngloader;src/Engine/control;src/Engine/components/mechanics;src/Engine/components;src/Engine;$(SolutionDir)\src\thirdparty\zlib;$(SolutionDir)\src\thirdparty\zlib\INCLUDE;$(SolutionDir)\src\thirdparty\libpng\INCLUDE;$(SolutionDir)\src\thirdparty\libpng;$(SolutionDir)\src\Game;$(SolutionDir)\src\Engine\OpenGL\ext;$(SolutionDir)\src\Engine\OpenGL;$(SolutionDir)\src\Engine;$(SolutionDir)\src</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>_CRT_SECURE_NO_WARNINGS;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -119,6 +119,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ftgl.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,10 +160,16 @@
     <ClCompile Include="src\Engine\systems\gUserInputSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gRenderSystem.cpp" />
     <ClCompile Include="src\Engine\systems\gSystemManager.cpp" />
+    <ClCompile Include="src\Engine\utils\gEasing.cpp" />
     <ClCompile Include="src\Engine\utils\Types.cpp" />
     <ClCompile Include="src\Engine\utils\Utils.cpp" />
     <ClCompile Include="src\Engine\GGameWindow.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameEntityGroup.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameExitWindow.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameGun.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameReplayWindow.cpp" />
     <ClCompile Include="src\Game\GGame.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameScene.cpp" />
     <ClCompile Include="src\Game\gMainScene.cpp" />
     <ClCompile Include="src\Game\main.cpp" />
     <ClCompile Include="src\thirdparty\libpng\png.c" />
@@ -180,6 +187,7 @@
     <ClCompile Include="src\thirdparty\libpng\pngwrite.c" />
     <ClCompile Include="src\thirdparty\libpng\pngwtran.c" />
     <ClCompile Include="src\thirdparty\libpng\pngwutil.c" />
+    <ClCompile Include="src\thirdparty\openGLText\OpenGLText.cpp" />
     <ClCompile Include="src\thirdparty\Tinyxml\tinystr.cpp" />
     <ClCompile Include="src\thirdparty\Tinyxml\tinyxml.cpp" />
     <ClCompile Include="src\thirdparty\Tinyxml\tinyxmlerror.cpp" />
@@ -226,6 +234,11 @@
     <ClInclude Include="src\Engine\graphics\gpngloader\gPngLoader.h" />
     <ClInclude Include="src\Engine\graphics\gTextureDictinary.h" />
     <ClInclude Include="src\Engine\systems\gRotableSystem.h" />
+    <ClInclude Include="src\Engine\utils\gEasing.h" />
+    <ClInclude Include="src\Game\GameScene\gGameEntityGroup.h" />
+    <ClInclude Include="src\Game\GameScene\gGameExitWindow.h" />
+    <ClInclude Include="src\Game\GameScene\gGameGun.h" />
+    <ClInclude Include="src\Game\GameScene\gGameReplayWindow.h" />
     <ClInclude Include="src\Game\GDefines.h" />
     <ClInclude Include="src\Engine\graphics\gTextureHandle.h" />
     <ClInclude Include="src\Engine\graphics\gTextureManager.h" />
@@ -252,11 +265,37 @@
     <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\entity\help\gPool.h" />
     <ClInclude Include="src\Game\GGame.h" />
+    <ClInclude Include="src\Game\GameScene\gGameScene.h" />
     <ClInclude Include="src\Game\gMainScene.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBBox.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBitmapGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBuffer.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBufferFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBufferGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTExtrdGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\ftgl.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLBitmapFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLExtrdFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLOutlineFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLPixmapFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLPolygonFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLTextureFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTLayout.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTOutlineGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPixmapGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPoint.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPolyGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTSimpleLayout.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTTextureGlyph.h" />
     <ClInclude Include="src\thirdparty\libpng\config.h" />
     <ClInclude Include="src\thirdparty\libpng\png.h" />
     <ClInclude Include="src\thirdparty\libpng\pngconf.h" />
     <ClInclude Include="src\thirdparty\libpng\pngpriv.h" />
+    <ClInclude Include="src\thirdparty\libtextdraw\drawtext.h" />
+    <ClInclude Include="src\thirdparty\libtextdraw\drawtext_impl.h" />
+    <ClInclude Include="src\thirdparty\openGLText\OpenGLText.h" />
     <ClInclude Include="src\thirdparty\sigslot\sigslot.h" />
     <ClInclude Include="src\thirdparty\Tinyxml\tinystr.h" />
     <ClInclude Include="src\thirdparty\Tinyxml\tinyxml.h" />
@@ -284,6 +323,7 @@
     <ClInclude Include="src\thirdparty\zlib\zutil.h" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="src\thirdparty\glew\glew32.lib" />
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

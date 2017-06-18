@@ -14,6 +14,8 @@ GRotableSystem::~GRotableSystem()
 
 void GRotableSystem::update(int dt)
 {
+	if (isStoped())
+		return;
 	mEntityManager->each<GRotableComponent, GRenderableComponent>([&](Entity entity, GRotableComponent& rotable, GRenderableComponent& renderable)
 	{
 		if (rotable.mState == GRotableComponent::STATE_WAIT)
@@ -24,23 +26,30 @@ void GRotableSystem::update(int dt)
 			rotable.signal_AngleChangingBegin();
 		}
 
-		rotable.mCurrentTime += dt;
-		if (rotable.mTime > rotable.mCurrentTime)
+		if (rotable.mCurrentTime  < rotable.mTime)
 		{
-			rotable.signal_AngleChanged(rotable.getCurrentAngle());
-			renderable.setAngle(rotable.getCurrentAngle());
+			rotable.mCurrentTime += dt;
+			float newAngle = renderable.getAngle() + rotable.getCurrentVelocity();
+			renderable.setAngle(newAngle > 360.0f ? newAngle - 360.0f : newAngle);
+			rotable.signal_AngleChanged(renderable.getAngle());
+			if (rotable.mCurrentTime >= rotable.mTime)
+			{
+				rotable.signal_AngleChangingFinished();
+				rotable.signal_VelocityChangingFinishedEntity(entity);
+			}
 		}
 		else
 		{
-			rotable.signal_AngleChanged(rotable.mEndAngle);
-			renderable.setAngle(rotable.mEndAngle);
-			rotable.signal_AngleChangingFinished();
-			if (rotable.mIsInfinity)
+			if (rotable.mContinueRotation)
 			{
-				rotable.reset();
+				float newAngle = renderable.getAngle() + rotable.getEndVelocity();
+				renderable.setAngle(newAngle > 360.0f ? newAngle - 360.0f : newAngle);
+				rotable.signal_AngleChanged(newAngle);
 			}
 			else
 			{
+				rotable.signal_AngleChangingFinished();
+				rotable.signal_AngleChangingFinishedEntity(entity);
 				rotable.setState(GRotableComponent::STATE_WAIT);
 			}
 		}

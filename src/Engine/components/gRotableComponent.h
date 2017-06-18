@@ -3,6 +3,7 @@
 
 #include "gComponent.h"
 #include "boost/signals2.hpp"
+#include "gEasing.h" 
 
 class GRotableComponent : public GComponent<GRotableComponent>
 {
@@ -13,30 +14,30 @@ public:
 		STATE_WAIT = BIT(1),
 		STATE_ROTATE = BIT(2)
 	};
+	GRotableComponent(float begVelocity, float endVelocity, int time = 0, bool continueRot = true, GEasings::EasingType easing = GEasings::EasingType::NONE)
+		: mBegVelocity(begVelocity), mEndVelocity(endVelocity), mContinueRotation(continueRot), mEasing(easing), mState(STATE_WAIT), mTime(time), mCurrentTime(0), mCurrentVelocity(begVelocity)
+	{
 
-	GRotableComponent(float beginAngle, float endAngle, int time, bool isInfinity)
-		: mBeginAngle(beginAngle), mEndAngle(endAngle), mIsInfinity(isInfinity),
-		  mTime(time), mCurrentTime(0), mState(STATE_WAIT)
-	{
-		recalcDAngle();
-	};
-	virtual ~GRotableComponent()
-	{
-		signal_AngleChanged.~signal();
-		signal_AngleChangingBegin.~signal();
-		signal_AngleChangingFinished.~signal();
-	};
-
-	float getCurrentAngle()
-	{
-		return mBeginAngle + mDAngle * mCurrentTime / mTime;
 	}
 
-	void setBeginXScale(float angle) { mBeginAngle = angle; recalcDAngle(); }
-	void setEndXScale(float angle){ mEndAngle = angle; recalcDAngle(); }
+	virtual ~GRotableComponent()
+	{
+	};
+
+	float getCurrentVelocity()
+	{
+		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBegVelocity, mEndVelocity - mBegVelocity, mTime);
+	}
+
+	void setBegVelocity(float velocity) { mBegVelocity = velocity; }
+	float getBegVelocity() const { return mBegVelocity; }
+	void setEndVelocity(float velocity) { mEndVelocity = velocity; }
+	float getEndVelocity() const { return mEndVelocity; }
 
 	void reset() { mCurrentTime = 0; }
 	void setState(uint32 state) { mState = state; }
+
+	void setEasing(GEasings::EasingType type) { mEasing = type; }
 
 public:/*slots*/
 	const boost::signals2::signal<void()>::slot_type slot_Rotate = boost::bind(&GRotableComponent::setState, this, GRotableComponent::STATE_ROTATE);
@@ -44,22 +45,21 @@ public: /*signals*/
 	boost::signals2::signal<void(float)>         signal_AngleChanged;
 	boost::signals2::signal<void()>              signal_AngleChangingBegin;
 	boost::signals2::signal<void()>              signal_AngleChangingFinished;
+	boost::signals2::signal<void(Entity)>        signal_AngleChangingFinishedEntity;
+	boost::signals2::signal<void(Entity)>        signal_VelocityChangingFinishedEntity;
 
-
-private:
-	void recalcDAngle()
-	{
-		mDAngle = mEndAngle - mBeginAngle;
-	}
 private: 
-	float mBeginAngle;
-	float mEndAngle;
-	float mDAngle;
-	bool  mIsInfinity;
+	float mBegVelocity;
+	float mEndVelocity;
+	float mCurrentVelocity;
+
+	bool mContinueRotation;
 
 	int mTime;
 	int mCurrentTime;
 	uint32 mState;
+
+	GEasings::EasingType mEasing;
 };
 
 #endif //GROTABLECOMPONENT_H

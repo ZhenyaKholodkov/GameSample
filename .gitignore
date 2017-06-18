@@ -60,3 +60,4 @@ x64/
 data/GameSample.iobj
 data/GameSample.ipdb
 *.pdb
+src/thirdparty/boost_none/

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:be0a0b62398a2cbaa517792f28177072:e0aadcdad0ef49a0f5a6b758aecd1c44:dd6d8c0304e89f23f328daf296e4bd6d$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlases>
+<TextureAtlas imagePath="texture_labyrinth.png" width="512" height="484">
+    <sprite n="0.png" x="0" y="0" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="1.png" x="300" y="100" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="3.png" x="0" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="4.png" x="128" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="5.png" x="256" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="6.png" x="384" y="228" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="7.png" x="0" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="8.png" x="128" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="Bomb.png" x="428" y="0" w="64" h="64" pX="0.5" pY="0.5"/>
+    <sprite n="coin.png" x="428" y="128" w="32" h="32" pX="0.5" pY="0.5"/>
+    <sprite n="Grass.png" x="256" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="over.png" x="0" y="128" w="300" h="100" pX="0.5" pY="0.5"/>
+    <sprite n="player.png" x="428" y="64" w="64" h="64" pX="0.5" pY="0.5"/>
+    <sprite n="stones.png" x="384" y="356" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="won.png" x="128" y="0" w="300" h="100" pX="0.5" pY="0.5"/>
+</TextureAtlas>
+
+
+</TextureAtlases>

@@ -8,6 +8,7 @@
 
 using namespace std;
 
+#define PI 3.141592653589793f
 #define DEGREE_TO_RAD 0.0174532925199f 
 #define MAX_ENTITY_COUNT 300
 #define INVALID_ENTITY (MAX_ENTITY_COUNT + 1)
@@ -56,6 +57,16 @@ struct GObjectRect
 	int   mHeight;
 	float mPivotX;
 	float mPivotY;
+};
+
+struct GColor
+{
+	float   r;  
+	float   g;  
+	float   b;
+	GColor() :r(0), g(0), b(0) {}
+	GColor(float red, float green, float blue) : r(red), g(green), b(blue) {}
+	GColor(uint32 rgba) : r(((rgba >> 24) & 0xFF) / 255.0f), g(((rgba >> 16) & 0xFF) / 255.0f), b(((rgba >> 8) & 0xFF) / 255.0f) {}
 };
 
 class IGColor     

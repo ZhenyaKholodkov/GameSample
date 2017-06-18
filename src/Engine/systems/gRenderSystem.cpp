@@ -14,31 +14,64 @@ GRenderSystem::~GRenderSystem()
 
 void GRenderSystem::update(int dt)
 {
+	if (isStoped())
+		return;
 	mRenderer->setClearColor(mBackgroundColor);
 	mRenderer->startFrame();
-
-	mRenderer->save();
-	mRenderer->scale(0.75f, 0.75f);
-
+	//mRenderer->beginTextRendering();
 	mEntityManager->each<GRenderableComponent, GLocationComponent>([this](Entity entity, GRenderableComponent& renderable, GLocationComponent& location)
 	{
 		if (!renderable.isVisible())
 			return;
 
 		GSprite* sprite = renderable.GetSprite();
-		if (!sprite)
-			return;
+		/**if (!sprite)
+			return;*/
 
 		mRenderer->save();
-		mRenderer->translate(location.getX() / 0.75f, location.getY() / 0.75f);
+
+		if (mEntityManager->doesHaveComponent<GParentComponent>(entity))
+			setParentParams(mEntityManager->getComponent<GParentComponent>(entity)->getParent());
+
+		mRenderer->translate(location.getX(), location.getY());
 		mRenderer->rotate(renderable.getAngle());
 		mRenderer->scale(renderable.getXScale(), renderable.getYScale());
+		if (sprite)
+		{
+			mRenderer->drawSprite(sprite);
+		}
 
-		mRenderer->drawSprite(sprite);
-
+	    std:string text = renderable.getText();
+		if (!text.empty())
+		{
+			mRenderer->drawText(text, renderable.getTextColor(), renderable.getFontSize());
+		}
 		mRenderer->restore();
 	});
-	mRenderer->restore();
 
+	//mRenderer->endTextRendering();
 	mRenderer->endFrame();
+
+}
+
+void GRenderSystem::setParentParams(Entity parent)
+{
+	if (mEntityManager->doesHaveComponent<GParentComponent>(parent)) //if parent has a parent
+	{
+		auto parentComponent = mEntityManager->getComponent<GParentComponent>(parent);
+		setParentParams(parentComponent->getParent());
+	}
+
+	if (mEntityManager->doesHaveComponent<GLocationComponent>(parent))
+	{
+		auto parentLocation = mEntityManager->getComponent<GLocationComponent>(parent);
+		mRenderer->translate(parentLocation->getX(), parentLocation->getY());
+	}
+
+	if (mEntityManager->doesHaveComponent<GRenderableComponent>(parent))
+	{
+		auto parentRenderable = mEntityManager->getComponent<GRenderableComponent>(parent);
+		mRenderer->rotate(parentRenderable->getAngle());
+		mRenderer->scale(parentRenderable->getXScale(), parentRenderable->getYScale());
+	}
 }

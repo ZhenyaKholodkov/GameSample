@@ -21,7 +21,7 @@ public:
 	//static GSystemManager* instance();
 
 	template<typename S>
-	void registerSystem(std::shared_ptr<GEntityManager> manager);
+	std::shared_ptr<GBaseSystem> registerSystem(std::shared_ptr<GEntityManager> manager);
 
 	template<typename S>
 	std::shared_ptr<GBaseSystem>  getSystem() const;
@@ -37,10 +37,11 @@ private:
 };
 
 template<typename S>
-void GSystemManager::registerSystem(std::shared_ptr<GEntityManager> manager)
+std::shared_ptr<GBaseSystem> GSystemManager::registerSystem(std::shared_ptr<GEntityManager> manager)
 {
 	uint32 index = GSystem<S>::getSystemId();
 	mSystems[index] = std::shared_ptr<GBaseSystem>(new S(manager));
+	return mSystems[index];
 }
 
 template<typename S>

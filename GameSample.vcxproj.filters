@@ -244,6 +244,13 @@
     <ClCompile Include="src\Engine\GGameWindow.cpp" />
     <ClCompile Include="src\Game\gMainScene.cpp" />
     <ClCompile Include="src\Engine\systems\gRotableSystem.cpp" />
+    <ClCompile Include="src\Engine\utils\gEasing.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameScene.cpp" />
+    <ClCompile Include="src\thirdparty\openGLText\OpenGLText.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameExitWindow.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameReplayWindow.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameEntityGroup.cpp" />
+    <ClCompile Include="src\Game\GameScene\gGameGun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GGame.h">
@@ -471,10 +478,42 @@
     <ClInclude Include="src\Game\GDefines.h" />
     <ClInclude Include="src\Engine\components\gRotableComponent.h" />
     <ClInclude Include="src\Engine\systems\gRotableSystem.h" />
+    <ClInclude Include="src\Engine\utils\gEasing.h" />
+    <ClInclude Include="src\Game\GameScene\gGameScene.h" />
+    <ClInclude Include="src\thirdparty\openGLText\OpenGLText.h" />
+    <ClInclude Include="src\thirdparty\libtextdraw\drawtext.h" />
+    <ClInclude Include="src\thirdparty\libtextdraw\drawtext_impl.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBBox.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBitmapGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBuffer.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBufferFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBufferGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTExtrdGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\ftgl.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLBitmapFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLExtrdFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLOutlineFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLPixmapFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLPolygonFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGLTextureFont.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTLayout.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTOutlineGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPixmapGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPoint.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTPolyGlyph.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTSimpleLayout.h" />
+    <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTTextureGlyph.h" />
+    <ClInclude Include="src\Game\GameScene\gGameExitWindow.h" />
+    <ClInclude Include="src\Game\GameScene\gGameReplayWindow.h" />
+    <ClInclude Include="src\Game\GameScene\gGameEntityGroup.h" />
+    <ClInclude Include="src\Game\GameScene\gGameGun.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">
       <Filter>src\thirdparty\zlib\lib</Filter>
     </Library>
+    <Library Include="src\thirdparty\glew\glew32.lib" />
   </ItemGroup>
 </Project>
