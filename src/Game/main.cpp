@@ -6,7 +6,7 @@
 #include "Utils.h"
 #include "GDefines.h"
 
-#include <vld.h>
+//#include <vld.h>
 
 
 INT32 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT32 mode)

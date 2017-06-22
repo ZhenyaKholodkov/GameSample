@@ -9,8 +9,17 @@ GGameExitWindow::GGameExitWindow(std::shared_ptr<GEntityManager> manager) :
 {
 
 }
+
 GGameExitWindow::~GGameExitWindow()
 {
+	unload();
+}
+
+void GGameExitWindow::unload()
+{
+	signal_show.disconnect_all_slots();
+	signal_hide.disconnect_all_slots();
+	signal_exit.disconnect_all_slots();
 	mManager->destroyEntity(mWindow);
 	mManager->destroyEntity(mMenuButton);
 	mManager->destroyEntity(mBackButton);
@@ -20,7 +29,8 @@ GGameExitWindow::~GGameExitWindow()
 void GGameExitWindow::create()
 {
 	GSprite* window = GResManager::Instance()->GetSprite("window.png");
-	mWindow = mManager->createPlainEntity(window, WIDTH / 2, HEIGHT / 3);
+	float x = static_cast<float>(WIDTH) / 2.0f, y = static_cast<float>(HEIGHT) / 3.0f;
+	mWindow = mManager->createPlainEntity(window, x, y, 3);
 	mManager->getComponent<GRenderableComponent>(mWindow)->setXYScale(0.0f, 0.0f);
 	auto scale = mManager->addComponentsToEntity<GScalableComponent>(mWindow, 0.0f, 0.0f, 1.0f, 1.0f, 1000,
 		GEasings::EasingType::EXPO_OUT_EASING);
@@ -31,9 +41,10 @@ void GGameExitWindow::create()
 	createBackButton();
 
 
-	mText = mManager->createEntity();
-	mManager->addComponentsToEntity<GLocationComponent>(mText, 0.0f/*-window->getWidth() / 2.5f*/, -window->getHeight() / 5);
-	mManager->addComponentsToEntity<GRenderableComponent>(mText, nullptr, 1.0f, 1.0f, 0.0f, "Tap the menu button to exit.", GColor(0x275fa3), 26);
+	mText = mManager->createEntity(3);
+	mManager->addComponentsToEntity<GLocationComponent>(mText, 0.0f, -window->getHeight() / 5.0f);
+	mManager->addComponentsToEntity<GRenderableComponent>(mText, nullptr, 1.0f, 1.0f, 0.0f, "Tap the menu button to exit.", 
+		                                                  GColor(0x275fa3), 26);
 	mManager->setChildParentRelations(mWindow, mText);
 }
 
@@ -45,7 +56,8 @@ void GGameExitWindow::createMenuButton()
 	GSprite* menuDown = GResManager::Instance()->GetSprite("blue_button_menu_down.png");
 
 	float menuButtonScale = 0.5f;
-	mMenuButton = mManager->createButtonEntity(menuNormal, menuMove, menuDown, window->getWidth() / 4, window->getHeight() / 5);
+	float x = window->getWidth() / 4.0f, y = window->getHeight() / 5.0f;
+	mMenuButton = mManager->createButtonEntity(menuNormal, menuMove, menuDown, x, y, 3);
 	mManager->getComponent<GRenderableComponent>(mMenuButton)->setXYScale(menuButtonScale, menuButtonScale);
 	mManager->setChildParentRelations(mWindow, mMenuButton);
 
@@ -63,8 +75,8 @@ void GGameExitWindow::createBackButton()
 
 	float backButtonXScale = -0.5f;
 	float backButtonYScale = 0.5f;
-	mBackButton = mManager->createButtonEntity(menuNormal, menuMove, menuDown, -window->getWidth() / 4,
-		window->getHeight() / 5);
+	float x = -window->getWidth() / 4.0f, y = window->getHeight() / 5.0f;
+	mBackButton = mManager->createButtonEntity(menuNormal, menuMove, menuDown, x, y, 3);
 
 	mManager->getComponent<GRenderableComponent>(mBackButton)->setXYScale(backButtonXScale, backButtonYScale);
 	mManager->setChildParentRelations(mWindow, mBackButton);
@@ -77,7 +89,6 @@ void GGameExitWindow::createBackButton()
 
 void GGameExitWindow::show()
 {
-	create();
 	signal_show();
 }
 

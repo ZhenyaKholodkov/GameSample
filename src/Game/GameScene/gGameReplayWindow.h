@@ -16,6 +16,7 @@ class GGameReplayWindow
 		void create();
 		void show();
 		void hide();
+		void unload();
 	private:
 		void createMenuButton();
 		void createReplayButton();

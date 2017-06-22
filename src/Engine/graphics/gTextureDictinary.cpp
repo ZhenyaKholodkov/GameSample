@@ -4,12 +4,6 @@
 #include "Utils.h"
 
 
-GTextureDictinary* GTextureDictinary::Instance()
-{
-	static GTextureDictinary instance;
-	return &instance;
-}
-
 GTextureDictinary::GTextureDictinary()
 	: mTableSize(1000)
 {
@@ -84,11 +78,9 @@ uint32 GTextureDictinary::getTableID(const char* key)
 
 void GTextureDictinary::destroy()
 {
-	while (mChain) 
+	/*while (mChain) 
 	{
-		GTextureObject* objectToDelete = mChain;
 		GTextureManager::Instance()->unloadTexture(mChain);
-		SAFE_DELETE(objectToDelete);
-	}
+	}*/
 	delete[] mTable;
 }

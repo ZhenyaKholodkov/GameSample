@@ -7,7 +7,7 @@
 class GTextureHandle
 {
 public:
-	GTextureHandle();
+	GTextureHandle(std::shared_ptr<GTextureManager> manager);
 	GTextureHandle(const char* texturePath);
 	GTextureHandle(const GTextureHandle& handle);
 	~GTextureHandle();
@@ -26,6 +26,7 @@ private:
 	inline bool IsNull(void) const { return mTexture == nullptr; }
 private:
 	GTextureObject* mTexture;
+	std::shared_ptr<GTextureManager> mTextureManager;
 };
 
 #endif //TEXTUREHANDLE_H

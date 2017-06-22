@@ -28,7 +28,7 @@ bool GGame::Create()
 	{
 		return false;
 	}
-	mSystemManager->registerSystem<GUserInputSystem>(mEntityManager);
+	mSystemManager->registerSystem<GUserInputSystem>(mEntityManager, static_cast<GInputSignals*>(this));
 	mSystemManager->registerSystem<GRenderSystem>(mEntityManager);
 	auto animSystem = mSystemManager->registerSystem<GAnimationSystem>(mEntityManager);
 	auto moveAnimSystem = mSystemManager->registerSystem<GMoveableAnimationSystem>(mEntityManager);
@@ -118,44 +118,4 @@ int32 GGame::onCreate()
 void GGame::onClose()
 {
 	GGameWindow::onClose();
-}
-
-void GGame::onLMouseDown(GCursor  point)
-{
-	if (isGameOver)
-		return;
-	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
-	inputSystem->OnMouseDown(point);
-}
-
-void GGame::onLMouseUp(GCursor  point)
-{
-	if (isGameOver)
-		return;
-	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
-	inputSystem->OnMouseUp(point);
-}
-
-void GGame::onMouseMove(GCursor point)
-{
-	if (isGameOver)
-		return;
-	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
-	inputSystem->OnMouseMove(point);
-}
-
-void GGame::onKeyUp(GKey key)
-{
-	if (isGameOver)
-		return;
-	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
-	inputSystem->OnKeyUp(key);
-}
-
-void GGame::onKeyDown(GKey key)
-{
-	if (isGameOver)
-		return;
-	std::shared_ptr<GUserInputSystem> inputSystem = std::static_pointer_cast<GUserInputSystem>(mSystemManager->getSystem<GUserInputSystem>());
-	inputSystem->OnKeyDown(key);
 }

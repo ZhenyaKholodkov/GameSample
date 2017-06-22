@@ -3,16 +3,9 @@
 #include "gPngLoader.h"
 
 
-GTextureManager* GTextureManager::Instance()
-{
-	static GTextureManager instance;
-	return &instance;
-}
-
-
 GTextureManager::GTextureManager()
 {
-
+	mTextureDictionary.reset(new GTextureDictinary());
 }
 
 GTextureManager::~GTextureManager()
@@ -22,8 +15,7 @@ GTextureManager::~GTextureManager()
 
 GTextureObject* GTextureManager::LoadTexture(const char* name)
 {
-	GTextureDictinary* dictionary = GTextureDictinary::Instance();
-	GTextureObject* texture = dictionary->find(name);
+	GTextureObject* texture = mTextureDictionary->find(name);
 	if (texture)
 		return texture;
 
@@ -41,7 +33,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 	texture->mWidth = width;
 	texture->mHeight = height;
 
-	dictionary->insert(texture);
+	mTextureDictionary->insert(texture);
 
 	free(data);
 	return texture;
@@ -50,8 +42,7 @@ GTextureObject* GTextureManager::LoadTexture(const char* name)
 
 void GTextureManager::unloadTexture(GTextureObject* texture)
 {
-	GTextureDictinary* dictionary = GTextureDictinary::Instance();
-	dictionary->remove(texture);
-
 	GRenderManager::Instance()->unloadTexture(texture->mGLTextureId);
+	mTextureDictionary->remove(texture);
+	SAFE_DELETE(texture);
 }

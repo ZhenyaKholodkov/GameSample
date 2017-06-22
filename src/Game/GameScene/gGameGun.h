@@ -6,7 +6,6 @@
 #include <queue>
 
 #include "gEntityManager.h"
-#include "gGameEntityGroup.h"
 #include "boost/signals2.hpp"
 #include "boost/bind.hpp"
 
@@ -59,6 +58,10 @@ public:
 private:
 	void generate();
 	void createNextEntity();
+
+	void coinColided();
+public: /*slots*/
+	boost::signals2::signal<void()>::slot_type slot_coinColided = boost::bind(&GGameGun::coinColided, this);
 public:/*signals*/
 	boost::signals2::signal<void()> signal_Lost;
 	boost::signals2::signal<void()> signal_GotCoin;

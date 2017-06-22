@@ -39,6 +39,8 @@ GGameGun::~GGameGun()
 
 void GGameGun::unload()
 {
+	signal_Lost.disconnect_all_slots();
+	signal_GotCoin.disconnect_all_slots();
 	mEntityManager->destroyEntity(mGun);
 }
 
@@ -71,7 +73,7 @@ void GGameGun::generate()
 			mSequence.push_back(0);
 		else if (i < lastCoinIndex)
 			mSequence.push_back(1);
-		else if (i < lastBagIndex)
+		else 
 			mSequence.push_back(2);
 	}
 	auto engine = std::default_random_engine{};
@@ -99,26 +101,26 @@ void GGameGun::createNextEntity()
 	else if (mSequence[mCurrentIndex] == 1)
 	{
 		sprite = GResManager::Instance()->GetSprite("coin.png");
-		mTimeToNextEntity = sprite->getHeight() * 2000 / mVelocity;
+		mTimeToNextEntity = static_cast<int>(sprite->getHeight()) * 2000 / mVelocity;
 	}
 	else if (mSequence[mCurrentIndex] == 2)
 	{
 		sprite = GResManager::Instance()->GetSprite("bag.png");
-		mTimeToNextEntity = sprite->getHeight() * 4000 / mVelocity;
+		mTimeToNextEntity = static_cast<int>(sprite->getHeight()) * 4000 / mVelocity;
 	}
 
 	if (!sprite)
 		return;
 	srand(time(0));
-	int rnd = rand() % 3;
-	float x = WIDTH / 6 + rnd * WIDTH / 3;
-	float y = -sprite->getHeight() / 2;
-	float yDestination = HEIGHT + sprite->getHeight() / 2;
+	float rnd = static_cast<float>(rand() % 3);
+	float x = static_cast<float>(WIDTH) / 6.0f + rnd * static_cast<float>(WIDTH) / 3.0f;
+	float y = -sprite->getHeight() / 2.0f;
+	float yDestination = static_cast<float>(HEIGHT) + sprite->getHeight() / 2;
 	mYBorderForNextEntity = sprite->getHeight();
 
-	Entity entity = mEntityManager->createPlainEntity(sprite, x, y);
+	Entity entity = mEntityManager->createPlainEntity(sprite, x, y, 1);
 
-	uint32 movingeTime = (yDestination - y) * 1000 / mVelocity;
+	int movingeTime = static_cast<int>(yDestination - y) * 1000 / mVelocity;
 	auto moveable = mEntityManager->addComponentsToEntity<GMoveableAnimationComponent>(entity, x, y, x, yDestination,
 		                                                                               movingeTime, false, GEasings::NONE, true);
 
@@ -127,12 +129,18 @@ void GGameGun::createNextEntity()
 
 	moveable->setState(GMoveableAnimationComponent::STATE_MOVE);
 
-	auto collision = mEntityManager->addComponentsToEntity<GCollisionComponent>(entity, sprite->getWidth() / 3, sprite->getHeight() / 3, true);
+	auto collision = mEntityManager->addComponentsToEntity<GCollisionComponent>(entity, sprite->getWidth() / 3.0f, sprite->getHeight() / 3.0f, true);
+	bool res = collision->signal_Collisioned.empty();
 	if (mSequence[mCurrentIndex] == 1)
-		collision->signal_Collisioned.connect([&]() { signal_GotCoin(); });
+		collision->signal_Collisioned.connect(slot_coinColided);
 	else if (mSequence[mCurrentIndex] == 2)
 		collision->signal_Collisioned.connect([&]() { signal_Lost(); });
 
 	mEntityManager->setChildParentRelations(mGun, entity);
 	++mCurrentIndex;
+}
+
+void GGameGun::coinColided()
+{
+	signal_GotCoin();
 }

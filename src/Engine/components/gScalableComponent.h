@@ -29,17 +29,17 @@ public:
 	float getCurrentXScale()
 	{
 		if (mState == STATE_SCALE)
-			return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginXScale, mDSaleX, mTime);
-		else if (mState == STATE_REVERT_SCALE)
-			return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mEndXScale, -mDSaleX, mTime);
+			return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mBeginXScale, mDSaleX, static_cast<float>(mTime));
+		else
+			return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mEndXScale, -mDSaleX, static_cast<float>(mTime));
 	}
 
 	float getCurrentYScale()
 	{
 		if (mState == STATE_SCALE)
-			return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginYScale, mDSaleY, mTime);
-		else if (mState == STATE_REVERT_SCALE)
-			return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mEndYScale, -mDSaleY, mTime);
+			return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mBeginYScale, mDSaleY, static_cast<float>(mTime));
+		else
+			return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mEndYScale, -mDSaleY, static_cast<float>(mTime));
 	}
 
 	void setBeginXScale(float scale) { mBeginXScale = scale; recalcDxDy(); }
@@ -80,8 +80,8 @@ private:
 	float mDSaleX;       //!< need x scale change
 	float mDSaleY;		 //!< need y scale change
 
-	int mTime;
-	int mCurrentTime;
+	int    mTime;
+	int    mCurrentTime;
 	uint32 mState;
 
 	GEasings::EasingType mEasing;

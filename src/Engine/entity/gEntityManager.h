@@ -7,12 +7,13 @@
 #include <functional>
 #include <any>
 #include <cassert>
-#include <bitset>
+#include <list>
 #include <functional>
 #include <utility>
 #include <new>
 #include <queue>
 
+#include "Utils.h"
 #include "Types.h"
 #include "GDefines.h"
 #include "GExeptions.h"
@@ -37,11 +38,17 @@
 #include "gRotableComponent.h"
 #include "gScalableComponent.h"
 
-
 class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 {
+	class EntityPriority;
+
 	friend class Iterator;
 	friend class GGameWindow;
+
+	friend inline bool operator== (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs);
+	friend inline bool operator!= (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs);
+	friend inline bool operator< (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs);
+	friend inline bool operator> (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs);
 	public:
 		template <typename T> struct identity { typedef T type; };
 
@@ -55,43 +62,55 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 			std::shared_ptr<GEntityManager> mEntityManager;
 		};*/
 
-		class Iterator : std::iterator<std::forward_iterator_tag, Entity>
+		class Iterator : std::iterator<std::forward_iterator_tag, std::list<EntityPriority>::const_iterator>
 		{
 			friend class GEntityManager;
 		public:
-			bool         operator==(const Iterator& right) const { return mCurrentEntity == right.mCurrentEntity; }
-			bool         operator!=(const Iterator& right) const { return mCurrentEntity != right.mCurrentEntity; }
-			Entity       operator*()       { return mCurrentEntity; }
-			const Entity operator*() const { return mCurrentEntity; }
+			bool         operator==(const Iterator& right) const { return mIter == right.mIter; }
+			bool         operator!=(const Iterator& right) const { return mIter != right.mIter; }
+			Entity       operator*()       { return mIter->mEntity; }
+			const Entity operator*() const { return mIter->mEntity; }
 			Iterator&    operator++()      { nextExistedEntity(); return *this; }
 
 			Iterator&    operator=(const Iterator& right)
 			{
 				mManager = right.mManager;
 				mMask = right.mMask;
-				mCapacity = right.mManager->mComponentIndexes.size();
-				mCurrentEntity = right.mCurrentEntity;
+				mIter = right.mIter;
 				return *this; 
 			}
-		private:
-			Iterator(std::shared_ptr<const GEntityManager> manager, ComponentMask mask, uint32 index) :mManager(manager), mMask(mask), mCapacity(manager->mComponentIndexes.size()), mCurrentEntity(index)
+
+			void changeIter(Entity entity)
 			{
+				//if(!isEntityValid(mIter->mEntity))
+				if (mManager->mEntityPriorities.size() == 1)
+					mIter = mManager->mEntityPriorities.end();
+				if(mIter->mEntity == entity && mIter != mManager->mEntityPriorities.begin())
+					--mIter;
+			}
+		private:
+			Iterator(std::shared_ptr<GEntityManager> manager, ComponentMask mask, std::list<EntityPriority>::const_iterator iter) :mManager(manager), mMask(mask), mIter(iter)
+			{
+				mConn = mManager->attachToEntityDestroyed(boost::bind(&Iterator::changeIter, this, _1));
 				if (predicate())
 				{
 					nextExistedEntity();
 				}
 			}
 			Iterator(const Iterator& iter) :
-				mManager(iter.mManager), mMask(iter.mMask), mCapacity(iter.mManager->mComponentIndexes.size()), mCurrentEntity(iter.mCurrentEntity)
+				mManager(iter.mManager), mMask(iter.mMask)
 			{}
-			~Iterator() {}
+			~Iterator()
+			{
+				mConn.disconnect();
+			}
 
 
 			void nextExistedEntity()
 			{
-				if (mCurrentEntity < mCapacity)
+				if(mIter != mManager->mEntityPriorities.end())
 				{
-					++mCurrentEntity;
+					++mIter;
 					if (predicate())
 					{
 						nextExistedEntity();
@@ -99,15 +118,15 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 				}
 			}
 
-			inline bool predicate()
+			inline bool predicate() const 
 			{
-				return mCurrentEntity < mCapacity && (!mManager->mComponentMasks.size() || mCurrentEntity == INVALID_ENTITY || !(mManager->getMaskFor(mCurrentEntity).contains(mMask)));
+				return mIter != mManager->mEntityPriorities.end() && (!mManager->mComponentMasks.size() || !(mManager->getMaskFor(mIter->mEntity).contains(mMask)));
 			}
 		private:
-			std::shared_ptr<const GEntityManager> mManager;
-			Entity mCurrentEntity;
-			size_t mCapacity;
+			std::shared_ptr<GEntityManager> mManager;
+			std::list<EntityPriority>::const_iterator mIter;
 			ComponentMask mMask;
+			boost::signals2::connection mConn;
 		};
 
 		template <typename ... Components>
@@ -115,25 +134,38 @@ class GEntityManager : public std::enable_shared_from_this<GEntityManager>
 		{
 			friend class GEntityManager;
 		public:
-			View(std::shared_ptr<const GEntityManager> manager, ComponentMask mask) : mManager(manager), mMask(mask) {}
+			View(std::shared_ptr<GEntityManager> manager, ComponentMask mask) : mManager(manager), mMask(mask) {}
 			View(View& view) : mManager(view.mManager), mMask(view.mMask) {}
 
-			GEntityManager::Iterator begin() const { return GEntityManager::Iterator(mManager, mMask, 0); }
-			GEntityManager::Iterator end()   const { const GEntityManager::Iterator iter(mManager, mMask, (mManager->mComponentIndexes.size())); return iter; }
+			GEntityManager::Iterator begin() const { return GEntityManager::Iterator(mManager, mMask, mManager->mEntityPriorities.begin()); }
+			GEntityManager::Iterator end()   const { return GEntityManager::Iterator(mManager, mMask, mManager->mEntityPriorities.end()); }
 
 			void each(typename identity<std::function<void(Entity entity, Components&...)>>::type f)
 			{
+			//	GEntityManager::Iterator mIter = begin();
+			//	boost::signals2::connection conn = mManager->attachToEntityDestroyed(boost::bind(&Iterator::changeIter, &mIter, _1));
+			//	while(mIter != end())
 				for (Entity it : *this)
 				{
 					f(it, *(mManager->getComponent<Components>(it))...);  //f(it, *(it.component<Components>())...);
+			//		++mIter;
 				}
+			//	conn.disconnect();
 			}
 		private:
-			std::shared_ptr<const GEntityManager> mManager;
+			std::shared_ptr<GEntityManager> mManager;
 			ComponentMask mMask;
+			
 		};
+private:
+	struct EntityPriority
+	{
+		EntityPriority(Entity entity, uint32 priority = 0) : mEntity(entity), mPriority(priority) {}
+		Entity mEntity;
+		uint32 mPriority;
+	};
 public:
-	Entity createEntity();                  // creates and return new Entity. 
+	Entity createEntity(uint32 priority = 0);                  // creates and return new Entity. 
 	void   destroyEntity(Entity entity);    // destoryes the entity with compnents.
 	void   destroyAllEntites();
 	
@@ -147,8 +179,8 @@ private:
 public:
 	~GEntityManager();
 public:
-	Entity createPlainEntity(GSprite* sprite, float xPos, float yPos);
-	Entity createButtonEntity(GSprite* normal, GSprite* move, GSprite* down, float xPos, float yPos);
+	Entity createPlainEntity(GSprite* sprite, float xPos, float yPos, uint32 priority = 0);
+	Entity createButtonEntity(GSprite* normal, GSprite* move, GSprite* down, float xPos, float yPos, uint32 priority = 0);
 
 	template<typename C, typename... Args>
 	C* addComponentsToEntity(Entity entity, Args&& ... args);           //Creates Component C for entity. If it is first component of that type, The ComponentPool will be created.
@@ -163,7 +195,7 @@ public:
 	std::shared_ptr<const GBasePool> GEntityManager::getComponentPool() const;
 
 	template<typename... Components>
-	GEntityManager::View<Components...> getEntitiesWithComponents() const;
+	GEntityManager::View<Components...> getEntitiesWithComponents();
 
 	template <typename... Components>
 	void each(typename GEntityManager::identity<std::function<void(Entity entity, Components&...)>>::type f);
@@ -174,8 +206,16 @@ public:
 	ComponentMask getComponentMask() const;
 
 	const ComponentMask& getMaskFor(Entity entity) const { return mComponentMasks[entity]; }
+
+	boost::signals2::connection attachToEntityDestroyed(boost::signals2::signal<void(Entity)>::slot_type const& f)
+	{
+		return signal_EntityToDestroy.connect(f);
+	}
 private:
 	uint32 getComponentCount();
+	void   addEntityToPriorities(Entity entity, uint32 priority = 0);
+
+	boost::signals2::signal<void(Entity)> signal_EntityToDestroy;
 private:
 	const uint32 DEFUALT_POOL_SIZE = 10;
 	std::queue<Entity>           mAvailableEntities;   // the queue of available entities 
@@ -183,6 +223,7 @@ private:
 	std::vector<std::shared_ptr<GBasePool>>  mComponentPools;       // pools of components. Each Component class has the static identifier that determines the index in this vector for the component pool.
 	std::vector<std::vector<size_t>> mComponentIndexes;
 	std::vector<ComponentMask>       mComponentMasks;
+	std::list<EntityPriority>        mEntityPriorities;
 };
 
 
@@ -207,9 +248,10 @@ ComponentMask GEntityManager::getComponentMask() const
 }
 
 template<typename... Components>
-GEntityManager::View<Components...> GEntityManager::getEntitiesWithComponents() const
+GEntityManager::View<Components...> GEntityManager::getEntitiesWithComponents()
 {
-	return View<Components...>(shared_from_this(), getComponentMasks<Components...>());
+	std::shared_ptr<GEntityManager> manager = shared_from_this();
+	return View<Components...>(manager, getComponentMasks<Components...>());
 }
 
 template <typename ... Components>
@@ -260,5 +302,24 @@ bool GEntityManager::doesHaveComponent(Entity entity) const
 	uint32 id = GComponent<C>::getComponentId();
 	return mComponentMasks[entity].contains(id);
 }
+
+
+inline bool operator== (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs)
+{
+	return lhs.mPriority == rhs.mPriority;
+}
+inline bool operator!= (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs)
+{
+	return lhs.mPriority != rhs.mPriority;
+}
+inline bool operator< (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs)
+{
+	return lhs.mPriority < rhs.mPriority;
+}
+inline bool operator> (const GEntityManager::EntityPriority &lhs, const GEntityManager::EntityPriority &rhs)
+{
+	return lhs.mPriority > rhs.mPriority;
+}
+
 #endif
 

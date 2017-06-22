@@ -14,6 +14,7 @@ class GGameExitWindow
 		~GGameExitWindow();
 
 		void create();
+		void unload();
 	private:
 		void createMenuButton();
 		void createBackButton();

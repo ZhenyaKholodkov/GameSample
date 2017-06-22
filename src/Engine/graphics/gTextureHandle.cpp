@@ -1,14 +1,16 @@
 #include "gTextureHandle.h"
+#include "gResManager.h"
 
-GTextureHandle::GTextureHandle():
-	mTexture(nullptr)
+GTextureHandle::GTextureHandle(std::shared_ptr<GTextureManager> manager):
+	mTexture(nullptr),
+	mTextureManager(manager)
 {
 	
 }
 
 GTextureHandle::GTextureHandle(const char* texturePath)
 {
-	mTexture = GTextureManager::Instance()->LoadTexture(texturePath);
+	mTexture = GResManager::Instance()->mTextureManager->LoadTexture(texturePath);
 	lock();
 }
 
@@ -24,7 +26,7 @@ void GTextureHandle::Set(const char* texturePath)
 		unlock();
 	}
 
-	mTexture = GTextureManager::Instance()->LoadTexture(texturePath);
+	mTexture = mTextureManager->LoadTexture(texturePath);
 	lock();
 }
 
@@ -49,7 +51,8 @@ void GTextureHandle::unlock()
 	if (--mTexture->mRefCounter == 0)
 	{
 		// free
-		GTextureManager::Instance()->unloadTexture(mTexture);
+		if(mTextureManager)
+			mTextureManager->unloadTexture(mTexture);
 	}
 
 	mTexture = nullptr;

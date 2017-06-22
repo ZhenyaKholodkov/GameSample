@@ -243,7 +243,7 @@ public:
 class GVector2
 {
 public:
-	GVector2() {}
+	GVector2() :x(0.0f), y(0.0f) {}
 	GVector2(float xV, float yV) :x(xV), y(yV) {}
 	float x;             
 	float y;             

@@ -8,13 +8,13 @@ class GSprite : GResource
 	friend class GResManager;
 
 public :
-	GSprite(const char* path);
+	GSprite(const char* path, std::shared_ptr<GTextureManager> manager);
 	virtual ~GSprite();
 
-	int    getXPos()   const { return mRect.mXPos;	 }
-	int    getYPos()   const { return mRect.mYPos;   }
-	int    getWidth()  const { return mRect.mWidth;  }
-	int    getHeight() const { return mRect.mHeight; }
+	float  getXPos()   const { return static_cast<float>(mRect.mXPos);   }
+	float  getYPos()   const { return static_cast<float>(mRect.mYPos);   }
+	float  getWidth()  const { return static_cast<float>(mRect.mWidth);  }
+	float  getHeight() const { return static_cast<float>(mRect.mHeight); }
 	float  getPivotX() const { return mRect.mPivotX; }
 	float  getPivotY() const { return mRect.mPivotY; }
 

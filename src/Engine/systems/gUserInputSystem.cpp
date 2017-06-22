@@ -1,9 +1,14 @@
 #include "gUserInputSystem.h"
 
 
-GUserInputSystem::GUserInputSystem(std::shared_ptr<GEntityManager> manager) :
+GUserInputSystem::GUserInputSystem(std::shared_ptr<GEntityManager> manager, GInputSignals* inputs) :
 	GSystem<GUserInputSystem>(manager)
 {
+	inputs->signal_LMouseDown.connect(slot_OnMouseDown);
+	inputs->signal_LMouseUp.connect(slot_OnMouseUp);
+	inputs->signal_MouseMove.connect(slot_OnMouseMove);
+	inputs->signal_KeyDown.connect(slot_OnKeyDown);
+	inputs->signal_KeyUp.connect(slot_OnKeyUp);
 }
 
 GUserInputSystem::~GUserInputSystem()

@@ -2,12 +2,6 @@
 #include "Utils.h"
 
 
-GResourceDictionary* GResourceDictionary::Instance()
-{
-	static GResourceDictionary instance;
-	return &instance;
-}
-
 GResourceDictionary::GResourceDictionary()
 	: mTableSize(511)
 {

@@ -18,8 +18,8 @@ enum ResType
 
 class GResManager
 {
+	friend class GTextureHandle;
 public:
-
 	enum { DefaultResourceSize = 100 };
 
 	static GResManager* Instance();
@@ -36,6 +36,9 @@ private:
 
 	const char*     mResDir;
 	int             mMaxFileId;
+
+	std::unique_ptr<GResourceDictionary> mResourceDictionary;
+	std::shared_ptr<GTextureManager> mTextureManager;
 };
 
 #endif

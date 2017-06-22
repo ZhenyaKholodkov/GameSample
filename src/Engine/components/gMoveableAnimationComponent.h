@@ -33,11 +33,11 @@ public:
 
 	float getCurrentX()
 	{
-		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginX, mDX, mMovingTime);
+		return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mBeginX, mDX, static_cast<float>(mMovingTime));
 	}
 	float getCurrentY()
 	{
-		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBeginY, mDY, mMovingTime);
+		return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mBeginY, mDY, static_cast<float>(mMovingTime));
 	}
 
 	float GetXDestination() { return mXDestination; }
@@ -60,7 +60,6 @@ public:
 	bool destroyAfterFinished() const { return mDestroyAfterFinished; }
 public:/*slots*/
 	const boost::signals2::signal<void()>::slot_type slot_Move = boost::bind(&GMoveableAnimationComponent::setState, this, GMoveableAnimationComponent::STATE_MOVE);
-    const boost::signals2::signal<void(int)>::slot_type slot_ChangeVelocity = boost::bind(&GMoveableAnimationComponent::changeVelocity, this, _1);
 
 public: /*signals*/
 	boost::signals2::signal<void(float, float)>     signal_LocationChanged;
@@ -69,14 +68,6 @@ public: /*signals*/
 	boost::signals2::signal<void(Entity)>           signal_MovingFinishedWithData;
 
 private:
-	void changeVelocity(int velocity)
-	{
-		int distance = sqrt(pow(mXDestination - mBeginX, 2) + pow(mYDestination - mBeginY, 2));
-		int time = distance * 1000 / velocity;
-		float difference = static_cast<float>(mCurrentTime) / static_cast<float>(mMovingTime);
-		mCurrentTime = time * difference;
-		mMovingTime = time; 
-	}
 	void recalcDxDy()
 	{
 		mDX = mXDestination - mBeginX;

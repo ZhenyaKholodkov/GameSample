@@ -6,18 +6,18 @@
 class GResourceDictionary
 {
 	friend class GTextureManager;
+	friend class GResManager;
+
+private:
+	GResourceDictionary();
+
+	uint32          getTableID(const char* key);
 public:
-	static GResourceDictionary* Instance();
+	~GResourceDictionary();
 
 	GResource*      find(const char* key);
 	void            insert(GResource* resource);
 	void            remove(GResource* resource);
-
-private:
-	GResourceDictionary();
-	~GResourceDictionary();
-
-	uint32          getTableID(const char* key);
 
 private:
 	GResource** mTable;

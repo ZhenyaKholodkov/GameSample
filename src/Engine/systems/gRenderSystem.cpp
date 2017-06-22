@@ -41,7 +41,7 @@ void GRenderSystem::update(int dt)
 			mRenderer->drawSprite(sprite);
 		}
 
-	    std:string text = renderable.getText();
+	    std::string text = renderable.getText();
 		if (!text.empty())
 		{
 			mRenderer->drawText(text, renderable.getTextColor(), renderable.getFontSize());

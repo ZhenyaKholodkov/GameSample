@@ -18,11 +18,23 @@ GGameScene::GGameScene(std::shared_ptr<GEntityManager> entityManager) :
 
 GGameScene::~GGameScene()
 {
+	disconnectSignals();
 	unload();
 }
+
+void GGameScene::disconnectSignals()
+{
+	signal_NextScreen.disconnect_all_slots();
+	signal_Pause.disconnect_all_slots();
+	signal_Continue.disconnect_all_slots();
+	signal_ChangeVelocity.disconnect_all_slots();
+}
+
 void GGameScene::unload()
 {
 	mGameGun.unload();
+	mReplayWindow.unload();
+	mExitWindow.unload();
 	mEntityManager->destroyEntity(mControls);
 	mEntityManager->destroyEntity(mBackGround);
 	mEntityManager->destroyEntity(mMill);
@@ -30,11 +42,13 @@ void GGameScene::unload()
 	mEntityManager->destroyEntity(mTextScore);
 
 	mIsStarted = false;
+	mPause = false;
 }
 
 
 void GGameScene::start()
 {
+	mScore = 0;
 	GSprite* spriteBackgroun = GResManager::Instance()->GetSprite("background.png");
 	GSprite* spriteCoin = GResManager::Instance()->GetSprite("coin.png");
 
@@ -50,7 +64,7 @@ void GGameScene::start()
 	createPauseButton();
 	mIsStarted = true;
 
-	mTextScore = mEntityManager->createEntity();
+	mTextScore = mEntityManager->createEntity(2);
 	mEntityManager->addComponentsToEntity<GLocationComponent>(mTextScore, 100.0f, 100.0f);
 	mEntityManager->addComponentsToEntity<GRenderableComponent>(mTextScore, nullptr, 1.0f, 1.0f, 0.0f, "Score: 0", GColor(0xffffff), 32);
 
@@ -67,6 +81,9 @@ void GGameScene::start()
 		signal_Pause();
 		mReplayWindow.show();
 	});
+
+	mReplayWindow.create();
+	mExitWindow.create();
 }
 
 void GGameScene::addCoin()
@@ -78,10 +95,10 @@ void GGameScene::addCoin()
 
 void GGameScene::replay()
 {
+	signal_Continue();
 	unload();
 	start();
 	mPause = false;
-	signal_Continue();
 }
 
 void GGameScene::update(int dt)
@@ -97,8 +114,8 @@ void GGameScene::createMill()
 	GSprite* spriteMillBase = GResManager::Instance()->GetSprite("mill_color.png");
 	GSprite* spriteMillSales = GResManager::Instance()->GetSprite("mill_part2.png");
 
-	float millX = WIDTH / 2;
-	float millY = HEIGHT + spriteMillBase->getHeight();
+	float millX = static_cast<float>(WIDTH) / 2;
+	float millY = static_cast<float>(HEIGHT) + spriteMillBase->getHeight();
 
 	mMill = mEntityManager->createPlainEntity(spriteMillBase, millX, millY);
 	auto renderMill = mEntityManager->getComponent<GRenderableComponent>(mMill);
@@ -107,15 +124,16 @@ void GGameScene::createMill()
 	mEntityManager->setChildParentRelations(mMill, millSacles);
 	auto rotable = mEntityManager->addComponentsToEntity<GRotableComponent>(millSacles, 12.0f, 12.0f);
 	auto moveable = mEntityManager->addComponentsToEntity<GMoveableAnimationComponent>(mMill, millX, millY,
-		                                                               millX, HEIGHT - 0.5f * spriteMillBase->getHeight() / 2,
-		                                                               1000, false, GEasings::EasingType::QUAD_IN_EASING);
+		                                                               millX, static_cast<float>(HEIGHT) - spriteMillBase->getHeight() / 4.0f,
+		                                                               500, false, GEasings::EasingType::QUAD_IN_EASING);
 	rotable->setState(GRotableComponent::STATE_ROTATE);
 	moveable->setState(GMoveableAnimationComponent::STATE_MOVE);
 
 	mEntityManager->addComponentsToEntity<GCollisionComponent>(mMill, spriteMillBase->getWidth() / 4, 
 		                                                       spriteMillBase->getHeight() / 2);
 
-	auto move = mEntityManager->addComponentsToEntity<GMoveableComponent>(mMill, WIDTH / 3, 0.0f);
+	auto move = mEntityManager->addComponentsToEntity<GMoveableComponent>(mMill, static_cast<float>(WIDTH) / 3.0f, 0.0f,
+		                                                                  GVector2(), GVector2(static_cast<float>(WIDTH), static_cast<float>(HEIGHT)));
 	auto control = mEntityManager->getComponent<GKeyDownEventComponent>(mControls);
 	control->signal_KeyLeft.connect(move->slot_MoveDxRevert);
 	control->signal_KeyRight.connect(move->slot_MoveDx);
@@ -127,10 +145,10 @@ void GGameScene::createPauseButton()
 	GSprite* spriteButtonMove = GResManager::Instance()->GetSprite("blue_button_pause_move.png");
 	GSprite* spriteButtonDown = GResManager::Instance()->GetSprite("blue_button_pause_down.png");
 
-	float buttonX = WIDTH - (spriteButtonNorm->getWidth() * 0.7f);
+	float buttonX = static_cast<float>(WIDTH) - spriteButtonNorm->getWidth() * 0.7f;
 	float buttonY = spriteButtonNorm->getHeight()  * 0.7f;
 
-	mPauseButton = mEntityManager->createButtonEntity(spriteButtonNorm, spriteButtonMove, spriteButtonDown, buttonX, buttonY);
+	mPauseButton = mEntityManager->createButtonEntity(spriteButtonNorm, spriteButtonMove, spriteButtonDown, buttonX, buttonY, 2);
 
 	auto scale = mEntityManager->addComponentsToEntity<GScalableComponent>(mPauseButton, 0.0f, 0.0f, 1.0f, 1.0f, 2000, 
 		                                                                   GEasings::EasingType::ELASTIC_OUT_EASING);

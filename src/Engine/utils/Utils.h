@@ -6,6 +6,11 @@
 #include <list>
 
 
+inline bool isEntityValid(Entity entity)
+{
+	return entity < INVALID_ENTITY;
+}
+
 inline unsigned int rgbaToInt(unsigned int aR, unsigned int aG, unsigned int aB, unsigned int aA = 255)
 {
 	return (aR << 16) | (aG << 8) | (aB) | (aA << 24);

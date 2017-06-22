@@ -29,13 +29,14 @@ private:
 	void addCoin();
 
 	void replay();
+	void disconnectSignals();
 public: /*lots*/
 	boost::signals2::signal<void()>::slot_type slot_replay = boost::bind(&GGameScene::replay, this);
 	boost::signals2::signal<void()>::slot_type slot_addCoin = boost::bind(&GGameScene::addCoin, this);
 public:/*signals*/
-	boost::signals2::signal<void()> signal_NextScreen;
-	boost::signals2::signal<void()> signal_Pause;
-	boost::signals2::signal<void()> signal_Continue;
+	boost::signals2::signal<void()>    signal_NextScreen;
+	boost::signals2::signal<void()>    signal_Pause;
+	boost::signals2::signal<void()>    signal_Continue;
 	boost::signals2::signal<void(int)> signal_ChangeVelocity;
 private:
 	const std::shared_ptr<GEntityManager> mEntityManager;

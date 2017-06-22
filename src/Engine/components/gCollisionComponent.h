@@ -7,10 +7,10 @@ class GCollisionComponent : public GComponent<GCollisionComponent>
 {
 	friend class GCollisionSystem;
 public:
-	GCollisionComponent(int xRadius, int yRadius, bool destroyAfterCollision = false)
+	GCollisionComponent(float xRadius, float yRadius, bool destroyAfterCollision = false)
 	{
-		mRadius.x = (float)xRadius;
-		mRadius.y = (float)yRadius;
+		mRadius.x = xRadius;
+		mRadius.y = yRadius;
 		mNeedCheck = false;
 		mDestroyAfterCollision = destroyAfterCollision;
 	};

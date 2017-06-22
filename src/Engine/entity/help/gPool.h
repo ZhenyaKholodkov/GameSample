@@ -138,7 +138,7 @@ public:
 	}
 	~GComponentPool() 
 	{
-		for (int i = 0; i < mCapacity; ++i)
+		for (size_t i = 0; i < mCapacity; ++i)
 		{
 			destroy(i);
 		}

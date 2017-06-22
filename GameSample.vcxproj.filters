@@ -242,15 +242,13 @@
     <ClCompile Include="src\Engine\utils\Utils.cpp" />
     <ClCompile Include="src\Game\main.cpp" />
     <ClCompile Include="src\Engine\GGameWindow.cpp" />
-    <ClCompile Include="src\Game\gMainScene.cpp" />
     <ClCompile Include="src\Engine\systems\gRotableSystem.cpp" />
     <ClCompile Include="src\Engine\utils\gEasing.cpp" />
     <ClCompile Include="src\Game\GameScene\gGameScene.cpp" />
-    <ClCompile Include="src\thirdparty\openGLText\OpenGLText.cpp" />
     <ClCompile Include="src\Game\GameScene\gGameExitWindow.cpp" />
     <ClCompile Include="src\Game\GameScene\gGameReplayWindow.cpp" />
-    <ClCompile Include="src\Game\GameScene\gGameEntityGroup.cpp" />
     <ClCompile Include="src\Game\GameScene\gGameGun.cpp" />
+    <ClCompile Include="src\Game\MainScene\gMainScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GGame.h">
@@ -421,9 +419,6 @@
     <ClInclude Include="src\Engine\components\gSizeComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\thirdparty\sigslot\sigslot.h">
-      <Filter>src\thirdparty\sigslot</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\components\gMouseMoveEventComponent.h">
       <Filter>src\Engine\components</Filter>
     </ClInclude>
@@ -474,15 +469,11 @@
     <ClInclude Include="src\Engine\GGameWindow.h" />
     <ClInclude Include="src\Engine\utils\GExeptions.h" />
     <ClInclude Include="src\Engine\entity\help\gComponentMask.h" />
-    <ClInclude Include="src\Game\gMainScene.h" />
     <ClInclude Include="src\Game\GDefines.h" />
     <ClInclude Include="src\Engine\components\gRotableComponent.h" />
     <ClInclude Include="src\Engine\systems\gRotableSystem.h" />
     <ClInclude Include="src\Engine\utils\gEasing.h" />
     <ClInclude Include="src\Game\GameScene\gGameScene.h" />
-    <ClInclude Include="src\thirdparty\openGLText\OpenGLText.h" />
-    <ClInclude Include="src\thirdparty\libtextdraw\drawtext.h" />
-    <ClInclude Include="src\thirdparty\libtextdraw\drawtext_impl.h" />
     <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBBox.h" />
     <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBitmapGlyph.h" />
     <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTBuffer.h" />
@@ -507,8 +498,9 @@
     <ClInclude Include="src\thirdparty\ftgl\include\FTGL\FTTextureGlyph.h" />
     <ClInclude Include="src\Game\GameScene\gGameExitWindow.h" />
     <ClInclude Include="src\Game\GameScene\gGameReplayWindow.h" />
-    <ClInclude Include="src\Game\GameScene\gGameEntityGroup.h" />
     <ClInclude Include="src\Game\GameScene\gGameGun.h" />
+    <ClInclude Include="src\Engine\gInputSignals.h" />
+    <ClInclude Include="src\Game\MainScene\gMainScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\thirdparty\zlib\LIB\zlib.lib">

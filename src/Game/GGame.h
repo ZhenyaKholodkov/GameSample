@@ -20,12 +20,6 @@ public:
 	virtual int32  onCreate();
 	virtual void   onClose();
 
-	virtual void onMouseMove(GCursor point);
-	virtual void onLMouseDown(GCursor point);
-	virtual void onLMouseUp(GCursor point);
-	virtual void onKeyDown(GKey key);
-	virtual void onKeyUp(GKey key);
-
 	bool LoadResources();
 public:/*slots*/
 public:/*signals*/

@@ -1,6 +1,7 @@
 #include "GSprite.h"
 
-GSprite::GSprite(const char* path):
+GSprite::GSprite(const char* path, std::shared_ptr<GTextureManager> manager):
+	mTextureHandle(manager),
 	GResource(path, ResourceType::TYPE_SPRITE),
 	mIsLoaded(false)
 {

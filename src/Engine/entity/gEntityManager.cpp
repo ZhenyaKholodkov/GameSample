@@ -24,26 +24,39 @@ GEntityManager::~GEntityManager()
 {
 }
 
-Entity GEntityManager::createEntity()
+Entity GEntityManager::createEntity(uint32 priority /*= 0*/)
 {
 	assert(mAvailableEntities.size() != 0);
 
 	Entity newEntity = mAvailableEntities.front();
 	mAvailableEntities.pop();
-
-	/*if (mComponentIndexes.size() <= newEntity)
-	{
-		mComponentIndexes.push_back(std::vector<size_t>(getComponentCount(), GBaseComponent::s_invalid_component_index()));
-	}*/
-
+	addEntityToPriorities(newEntity, priority);
 	return newEntity;
+}
+
+void GEntityManager::addEntityToPriorities(Entity entity, uint32 priority/* = 0*/)
+{
+/*	if (mEntityPriorities.size() == 0 || mEntityPriorities.cend()->mPriority == priority)
+	{
+		mEntityPriorities.push_back(EntityPriority(entity, priority));
+		return;
+	}*/
+	for (auto iter = mEntityPriorities.crbegin(); iter != mEntityPriorities.crend(); ++iter)
+	{
+		if (iter->mPriority <= priority)
+		{
+			mEntityPriorities.insert(iter.base(), EntityPriority(entity, priority));
+			return;
+		}
+	}
+	mEntityPriorities.push_front(EntityPriority(entity, priority));
 }
 
 void GEntityManager::destroyEntity(Entity entity)
 {
 	if (entity == INVALID_ENTITY)
 		return;
-
+	signal_EntityToDestroy(entity);
 	auto  childComponent = getComponent<GChildComponent>(entity);
 	if (childComponent)
 	{
@@ -55,6 +68,14 @@ void GEntityManager::destroyEntity(Entity entity)
 		}
 	}
 	removeParent(entity);
+	for (auto iter = mEntityPriorities.begin(); iter != mEntityPriorities.end(); ++iter)
+	{
+		if (iter->mEntity == entity)
+		{
+			mEntityPriorities.erase(iter);
+			break;
+		}
+	}
 	for (uint32 index = 0; index < getComponentCount(); ++index)
 	{
 		if (mComponentMasks[entity].contains(index))
@@ -63,7 +84,6 @@ void GEntityManager::destroyEntity(Entity entity)
 	mComponentMasks[entity].reset();
 	mAvailableEntities.push(entity);
 	std::fill(mComponentIndexes[entity].begin(), mComponentIndexes[entity].end(), 0);
-	GEntityManager::Iterator(shared_from_this(), ComponentMask(2), 0);
 }
 
 void GEntityManager::destroyAllEntites()
@@ -77,18 +97,18 @@ void GEntityManager::destroyAllEntites()
 	}
 }
 
-Entity GEntityManager::createPlainEntity(GSprite* sprite, float xPos, float yPos)
+Entity GEntityManager::createPlainEntity(GSprite* sprite, float xPos, float yPos, uint32 priority /*= 0*/)
 {
-	Entity entity = createEntity();
+	Entity entity = createEntity(priority);
 	addComponentsToEntity<GLocationComponent>(entity, xPos, yPos);
 	addComponentsToEntity<GRenderableComponent>(entity, sprite);
 	return entity;
 
 }
 
-Entity GEntityManager::createButtonEntity(GSprite* normal, GSprite* move, GSprite* down, float xPos, float yPos)
+Entity GEntityManager::createButtonEntity(GSprite* normal, GSprite* move, GSprite* down, float xPos, float yPos, uint32 priority/* = 0*/)
 {
-	Entity entity = createEntity();
+	Entity entity = createEntity(priority);
 	addComponentsToEntity<GLocationComponent>(entity, xPos, yPos);
 	auto render = addComponentsToEntity<GRenderableComponent>(entity, normal);
 

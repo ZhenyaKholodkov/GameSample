@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "gEntityManager.h"
 #include "gSystemManager.h"
+#include "gInputSignals.h"
 
 #include <windows.h>
 #include <stdio.h>
@@ -19,7 +20,7 @@
 #pragma warning(disable: 4312)     // 'type cast' : conversion from 'LONG' to 'Window *' of greater size
 #endif
 
-class GGameWindow
+class GGameWindow: public GInputSignals
 {
 	friend LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 public:
@@ -45,22 +46,22 @@ private:
 	bool createGLContext();
 	void destroyGLContext() const;
 	void updateContext() const;
+
+	void onMouseMove(GCursor cursor)      { signal_MouseMove(cursor); };
+	void onLMouseDown(GCursor cursor) { signal_LMouseDown(cursor); };
+	void onRMouseDown(GCursor cursor) { signal_RMouseDown(cursor); };
+	void onLMouseUp(GCursor cursor) { signal_LMouseUp(cursor); };
+	void onRMouseUp(GCursor cursor) { signal_RMouseUp(cursor); };
+	void onMouseWheelDown(GCursor cursor) { signal_MouseWheelDown(cursor); };
+	void onMouseWheelUp(GCursor cursor) { signal_MouseWheelUp(cursor); };
+
+	void onKeyUp(GKey key)   { signal_KeyDown(key); };
+	void onKeyDown(GKey key) { signal_KeyUp(key); };
 protected:
 
 	virtual int  onCreate() { return 1; }
 	virtual void onClose();
 	virtual void onTimer(int);
-
-	virtual void onMouseMove(GCursor cursor) {};
-	virtual void onLMouseDown(GCursor cursor) {};
-	virtual void onRMouseDown(GCursor cursor) {};
-	virtual void onLMouseUp(GCursor cursor) {};
-	virtual void onRMouseUp(GCursor cursor) {};
-	virtual void onMouseWheelDown(GCursor cursor) {};
-	virtual void onMouseWheelUp(GCursor cursor) {};
-
-	virtual void onKeyUp(GKey key) {};
-	virtual void onKeyDown(GKey key) {};
 
 private:          
 	int32  mPeriod;

@@ -6,16 +6,16 @@
 
 class GTextureManager
 {
+	friend class GResManager;
 public:
-	static GTextureManager* Instance();
-
+	~GTextureManager();
 	GTextureObject* LoadTexture(const char* name);  // return the texture and loads it if needed.
 	void unloadTexture(GTextureObject* texture);
 private:
 	GTextureManager();
-	~GTextureManager();
 
 private:
+	std::unique_ptr<GTextureDictinary> mTextureDictionary;
 };
 #define GTEXTUREMANAGER_H
 #endif //TEXTUREMANAGER_H

@@ -16,8 +16,8 @@ public:
 		STATE_MOVE_DY_REVERT = BIT(5)
 	}MoveableState;
 
-	GMoveableComponent(float dx, float dy) :
-		mDX(dx), mDY(dy), mState(STATE_STOP)
+	GMoveableComponent(float dx, float dy, GVector2 leftTopPoint, GVector2 rightBottomPoint) :
+		mDX(dx), mDY(dy), mLeftTopPoint(leftTopPoint), mRightBottomPoint(rightBottomPoint), mState(STATE_STOP)
 	{	};
 	virtual ~GMoveableComponent() 
 	{
@@ -29,6 +29,16 @@ public:
 	void  SetDX(float x) { mDX = x; }
 	float GetDY() { return mDY; }
 	void  SetDY(float y) { mDY = y; }
+
+	bool isInsideRectangle(GVector2 point)
+	{
+		if (point.x < mLeftTopPoint.x || point.y < mLeftTopPoint.y ||
+			point.x >= mRightBottomPoint.x || point.y >= mRightBottomPoint.y)
+		{
+			return false;
+		}
+		return true;
+	}
 
 private:
 	void setState(MoveableState state) { mState = state; }
@@ -47,6 +57,9 @@ public: /*signals*/
 private: 
 	float mDX;
 	float mDY;
+
+	GVector2 mLeftTopPoint;
+	GVector2 mRightBottomPoint;
 
 	MoveableState mState;
 };

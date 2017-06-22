@@ -8,18 +8,16 @@ class GTextureDictinary
 {
 	friend class GTextureManager;
 public :
-	static GTextureDictinary* Instance();
+	~GTextureDictinary();
 
 	GTextureObject* find(const char* key);
 	void            insert(GTextureObject* texture);
 	void            remove(GTextureObject* texture);
 private:
 	GTextureDictinary();
-	~GTextureDictinary();
 
 	uint32          getTableID(const char* key);
 	void            destroy();
-
 private:
 	GTextureObject** mTable;
 	GTextureObject*  mChain;

@@ -26,7 +26,7 @@ public:
 
 	float getCurrentVelocity()
 	{
-		return GEasings::calculateValueWithEasing(mEasing, mCurrentTime, mBegVelocity, mEndVelocity - mBegVelocity, mTime);
+		return GEasings::calculateValueWithEasing(mEasing, static_cast<float>(mCurrentTime), mBegVelocity, mEndVelocity - mBegVelocity, static_cast<float>(mTime));
 	}
 
 	void setBegVelocity(float velocity) { mBegVelocity = velocity; }

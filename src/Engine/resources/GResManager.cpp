@@ -9,6 +9,8 @@
 //////////////!!!GResManager - realiztion!!!///////////
 GResManager::GResManager() : mMaxFileId(0)
 {
+	mResourceDictionary.reset(new GResourceDictionary());
+	mTextureManager.reset(new GTextureManager());
 }
 
 GResManager::~GResManager()
@@ -41,7 +43,7 @@ bool GResManager::LoadImage(const char* path, unsigned char** data, uint32* data
 
 GSprite* GResManager::GetSprite(const char* key)
 {
-	GSprite* sprite = static_cast<GSprite*>(GResourceDictionary::Instance()->find(key));
+	GSprite* sprite = static_cast<GSprite*>(mResourceDictionary->find(key));
 
 	if (!sprite)
 		return nullptr;
@@ -81,12 +83,12 @@ bool GResManager::LoadResources(const char* pathToConfig)
 		GTextureAtlas* atlas = new GTextureAtlas(atlasTextureData->Attribute("imagePath"));
 		atlasTextureData->QueryIntAttribute("width", &atlas->mWidth);
 		atlasTextureData->QueryIntAttribute("height", &atlas->mHeight);
-		GResourceDictionary::Instance()->insert(static_cast<GResource*>(atlas));
+		mResourceDictionary->insert(static_cast<GResource*>(atlas));
 
 		TiXmlElement* spriteData = atlasTextureData->FirstChildElement("sprite");
 		while (spriteData)
 		{
-			GSprite* sprite = new GSprite(spriteData->Attribute("n"));
+			GSprite* sprite = new GSprite(spriteData->Attribute("n"), mTextureManager);
 
 			sprite->mTextureKey = atlas->mKey;
 			spriteData->QueryIntAttribute("x", &sprite->mRect.mXPos);
@@ -101,7 +103,7 @@ bool GResManager::LoadResources(const char* pathToConfig)
 			sprite->mRect.mPivotX = pivotX * sprite->mRect.mWidth;
 			sprite->mRect.mPivotY = pivotY * sprite->mRect.mHeight;
 
-			GResourceDictionary::Instance()->insert((GResource*)(sprite));
+			mResourceDictionary->insert((GResource*)(sprite));
 
 			spriteData = spriteData->NextSiblingElement();
 		}
